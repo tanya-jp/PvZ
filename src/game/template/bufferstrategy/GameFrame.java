@@ -4,7 +4,7 @@ package game.template.bufferstrategy;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The window on which the rendering is performed.
@@ -30,6 +30,9 @@ public class GameFrame extends JFrame {
         //
         // Initialize the JFrame ...
         //
+        Icon icon = new ImageIcon(".\\PVS Design Kit\\images\\mainBG");
+        JLabel pic = new JLabel(icon);
+        this.add(pic);
     }
 
     /**

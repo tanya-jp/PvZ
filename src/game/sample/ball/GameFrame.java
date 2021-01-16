@@ -1,17 +1,14 @@
 
 package game.sample.ball;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The window on which the rendering is performed.
@@ -24,6 +21,10 @@ import javax.swing.JFrame;
  * @author Seyed Mohammad Ghaffarian
  */
 public class GameFrame extends JFrame {
+
+    private Image background = new ImageIcon(".\\PVS Design Kit\\images\\backyard.jpg").getImage();
+    private Image sunflower = new ImageIcon(".\\PVS Design Kit\\images\\active_sunflower.png").getImage();
+//    JLabel pic = new JLabel(icon);
 
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
@@ -38,7 +39,7 @@ public class GameFrame extends JFrame {
 
     public GameFrame(String title) {
         super(title);
-        setResizable(false);
+//        setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         lastRender = -1;
         fpsHistory = new ArrayList<>(100);
@@ -99,12 +100,13 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         // Draw background
-        g2d.setColor(Color.GRAY);
+//        g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        g2d.drawImage(background, 30,50, null);
         // Draw ball
-        g2d.setColor(Color.BLACK);
+//        g2d.setColor(Color.BLACK);
+        g2d.drawImage(sunflower, 10,40, null);
         g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
-
         /*		g2d.drawImage(image,state.locX,state.locY,null);*/
 
 
