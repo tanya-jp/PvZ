@@ -24,10 +24,11 @@ public class GameFrame extends JFrame {
 
     private Image background = new ImageIcon(".\\PVS Design Kit\\images\\backyard.jpg").getImage();
     private Image sunflower = new ImageIcon(".\\PVS Design Kit\\images\\active_sunflower.png").getImage();
+    private Image sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
 //    JLabel pic = new JLabel(icon);
 
-    public static final int GAME_HEIGHT = 720;                  // 720p game resolution
-    public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
+    public static final int GAME_HEIGHT = 752;                  // 720p game resolution
+    public static final int GAME_WIDTH = 1000;  // wide aspect ratio
 
     //uncomment all /*...*/ in the class for using Tank icon instead of a simple circle
     /*private BufferedImage image;*/

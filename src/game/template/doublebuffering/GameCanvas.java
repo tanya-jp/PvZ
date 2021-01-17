@@ -1,13 +1,11 @@
 /*** In The Name of Allah ***/
 package game.template.doublebuffering;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
+import java.util.Random;
+import javax.swing.*;
+import game.template.bufferstrategy.GameState;
 
 /**
  * The canvas on which the rendering is performed.
@@ -19,8 +17,11 @@ import javax.swing.JPanel;
  */
 public class GameCanvas extends JPanel {
 
-    public static final int GAME_HEIGHT = 720;                  // 720p game resolution
-    public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
+    public static final int GAME_HEIGHT = 772;
+    public static final int GAME_WIDTH = 1010;
+    private final Image background;
+    private final Image sun ;
+    private int y, x, flag;
 
     private BufferedImage bufferedScreen;
     private Graphics2D bufferedGraphics;
@@ -35,6 +36,8 @@ public class GameCanvas extends JPanel {
         bufferedScreen = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Get the graphics of the offscreen buffer;
         bufferedGraphics = (Graphics2D) bufferedScreen.createGraphics();
+        background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
+        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
     }
 
     /**
@@ -45,7 +48,7 @@ public class GameCanvas extends JPanel {
         // Call super class's paint
         super.paintComponent(g);
         // Now, draw the offscreen image to the screen like a normal image.
-        g.drawImage(bufferedScreen, 0, 0, this);
+        g.drawImage(background, 2,30, null);
     }
 
 
