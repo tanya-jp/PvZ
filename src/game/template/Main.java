@@ -10,6 +10,7 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
+        String type = null;
         // Initialize the global thread-pool
         ThreadPool.init();
 
@@ -19,13 +20,13 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GameFrame frame = new GameFrame("Plants Vs. Zombies !");
+                GameFrame frame = new GameFrame("Plants Vs. Zombies !", type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                 frame.initBufferStrategy();
                 // Create and execute the game-loop
-                GameLoop game = new GameLoop(frame);
+                GameLoop game = new GameLoop(frame, type);
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...

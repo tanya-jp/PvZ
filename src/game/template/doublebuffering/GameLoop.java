@@ -2,6 +2,7 @@
 package game.template.doublebuffering;
 import game.template.bufferstrategy.GameState;
 
+import java.util.PrimitiveIterator;
 import java.util.Random;
 
 /**
@@ -26,8 +27,10 @@ public class GameLoop implements Runnable {
 
     private GameCanvas canvas;
     private GameState state;
+    private String type;
 
-    public GameLoop(GameCanvas gc) {
+    public GameLoop(GameCanvas gc, String type) {
+        this.type = type;
         canvas = gc;
     }
 
@@ -35,7 +38,7 @@ public class GameLoop implements Runnable {
         //
         // Perform all initializations ...
         //
-        state = new GameState();
+        state = new GameState(type);
         canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
