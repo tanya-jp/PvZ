@@ -1,24 +1,32 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Random;
 
 /**
- * This class holds the state of the game and all of its elements.
- * This class also handles user inputs, which affect the game state.
- *
- * @author Seyed Mohammad Ghaffarian
- */
+        * This class holds the state of game and all of its elements.
+        * This class also handles user inputs, which affect the game state.
+        */
 public class GameState {
 
+    public static final int GAME_HEIGHT = 772;
+    public static final int GAME_WIDTH = 1010;
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
+    public int locX, locY;
+    Random rand = new Random();
+
 
     public GameState() {
+        locX = rand.nextInt(GAME_WIDTH);
+        locY = 60;
         //
         // Initialize the game state and all elements ...
         //
@@ -30,10 +38,32 @@ public class GameState {
      * The method which updates the game state.
      */
     public void update() {
+
         //
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
+        if(locY > (GAME_HEIGHT - 100))
+        {
+            try {
+                Thread.sleep(6000);
+                locY = 60;
+                locX = rand.nextInt(GAME_WIDTH) - 60;
+                if(locX < 60)
+                    locX = locX + 60;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            try {
+                Thread.sleep(250);
+                locY = locY + 30;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

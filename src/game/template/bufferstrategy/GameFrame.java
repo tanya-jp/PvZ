@@ -1,10 +1,10 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
+import game.template.doublebuffering.GameCanvas;
 
 /**
  * The window on which the rendering is performed.
@@ -18,8 +18,9 @@ import javax.swing.*;
  */
 public class GameFrame extends JFrame {
 
-    public static final int GAME_HEIGHT = 720;                  // 720p game resolution
-    public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
+    public static final int GAME_HEIGHT = 772;
+    public static final int GAME_WIDTH = 1010;
+    private final Image sun;
 
     private BufferStrategy bufferStrategy;
 
@@ -27,12 +28,11 @@ public class GameFrame extends JFrame {
         super(title);
         setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
+//        background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
         //
         // Initialize the JFrame ...
         //
-        Icon icon = new ImageIcon(".\\PVS Design Kit\\images\\mainBG");
-        JLabel pic = new JLabel(icon);
-        this.add(pic);
+        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
     }
 
     /**
@@ -71,6 +71,13 @@ public class GameFrame extends JFrame {
      * Rendering all game elements based on the game state.
      */
     private void doRendering(Graphics2D g2d, GameState state) {
+        GameCanvas canvas = new GameCanvas();
+        canvas.paintComponent(g2d);
+        long start = System.currentTimeMillis();
+        long delay = (1000 / 30) - (System.currentTimeMillis() - start);
+        if(delay > 0)
+            g2d.drawImage(sun, state.locX, state.locY, null);
+//        canvas.render(state);
         //
         // Draw all game elements according
         //  to the game 'state' using 'g2d' ...

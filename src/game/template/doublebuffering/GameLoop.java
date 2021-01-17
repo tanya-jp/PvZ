@@ -1,5 +1,8 @@
 /*** In The Name of Allah ***/
 package game.template.doublebuffering;
+import game.template.bufferstrategy.GameState;
+
+import java.util.Random;
 
 /**
  * A very simple structure for the main game loop.
