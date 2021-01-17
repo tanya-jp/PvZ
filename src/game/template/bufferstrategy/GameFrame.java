@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
     private final Image cherryBombCard;
     private final Image wallNutCard;
     private final Image freezePeaShooterCard;
+    private final Image lawnMower;
     private String type;
 
     private BufferStrategy bufferStrategy;
@@ -45,6 +46,7 @@ public class GameFrame extends JFrame {
         cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
         wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
         freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
+        lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
     }
 
     /**
@@ -96,6 +98,13 @@ public class GameFrame extends JFrame {
             g2d.drawImage(wallNutCard, 110+3*peaShooterCard.getWidth(null), 38, null);
         if(!state.getFreezePea() && state.getSunNumber() >= 175)
             g2d.drawImage(freezePeaShooterCard, 110+4*peaShooterCard.getWidth(null), 38, null);
+        //set lawn mowers
+        g2d.drawImage(lawnMower,-35,150,null);
+        g2d.drawImage(lawnMower,-35,150 + 120,null);
+        g2d.drawImage(lawnMower,-35,150 + 120*2,null);
+        g2d.drawImage(lawnMower,-35,150 + 120*3,null);
+        g2d.drawImage(lawnMower,-35,150 + 120*4,null);
+        g2d.drawImage(lawnMower,-35,150 + 120*5,null);
         long start = System.currentTimeMillis();
         long delay = (1000 / 30) - (System.currentTimeMillis() - start);
         if(delay > 0 && !state.getSun())

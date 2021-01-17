@@ -40,7 +40,7 @@ public class GameState {
         sunFlowerTime = 0;
         cherryBombTime = 0;
         wallNutTime = 0;
-        sunTime = System.currentTimeMillis() + 26000;
+        sunTime = System.currentTimeMillis() + 50000;
         freezePeaShooterTime = 0;
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
@@ -83,7 +83,8 @@ public class GameState {
                 freezePeaShooter = false;
         }
         //checks time of dropping
-        if(sunState && (System.currentTimeMillis() - sunTime) >= 25000)
+        if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
+                (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
         {
             sunState = false;
             changeSunState();
@@ -103,8 +104,8 @@ public class GameState {
                 Thread.sleep(500);
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
-                if(sunX < 100)
-                    sunX = sunX + 100;
+                if(sunX < 150)
+                    sunX = sunX + 150;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
