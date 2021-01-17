@@ -62,8 +62,9 @@ public class GameState {
     {
         if(sunY > (GAME_HEIGHT - 100))
         {
+            sunState = false;
             try {
-                Thread.sleep(500);
+                Thread.sleep(2500);
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
                 if(sunX < 100)
@@ -75,7 +76,7 @@ public class GameState {
         else
         {
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
                 sunY = sunY + 30;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -135,7 +136,11 @@ public class GameState {
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                peaShooter = true;
+                if(sunNumber >= 100)
+                {
+                    peaShooter = true;
+                    sunNumber -= 100;
+                }
                 System.out.println("p");
             }
 
@@ -144,7 +149,11 @@ public class GameState {
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                sunFlower = true;
+                if(sunNumber >= 50)
+                {
+                    sunFlower = true;
+                    sunNumber -= 50;
+                }
                 System.out.println("s");
             }
 
@@ -153,7 +162,11 @@ public class GameState {
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                cherryBomb = true;
+                if(sunNumber >= 150)
+                {
+                    cherryBomb = true;
+                    sunNumber -= 150;
+                }
                 System.out.println("c");
             }
             else if(e.getX() >= 110 - cardW + cardW*3 &&
@@ -161,20 +174,25 @@ public class GameState {
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                wallNut = true;
+                if(sunNumber >= 50)
+                {
+                    wallNut = true;
+                    sunNumber -= 50;
+                }
                 System.out.println("w");
             }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if((e.getX() >= sunX - sun.getWidth(null)/2 &&
-                    e.getX() <= sunX + sun.getWidth(null)/2) &&
-                    (e.getY() >= sunY - sun.getHeight(null)/2 &&
-                            e.getY() <= sunY + sun.getHeight(null)/2))
+            if((e.getX() >= sunX - sun.getWidth(null) &&
+                    e.getX() <= sunX + sun.getWidth(null)) &&
+                    (e.getY() >= sunY - sun.getHeight(null) &&
+                            e.getY() <= sunY + sun.getHeight(null)))
             {
                 sunState = true;
                 sunNumber += 25;
+                sunY = GAME_HEIGHT;
             }
             else
                 sunState = false;
