@@ -75,14 +75,7 @@ public class GameFrame extends JFrame {
         canvas.paintComponent(g2d);
         long start = System.currentTimeMillis();
         long delay = (1000 / 30) - (System.currentTimeMillis() - start);
-        if(state.sunY == 60) {
-            try {
-                Thread.sleep(25000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        if(delay > 0)
+        if(delay > 0 && !state.getSun())
             g2d.drawImage(sun, state.sunX, state.sunY, null);
 //        canvas.render(state);
         //
