@@ -20,7 +20,11 @@ public class GameCanvas extends JPanel {
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
     private final Image background;
-    private final Image sun ;
+    private final Image peaShooterCard;
+    private final Image sunFlowerCard;
+    private final Image cherryBombCard;
+    private final Image wallNutCard;
+
     private int y, x, flag;
 
     private BufferedImage bufferedScreen;
@@ -37,7 +41,10 @@ public class GameCanvas extends JPanel {
         // Get the graphics of the offscreen buffer;
         bufferedGraphics = (Graphics2D) bufferedScreen.createGraphics();
         background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
-        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+        peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
+        sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
+        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
     }
 
     /**
@@ -49,6 +56,10 @@ public class GameCanvas extends JPanel {
         super.paintComponent(g);
         // Now, draw the offscreen image to the screen like a normal image.
         g.drawImage(background, 2,30, null);
+        g.drawImage(peaShooterCard, 110, 38, null);
+        g.drawImage(sunFlowerCard, 110+peaShooterCard.getWidth(null), 38, null);
+        g.drawImage(cherryBombCard, 110+2*peaShooterCard.getWidth(null), 38, null);
+        g.drawImage(wallNutCard, 110+3*peaShooterCard.getWidth(null), 38, null);
     }
 
 
