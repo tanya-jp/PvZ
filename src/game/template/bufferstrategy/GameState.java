@@ -18,8 +18,9 @@ public class GameState {
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
     private boolean sunState;
-    public int sunX, sunY,sunNumber;
+    public int sunX, sunY,sunNumber, cardW,cardH;
     private final Image sun;
+    private boolean peaShooter, sunFlower, cherryBomb, wallNut;
     Random rand = new Random();
 
 
@@ -28,6 +29,12 @@ public class GameState {
         sunY = 60;
         sunNumber = 0;
         sunState = false;
+        peaShooter = false;
+        sunFlower = false;
+        cherryBomb = false;
+        wallNut = false;
+        cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
+        cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
         //
         // Initialize the game state and all elements ...
         //
@@ -46,7 +53,6 @@ public class GameState {
         //  based on user input and elapsed time ...
         //
         changeSunState();
-        System.out.println(sunNumber);
     }
 
     /**
@@ -60,8 +66,8 @@ public class GameState {
                 Thread.sleep(500);
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
-                if(sunX < 60)
-                    sunX = sunX + 60;
+                if(sunX < 100)
+                    sunX = sunX + 100;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -124,6 +130,40 @@ public class GameState {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            if(e.getX() >= 110 - cardW &&
+                    e.getX() <= 110 + cardW &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                peaShooter = true;
+                System.out.println("p");
+            }
+
+            else if(e.getX() >= 110 - cardW + cardW &&
+                    e.getX() <= 110 + cardW + cardW &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                sunFlower = true;
+                System.out.println("s");
+            }
+
+            else if(e.getX() >= 110 - cardW + cardW*2 &&
+                    e.getX() <= 110 + cardW + cardW*2 &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                cherryBomb = true;
+                System.out.println("c");
+            }
+            else if(e.getX() >= 110 - cardW + cardW*3 &&
+                    e.getX() <= 110 + cardW + cardW*3 &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                wallNut = true;
+                System.out.println("w");
+            }
         }
 
         @Override
