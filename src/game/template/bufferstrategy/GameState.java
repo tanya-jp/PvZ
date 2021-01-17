@@ -20,13 +20,13 @@ public class GameState {
     public static final int GAME_WIDTH = 1010;
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
-    public int locX, locY;
+    public int sunX, sunY;
     Random rand = new Random();
 
 
     public GameState() {
-        locX = rand.nextInt(GAME_WIDTH);
-        locY = 60;
+        sunX = rand.nextInt(GAME_WIDTH);
+        sunY = 60;
         //
         // Initialize the game state and all elements ...
         //
@@ -43,14 +43,22 @@ public class GameState {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
-        if(locY > (GAME_HEIGHT - 100))
+        changeSunState();
+    }
+
+    /**
+     * This class controls sun when it is dropping down.
+     */
+    private void changeSunState()
+    {
+        if(sunY > (GAME_HEIGHT - 100))
         {
             try {
-                Thread.sleep(6000);
-                locY = 60;
-                locX = rand.nextInt(GAME_WIDTH) - 60;
-                if(locX < 60)
-                    locX = locX + 60;
+                Thread.sleep(10);
+                sunY = 60;
+                sunX = rand.nextInt(GAME_WIDTH) - 60;
+                if(sunX < 60)
+                    sunX = sunX + 60;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -59,13 +67,12 @@ public class GameState {
         {
             try {
                 Thread.sleep(250);
-                locY = locY + 30;
+                sunY = sunY + 30;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     public KeyListener getKeyListener() {
         return keyHandler;
