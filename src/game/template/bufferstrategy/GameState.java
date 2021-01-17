@@ -22,7 +22,7 @@ public class GameState {
     private final Image sun;
     private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
     Random rand = new Random();
-    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime;
+    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime;
     private String type;
 
 
@@ -40,6 +40,7 @@ public class GameState {
         sunFlowerTime = 0;
         cherryBombTime = 0;
         wallNutTime = 0;
+        sunTime = System.currentTimeMillis() + 26000;
         freezePeaShooterTime = 0;
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
@@ -60,7 +61,6 @@ public class GameState {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
-        changeSunState();
         if(sunFlower && (System.currentTimeMillis() - sunFlowerTime) >= 7500)
             sunFlower = false;
         if(peaShooter && (System.currentTimeMillis() - peaShooterTime) >= 7500)
@@ -82,6 +82,14 @@ public class GameState {
             else if(type.equals("hard") && (System.currentTimeMillis() - freezePeaShooterTime) >= 30000)
                 freezePeaShooter = false;
         }
+        //checks time of dropping
+        if(sunState && (System.currentTimeMillis() - sunTime) >= 25000)
+        {
+            sunState = false;
+            changeSunState();
+        }
+        else if(!sunState)
+            changeSunState();
     }
 
     /**
@@ -91,9 +99,8 @@ public class GameState {
     {
         if(sunY > (GAME_HEIGHT - 100))
         {
-            sunState = false;
             try {
-                Thread.sleep(2500);
+                Thread.sleep(500);
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
                 if(sunX < 100)
@@ -107,6 +114,11 @@ public class GameState {
             try {
                 Thread.sleep(1000);
                 sunY = sunY + 30;
+                if(sunY > (GAME_HEIGHT - 100))
+                {
+                    sunTime = System.currentTimeMillis();
+                    sunState = true;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -123,33 +135,52 @@ public class GameState {
         return mouseHandler;
     }
 
-
-
+    /**
+     *If sun has been chosen returns true.
+     * When returns false, means sun should continue dropping.
+     */
     public boolean getSun()
     {
         return sunState;
     }
 
+    /**
+     * Returns the number of chosen suns*25.
+     */
     public int getSunNumber(){
         return sunNumber;
     }
-
+    /**
+     * If peaShooter's card can be appeared, returns false.
+     */
     public boolean getPea()
     {
         return peaShooter;
     }
+    /**
+     * If sunFlower's card can be appeared, returns false.
+     */
     public boolean getSunFlower()
     {
         return sunFlower;
     }
+    /**
+     * If cherryBomb's card can be appeared, returns false.
+     */
     public boolean getCherry()
     {
         return cherryBomb;
     }
+    /**
+     * If wallNut's card can be appeared, returns false.
+     */
     public boolean getWallNut()
     {
         return wallNut;
     }
+    /**
+     * If freezePeaShooter's card can be appeared, returns false.
+     */
     public boolean getFreezePea()
     {
         return freezePeaShooter;
@@ -255,6 +286,7 @@ public class GameState {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            //saves sun
             if((e.getX() >= sunX - sun.getWidth(null) &&
                     e.getX() <= sunX + sun.getWidth(null)) &&
                     (e.getY() >= sunY - sun.getHeight(null) &&
@@ -263,6 +295,7 @@ public class GameState {
                 sunState = true;
                 sunNumber += 25;
                 sunY = GAME_HEIGHT;
+                sunTime = System.currentTimeMillis();
             }
             else
                 sunState = false;
