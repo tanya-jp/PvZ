@@ -2,6 +2,7 @@
 package game.template.bufferstrategy;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
@@ -15,9 +16,9 @@ public class GameState {
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
     private KeyHandler keyHandler;
-    private SetSun setSun;
+    private MouseHandler mouseHandler;
     private boolean sunState;
-    public int sunX, sunY;
+    public int sunX, sunY,sunNumber;
     private final Image sun;
     Random rand = new Random();
 
@@ -25,12 +26,13 @@ public class GameState {
     public GameState() {
         sunX = rand.nextInt(GAME_WIDTH);
         sunY = 60;
+        sunNumber = 0;
         sunState = false;
         //
         // Initialize the game state and all elements ...
         //
 //        keyHandler = new KeyHandler();
-        setSun = new SetSun();
+        mouseHandler = new MouseHandler();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
     }
 
@@ -43,8 +45,8 @@ public class GameState {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
-
         changeSunState();
+        System.out.println(sunNumber);
     }
 
     /**
@@ -57,7 +59,7 @@ public class GameState {
             try {
                 Thread.sleep(500);
                 sunY = 60;
-                sunX = rand.nextInt(GAME_WIDTH) - 60;
+                sunX = rand.nextInt(GAME_WIDTH) - 100;
                 if(sunX < 60)
                     sunX = sunX + 60;
             } catch (InterruptedException e) {
@@ -79,10 +81,10 @@ public class GameState {
         return keyHandler;
     }
     public MouseListener getMouseListener() {
-        return setSun;
+        return mouseHandler;
     }
     public MouseMotionListener getMouseMotionListener() {
-        return setSun;
+        return mouseHandler;
     }
 
 
@@ -90,6 +92,10 @@ public class GameState {
     public boolean getSun()
     {
         return sunState;
+    }
+
+    public int getSunNumber(){
+        return sunNumber;
     }
 
     /**
@@ -114,7 +120,7 @@ public class GameState {
     /**
      * The mouse handler.
      */
-    class SetSun implements MouseListener, MouseMotionListener {
+    class MouseHandler implements MouseListener, MouseMotionListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -126,11 +132,13 @@ public class GameState {
                     e.getX() <= sunX + sun.getWidth(null)/2) &&
                     (e.getY() >= sunY - sun.getHeight(null)/2 &&
                             e.getY() <= sunY + sun.getHeight(null)/2))
+            {
                 sunState = true;
+                sunNumber += 25;
+            }
             else
                 sunState = false;
 
-            System.out.println(sunState);
         }
 
         @Override
