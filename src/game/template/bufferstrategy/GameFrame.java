@@ -77,6 +77,8 @@ public class GameFrame extends JFrame {
         long delay = (1000 / 30) - (System.currentTimeMillis() - start);
         if(delay > 0 && !state.getSun())
             g2d.drawImage(sun, state.sunX, state.sunY, null);
+        g2d.setFont(g2d.getFont().deriveFont(18.0f));
+        g2d.drawString(String.valueOf(state.sunNumber), 55, 125);
 //        canvas.render(state);
         //
         // Draw all game elements according
