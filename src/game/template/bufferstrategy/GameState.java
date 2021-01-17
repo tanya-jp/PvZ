@@ -3,11 +3,7 @@ package game.template.bufferstrategy;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.Random;
 
 /**
@@ -19,19 +15,23 @@ public class GameState {
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
     private KeyHandler keyHandler;
-    private MouseHandler mouseHandler;
+    private SetSun setSun;
+    private boolean sunState;
     public int sunX, sunY;
+    private final Image sun;
     Random rand = new Random();
 
 
     public GameState() {
         sunX = rand.nextInt(GAME_WIDTH);
         sunY = 60;
+        sunState = false;
         //
         // Initialize the game state and all elements ...
         //
-        keyHandler = new KeyHandler();
-        mouseHandler = new MouseHandler();
+//        keyHandler = new KeyHandler();
+        setSun = new SetSun();
+        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
     }
 
     /**
@@ -43,6 +43,7 @@ public class GameState {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
+
         changeSunState();
     }
 
@@ -54,7 +55,7 @@ public class GameState {
         if(sunY > (GAME_HEIGHT - 100))
         {
             try {
-                Thread.sleep(10);
+                Thread.sleep(500);
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 60;
                 if(sunX < 60)
@@ -66,7 +67,7 @@ public class GameState {
         else
         {
             try {
-                Thread.sleep(250);
+                Thread.sleep(500);
                 sunY = sunY + 30;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -78,13 +79,18 @@ public class GameState {
         return keyHandler;
     }
     public MouseListener getMouseListener() {
-        return mouseHandler;
+        return setSun;
     }
     public MouseMotionListener getMouseMotionListener() {
-        return mouseHandler;
+        return setSun;
     }
 
 
+
+    public boolean getSun()
+    {
+        return sunState;
+    }
 
     /**
      * The keyboard handler.
@@ -108,7 +114,7 @@ public class GameState {
     /**
      * The mouse handler.
      */
-    class MouseHandler implements MouseListener, MouseMotionListener {
+    class SetSun implements MouseListener, MouseMotionListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -116,6 +122,15 @@ public class GameState {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            if((e.getX() >= sunX - sun.getWidth(null)/2 &&
+                    e.getX() <= sunX + sun.getWidth(null)/2) &&
+                    (e.getY() >= sunY - sun.getHeight(null)/2 &&
+                            e.getY() <= sunY + sun.getHeight(null)/2))
+                sunState = true;
+            else
+                sunState = false;
+
+            System.out.println(sunState);
         }
 
         @Override
