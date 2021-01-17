@@ -20,12 +20,15 @@ public class GameState {
     private boolean sunState;
     public int sunX, sunY,sunNumber, cardW,cardH;
     private final Image sun;
-    private boolean peaShooter, sunFlower, cherryBomb, wallNut;
+    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
     Random rand = new Random();
+    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime;
+    private String type;
 
 
-    public GameState() {
+    public GameState(String type) {
         sunX = rand.nextInt(GAME_WIDTH);
+        this.type = type;
         sunY = 60;
         sunNumber = 0;
         sunState = false;
@@ -33,6 +36,11 @@ public class GameState {
         sunFlower = false;
         cherryBomb = false;
         wallNut = false;
+        peaShooterTime = 0;
+        sunFlowerTime = 0;
+        cherryBombTime = 0;
+        wallNutTime = 0;
+        freezePeaShooterTime = 0;
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
         //
@@ -53,6 +61,27 @@ public class GameState {
         //  based on user input and elapsed time ...
         //
         changeSunState();
+        if(sunFlower && (System.currentTimeMillis() - sunFlowerTime) >= 7500)
+            sunFlower = false;
+        if(peaShooter && (System.currentTimeMillis() - peaShooterTime) >= 7500)
+            peaShooter = false;
+        if(wallNut && (System.currentTimeMillis() - wallNutTime) >= 30000)
+            wallNut = false;
+        if(cherryBomb)
+        {
+            if(type.equals("normal") && (System.currentTimeMillis() - cherryBombTime) >= 30000)
+                cherryBomb = false;
+            else if(type.equals("hard") && (System.currentTimeMillis() - cherryBombTime) >= 45000)
+                cherryBomb = false;
+
+        }
+        if(freezePeaShooter)
+        {
+            if(type.equals("normal") && (System.currentTimeMillis() - freezePeaShooterTime) >= 7500)
+                freezePeaShooter = false;
+            else if(type.equals("hard") && (System.currentTimeMillis() - freezePeaShooterTime) >= 30000)
+                freezePeaShooter = false;
+        }
     }
 
     /**
@@ -105,6 +134,27 @@ public class GameState {
         return sunNumber;
     }
 
+    public boolean getPea()
+    {
+        return peaShooter;
+    }
+    public boolean getSunFlower()
+    {
+        return sunFlower;
+    }
+    public boolean getCherry()
+    {
+        return cherryBomb;
+    }
+    public boolean getWallNut()
+    {
+        return wallNut;
+    }
+    public boolean getFreezePea()
+    {
+        return freezePeaShooter;
+    }
+
     /**
      * The keyboard handler.
      */
@@ -131,55 +181,75 @@ public class GameState {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            //peaShooter has been chosen
             if(e.getX() >= 110 - cardW &&
                     e.getX() <= 110 + cardW &&
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                if(sunNumber >= 100)
+                if(sunNumber >= 100 && !peaShooter)
                 {
                     peaShooter = true;
                     sunNumber -= 100;
+                    peaShooterTime = System.currentTimeMillis();
                 }
                 System.out.println("p");
             }
-
+            //sunFlower has been chosen
             else if(e.getX() >= 110 - cardW + cardW &&
                     e.getX() <= 110 + cardW + cardW &&
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                if(sunNumber >= 50)
+                if(sunNumber >= 50 && !sunFlower)
                 {
                     sunFlower = true;
                     sunNumber -= 50;
+                    sunFlowerTime = System.currentTimeMillis();
+                    System.out.println("s");
                 }
-                System.out.println("s");
             }
-
+            //cherryBomb has been chosen
             else if(e.getX() >= 110 - cardW + cardW*2 &&
                     e.getX() <= 110 + cardW + cardW*2 &&
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                if(sunNumber >= 150)
+                if(sunNumber >= 150 && !cherryBomb)
                 {
                     cherryBomb = true;
                     sunNumber -= 150;
+                    cherryBombTime = System.currentTimeMillis();
                 }
                 System.out.println("c");
             }
+            //walletNut has been chosen
             else if(e.getX() >= 110 - cardW + cardW*3 &&
                     e.getX() <= 110 + cardW + cardW*3 &&
                     e.getY() >= 38 - cardH &&
                     e.getY() <= 38 + cardH)
             {
-                if(sunNumber >= 50)
+                if(sunNumber >= 50 && !wallNut)
                 {
                     wallNut = true;
                     sunNumber -= 50;
+                    wallNutTime = System.currentTimeMillis();
                 }
                 System.out.println("w");
+            }
+            //freezePeaShooter has been chosen
+            else if(e.getX() >= 110 - cardW + cardW*4 &&
+                    e.getX() <= 110 + cardW + cardW*4 &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                if(sunNumber >= 175 && !freezePeaShooter)
+                {
+                    freezePeaShooter = true;
+                    sunNumber -= 175;
+                    freezePeaShooterTime = System.currentTimeMillis();
+                }
+                System.out.println("f");
             }
         }
 

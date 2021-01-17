@@ -25,8 +25,10 @@ public class GameLoop implements Runnable {
 
     private GameFrame canvas;
     private GameState state;
+    private String type;
 
-    public GameLoop(GameFrame frame) {
+    public GameLoop(GameFrame frame, String type) {
+        this.type = type;
         canvas = frame;
     }
 
@@ -35,7 +37,7 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-        state = new GameState();
+        state = new GameState(type);
         canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
