@@ -5,7 +5,9 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 /**
         * This class holds the state of game and all of its elements.
@@ -18,9 +20,10 @@ public class GameState {
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
     private boolean sunState;
-    public int sunX, sunY,sunNumber, cardW,cardH;
+    public int sunX, sunY,sunNumber, cardW, cardH, locX, locY;
     private final Image sun;
     private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
+    private HashMap<Integer, String> info = new HashMap<>();
     Random rand = new Random();
     private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime;
     private String type;
@@ -36,6 +39,15 @@ public class GameState {
         sunFlower = false;
         cherryBomb = false;
         wallNut = false;
+        for (int i = 1; i <= 9; i++)
+        {
+            for(int j = 1; j <= 5; j++)
+            {
+                int loc = j*10 + i;
+                info.put(loc, null);
+
+            }
+        }
         peaShooterTime = 0;
         sunFlowerTime = 0;
         cherryBombTime = 0;
@@ -187,6 +199,10 @@ public class GameState {
         return freezePeaShooter;
     }
 
+    public HashMap<Integer, String> getInfo()
+    {
+        return info;
+    }
     /**
      * The keyboard handler.
      */
@@ -225,7 +241,6 @@ public class GameState {
                     sunNumber -= 100;
                     peaShooterTime = System.currentTimeMillis();
                 }
-                System.out.println("p");
             }
             //sunFlower has been chosen
             else if(e.getX() >= 110 - cardW + cardW &&
@@ -238,7 +253,6 @@ public class GameState {
                     sunFlower = true;
                     sunNumber -= 50;
                     sunFlowerTime = System.currentTimeMillis();
-                    System.out.println("s");
                 }
             }
             //cherryBomb has been chosen
@@ -253,7 +267,6 @@ public class GameState {
                     sunNumber -= 150;
                     cherryBombTime = System.currentTimeMillis();
                 }
-                System.out.println("c");
             }
             //walletNut has been chosen
             else if(e.getX() >= 110 - cardW + cardW*3 &&
@@ -267,7 +280,6 @@ public class GameState {
                     sunNumber -= 50;
                     wallNutTime = System.currentTimeMillis();
                 }
-                System.out.println("w");
             }
             //freezePeaShooter has been chosen
             else if(e.getX() >= 110 - cardW + cardW*4 &&
@@ -281,7 +293,6 @@ public class GameState {
                     sunNumber -= 175;
                     freezePeaShooterTime = System.currentTimeMillis();
                 }
-                System.out.println("f");
             }
         }
 
@@ -300,6 +311,58 @@ public class GameState {
             }
             else
                 sunState = false;
+
+            //find the selected location for putting flowers
+            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter) && !sunState)
+            {
+                int x = e.getX();
+                int y = e.getY();
+                int c=0, r=0;
+                //find row of chosen cell
+                if( y > 138 && y <= 246)
+                    r = 1;
+                else if( y > 246 && y <= 370)
+                    r = 2;
+                else if( y > 370 && y <= 500)
+                    r = 3;
+                else if( y > 500 && y <= 618)
+                r = 4;
+                else if( y > 618 && y <= 742)
+                    r = 5;
+                //find column on chosen cell
+                if( x > 38 && x <= 144)
+                    c = 1;
+                else if(x > 144 && x <= 244)
+                    c = 2;
+                else if(x > 244 && x <= 348)
+                    c = 3;
+                else if(x > 348 && x <= 446)
+                    c = 4;
+                else if(x > 446 && x <= 552)
+                    c = 5;
+                else if(x > 552 && x <= 650)
+                    c = 6;
+                else if(x > 650 && x <= 748)
+                    c = 7;
+                else if(x > 748 && x <= 844)
+                    c = 8;
+                else if(x > 748 && x <= 972)
+                    c = 9;
+                int loc = r*10 + c;
+                if(info.get(loc) == null)
+                {
+                    if(peaShooter)
+                        info.replace(loc, "peaShooter");
+                    else if(sunFlower)
+                        info.replace(loc, "sunFlower");
+                    else if(cherryBomb)
+                        info.replace(loc, "cherryBomb");
+                    else if(wallNut)
+                        info.replace(loc, "wallNut");
+                    else if(freezePeaShooter)
+                        info.replace(loc, "freezePeaShooter");
+                }
+            }
 
         }
 
