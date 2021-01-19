@@ -20,8 +20,6 @@ public class GameFrame extends JFrame {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
-    private int x = 61;
-    private int y = 149;
     private Image sun;
     private Image peaShooterCard;
     private Image sunFlowerCard;
@@ -179,15 +177,17 @@ public class GameFrame extends JFrame {
                 int locX = 0, locY = 0;
                 if(state.getInfo().get(loc) != null)
                 {
-                    locX = x + (i-1)*100;
-                    locY = y + (j-1)*115;
+                    int x = 66;
+                    locX = x + (i-1)*102;
+                    int y = 154;
+                    locY = y + (j-1)*118;
 
                     if(state.getInfo().get(loc).equals("peaShooter"))
                         g2d.drawImage(peaShooterFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("sunFlower"))
                         g2d.drawImage(sunFlowerFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("cherryBomb"))
-                        g2d.drawImage(cherryBombCard, locX, locY, null);
+                        g2d.drawImage(cherryFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("wallNut"))
                         g2d.drawImage(walnutFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))

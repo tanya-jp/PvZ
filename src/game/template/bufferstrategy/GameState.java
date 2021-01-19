@@ -20,10 +20,10 @@ public class GameState {
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
     private boolean sunState;
-    public int sunX, sunY,sunNumber, cardW, cardH, locX, locY;
+    public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
     private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
-    private HashMap<Integer, String> info = new HashMap<>();
+    private HashMap<Integer, String> info ;
     Random rand = new Random();
     private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime;
     private String type;
@@ -31,6 +31,7 @@ public class GameState {
 
     public GameState(String type) {
         sunX = rand.nextInt(GAME_WIDTH);
+        info = new HashMap<>();
         this.type = type;
         sunY = 60;
         sunNumber = 0;
@@ -309,11 +310,9 @@ public class GameState {
                 sunY = GAME_HEIGHT;
                 sunTime = System.currentTimeMillis();
             }
-            else
-                sunState = false;
 
             //find the selected location for putting flowers
-            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter) && !sunState)
+            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter))
             {
                 int x = e.getX();
                 int y = e.getY();
