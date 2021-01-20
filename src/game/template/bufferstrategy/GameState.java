@@ -248,6 +248,13 @@ public class GameState {
         return freezePeaShooter;
     }
     /**
+     * If shovel has been chosen, returns true.
+     */
+    public boolean getShovel()
+    {
+        return shovel;
+    }
+    /**
      * If sunflower's sun can be appeared, returns true.
      */
     public HashMap<Integer, Boolean> getSunFlowerState()
