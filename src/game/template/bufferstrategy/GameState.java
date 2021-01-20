@@ -1,10 +1,9 @@
-/*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+//import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTreeUI;
+//import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -17,14 +16,14 @@ public class GameState {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
-    private KeyHandler keyHandler;
-    private MouseHandler mouseHandler;
+//    private KeyHandler keyHandler;
+    private final MouseHandler mouseHandler;
     private boolean sunState;
     private HashMap<Integer, Boolean> sunFlowerState;
-    private HashMap<Integer, Long> sunFlowerSunTime;
+    private final HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
-    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter, lock;
+    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter, lock, shovel;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
     private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState;
@@ -45,6 +44,7 @@ public class GameState {
         cherryBomb = false;
         wallNut = false;
         lock = false;
+        shovel = false;
         sunFlowerState = new HashMap<>();
         for (int i = 1; i <= 9; i++)
         {
@@ -187,9 +187,9 @@ public class GameState {
         }
     }
 
-    public KeyListener getKeyListener() {
-        return keyHandler;
-    }
+//    public KeyListener getKeyListener() {
+//        return keyHandler;
+//    }
     public MouseListener getMouseListener() {
         return mouseHandler;
     }
@@ -260,24 +260,24 @@ public class GameState {
     {
         return info;
     }
-    /**
-     * The keyboard handler.
-     */
-    class KeyHandler implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-        }
-
-    }
+//    /**
+//     * The keyboard handler.
+//     */
+//    class KeyHandler implements KeyListener {
+//
+//        @Override
+//        public void keyTyped(KeyEvent e) {
+//        }
+//
+//        @Override
+//        public void keyPressed(KeyEvent e) {
+//        }
+//
+//        @Override
+//        public void keyReleased(KeyEvent e) {
+//        }
+//
+//    }
 
     /**
      * The mouse handler.
@@ -322,8 +322,7 @@ public class GameState {
                 c = 8;
             else if(x > 748 && x <= 972)
                 c = 9;
-            int loc = r*10 + c;
-            return loc;
+            return r*10 + c;
         }
 
         @Override
@@ -398,6 +397,14 @@ public class GameState {
                     lock = false;
                 }
             }
+            //shovel has been chosen
+            else if(e.getX() >= 600 &&
+                    e.getX() <= 700 &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                shovel = true;
+            }
         }
 
         @Override
@@ -457,6 +464,21 @@ public class GameState {
                     else if(freezePeaShooter)
                         info.replace(loc, "freezePeaShooter");
                     lock = true;
+                }
+            }
+            //removes a flower by shovel
+            if(shovel)
+            {
+                int loc = findLoc(x, y);
+                if(info.get(loc) != null)
+                {
+                    if(info.get(loc).equals("sunFlower"))
+                    {
+                        sunFlowerState.replace(loc, null);
+                        sunFlowerSunTime.replace(loc, null);
+                    }
+                    info.replace(loc, null);
+                    shovel = false;
                 }
             }
         }

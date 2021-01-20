@@ -21,11 +21,13 @@ public class GameFrame extends JFrame {
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
     private Image sun;
+    private Image shovel;
     private Image peaShooterCard;
     private Image sunFlowerCard;
     private Image cherryBombCard;
     private Image wallNutCard;
     private Image freezePeaShooterCard;
+    private Image mushroomCard;
     private Image lawnMower;
     private Image walnutFull;
     private Image sunFlowerFull;
@@ -55,11 +57,13 @@ public class GameFrame extends JFrame {
     {
 //        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
+        shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
         peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
         sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
         cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
         wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
         freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
+        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\cars_Sun-shroom.jpg").getImage();
         lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
         walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
         sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
@@ -106,6 +110,7 @@ public class GameFrame extends JFrame {
     private void doRendering(Graphics2D g2d, GameState state) {
         GameCanvas canvas = new GameCanvas();
         canvas.paintComponent(g2d);
+        g2d.drawImage(shovel, 600, 38, null);
         //set cards
         putCards(g2d, state);
         //set lawn mowers
@@ -127,16 +132,19 @@ public class GameFrame extends JFrame {
      */
     private void putCards(Graphics2D g2d, GameState state)
     {
+        int x = peaShooterCard.getWidth(null);
+        int y = peaShooterCard.getHeight(null);
         if(!state.getPea() && state.getSunNumber() >= 100)
             g2d.drawImage(peaShooterCard, 110, 38, null);
         if(!state.getSunFlower() && state.getSunNumber() >= 50)
-            g2d.drawImage(sunFlowerCard, 110+peaShooterCard.getWidth(null), 38, null);
+            g2d.drawImage(sunFlowerCard, 110+x, 38, null);
         if(!state.getCherry() && state.getSunNumber() >= 150)
-            g2d.drawImage(cherryBombCard, 110+2*peaShooterCard.getWidth(null), 38, null);
+            g2d.drawImage(cherryBombCard, 110+2*x, 38, null);
         if(!state.getWallNut() && state.getSunNumber() >= 50)
-            g2d.drawImage(wallNutCard, 110+3*peaShooterCard.getWidth(null), 38, null);
+            g2d.drawImage(wallNutCard, 110+3*x, 38, null);
         if(!state.getFreezePea() && state.getSunNumber() >= 175)
-            g2d.drawImage(freezePeaShooterCard, 110+4*peaShooterCard.getWidth(null), 38, null);
+            g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
+        g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x, y, null);
     }
 
     /**
