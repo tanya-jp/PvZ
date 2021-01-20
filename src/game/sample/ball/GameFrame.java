@@ -25,6 +25,7 @@ public class GameFrame extends JFrame {
     private Image background = new ImageIcon(".\\PVS Design Kit\\images\\backyard.jpg").getImage();
     private Image sunflower = new ImageIcon(".\\PVS Design Kit\\images\\active_sunflower.png").getImage();
     private Image sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+//    private Image sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
 //    JLabel pic = new JLabel(icon);
 
     public static final int GAME_HEIGHT = 752;                  // 720p game resolution

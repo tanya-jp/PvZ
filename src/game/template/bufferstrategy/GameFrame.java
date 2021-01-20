@@ -53,7 +53,8 @@ public class GameFrame extends JFrame {
      */
     private void setImages()
     {
-        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+//        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+        sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
         sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
         cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
@@ -185,9 +186,14 @@ public class GameFrame extends JFrame {
                     if(state.getInfo().get(loc).equals("peaShooter"))
                         g2d.drawImage(peaShooterFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("sunFlower"))
+                    {
                         g2d.drawImage(sunFlowerFull, locX, locY, null);
+                        if(state.getSunFlowerState().containsKey(loc) &&
+                        state.getSunFlowerState().get(loc))
+                            g2d.drawImage(sun, locX-25, locY+15, null);
+                    }
                     else if(state.getInfo().get(loc).equals("cherryBomb"))
-                        g2d.drawImage(cherryFull, locX, locY, null);
+                        g2d.drawImage(cherryFull, locX, locY+30, null);
                     else if(state.getInfo().get(loc).equals("wallNut"))
                         g2d.drawImage(walnutFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))

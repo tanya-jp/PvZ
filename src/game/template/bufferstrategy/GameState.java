@@ -1,13 +1,13 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
         * This class holds the state of game and all of its elements.
@@ -20,18 +20,22 @@ public class GameState {
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
     private boolean sunState;
+    private HashMap<Integer, Boolean> sunFlowerState;
+    private HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
     private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
-    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime;
+    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState;
     private String type;
 
 
     public GameState(String type) {
         sunX = rand.nextInt(GAME_WIDTH);
         info = new HashMap<>();
+        sunFlowerState = new HashMap<>();
+        sunFlowerSunTime = new HashMap<>();
         this.type = type;
         sunY = 60;
         sunNumber = 0;
@@ -40,13 +44,15 @@ public class GameState {
         sunFlower = false;
         cherryBomb = false;
         wallNut = false;
+        sunFlowerState = new HashMap<>();
         for (int i = 1; i <= 9; i++)
         {
             for(int j = 1; j <= 5; j++)
             {
                 int loc = j*10 + i;
                 info.put(loc, null);
-
+                sunFlowerState.put(loc, null);
+                sunFlowerSunTime.put(loc, null);
             }
         }
         peaShooterTime = 0;
@@ -86,6 +92,17 @@ public class GameState {
                 cherryBomb = false;
             else if(type.equals("hard") && (System.currentTimeMillis() - cherryBombTime) >= 45000)
                 cherryBomb = false;
+            if((System.currentTimeMillis() - cherryBombState) >= 1500)
+            {
+                for (HashMap.Entry<Integer, String> set : info.entrySet()) {
+                    if (set.getValue() != null)
+                        if(set.getValue().equals("cherryBomb"))
+                        {
+                            int loc = set.getKey();
+                            info.replace(loc, null);
+                        }
+                }
+            }
 
         }
         if(freezePeaShooter)
@@ -104,6 +121,8 @@ public class GameState {
         }
         else if(!sunState)
             changeSunState();
+        //checks sunflower's sun time
+        setSunFlowerState();
     }
 
     /**
@@ -135,6 +154,22 @@ public class GameState {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void setSunFlowerState()
+    {
+        long time = System.currentTimeMillis();
+        for (HashMap.Entry<Integer, Boolean> set : sunFlowerState.entrySet()) {
+            if (set.getValue() != null)
+                if(!set.getValue())
+            {
+                int loc = set.getKey();
+                if(type.equals("normal") && time - sunFlowerSunTime.get(loc) >= 20000)
+                    sunFlowerState.replace(loc, true);
+                else if(type.equals("hard") && time - sunFlowerSunTime.get(loc) >= 25000)
+                    sunFlowerState.replace(loc, true);
             }
         }
     }
@@ -199,6 +234,14 @@ public class GameState {
     {
         return freezePeaShooter;
     }
+    /**
+     * If sunflower's sun can be appeared, returns true.
+     */
+    public HashMap<Integer, Boolean> getSunFlowerState()
+    {
+        return sunFlowerState;
+    }
+
 
     public HashMap<Integer, String> getInfo()
     {
@@ -227,6 +270,48 @@ public class GameState {
      * The mouse handler.
      */
     class MouseHandler implements MouseListener, MouseMotionListener {
+        /**
+         * Finds the row and the column of the chosen cell.
+         * @param x of clicked location
+         * @param y of clicked location
+         * @return chosen location in the form of yx -> row*10 + column
+         */
+        private int findLoc(int x, int y)
+        {
+            int c=0, r=0;
+            //find row of chosen cell
+            if( y > 138 && y <= 246)
+                r = 1;
+            else if( y > 246 && y <= 370)
+                r = 2;
+            else if( y > 370 && y <= 500)
+                r = 3;
+            else if( y > 500 && y <= 618)
+                r = 4;
+            else if( y > 618 && y <= 742)
+                r = 5;
+            //find column on chosen cell
+            if( x > 38 && x <= 144)
+                c = 1;
+            else if(x > 144 && x <= 244)
+                c = 2;
+            else if(x > 244 && x <= 348)
+                c = 3;
+            else if(x > 348 && x <= 446)
+                c = 4;
+            else if(x > 446 && x <= 552)
+                c = 5;
+            else if(x > 552 && x <= 650)
+                c = 6;
+            else if(x > 650 && x <= 748)
+                c = 7;
+            else if(x > 748 && x <= 844)
+                c = 8;
+            else if(x > 748 && x <= 972)
+                c = 9;
+            int loc = r*10 + c;
+            return loc;
+        }
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -299,6 +384,8 @@ public class GameState {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
             //saves sun
             if((e.getX() >= sunX - sun.getWidth(null) &&
                     e.getX() <= sunX + sun.getWidth(null)) &&
@@ -311,62 +398,48 @@ public class GameState {
                 sunTime = System.currentTimeMillis();
             }
 
+            int loc = findLoc(x,y);
+            if(sunFlowerState.get(loc) != null)
+                if (sunFlowerState.get(loc))
+                {
+                    sunFlowerState.replace(loc, false);
+                    sunFlowerSunTime.replace(loc, System.currentTimeMillis());
+                    sunNumber += 25;
+                }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
             //find the selected location for putting flowers
             if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter))
             {
-                int x = e.getX();
-                int y = e.getY();
-                int c=0, r=0;
-                //find row of chosen cell
-                if( y > 138 && y <= 246)
-                    r = 1;
-                else if( y > 246 && y <= 370)
-                    r = 2;
-                else if( y > 370 && y <= 500)
-                    r = 3;
-                else if( y > 500 && y <= 618)
-                r = 4;
-                else if( y > 618 && y <= 742)
-                    r = 5;
-                //find column on chosen cell
-                if( x > 38 && x <= 144)
-                    c = 1;
-                else if(x > 144 && x <= 244)
-                    c = 2;
-                else if(x > 244 && x <= 348)
-                    c = 3;
-                else if(x > 348 && x <= 446)
-                    c = 4;
-                else if(x > 446 && x <= 552)
-                    c = 5;
-                else if(x > 552 && x <= 650)
-                    c = 6;
-                else if(x > 650 && x <= 748)
-                    c = 7;
-                else if(x > 748 && x <= 844)
-                    c = 8;
-                else if(x > 748 && x <= 972)
-                    c = 9;
-                int loc = r*10 + c;
+                int loc = findLoc(x, y);
                 if(info.get(loc) == null)
                 {
                     if(peaShooter)
                         info.replace(loc, "peaShooter");
                     else if(sunFlower)
+                    {
                         info.replace(loc, "sunFlower");
+                        if(sunFlowerState.get(loc) == null)
+                            sunFlowerState.replace(loc, true);
+                        long time = System.currentTimeMillis();
+                        if(sunFlowerSunTime.get(loc) == null)
+                            sunFlowerSunTime.replace(loc, time);
+                    }
                     else if(cherryBomb)
+                    {
                         info.replace(loc, "cherryBomb");
+                        cherryBombState = System.currentTimeMillis();
+                    }
                     else if(wallNut)
                         info.replace(loc, "wallNut");
                     else if(freezePeaShooter)
                         info.replace(loc, "freezePeaShooter");
                 }
             }
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
         }
 
         @Override
