@@ -39,7 +39,7 @@ public class GameLoop implements Runnable {
         // Perform all initializations ...
         //
         state = new GameState(type);
-        canvas.addKeyListener(state.getKeyListener());
+//        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
         canvas.requestFocusInWindow();
