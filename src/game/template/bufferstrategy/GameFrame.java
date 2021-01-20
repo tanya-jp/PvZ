@@ -34,6 +34,7 @@ public class GameFrame extends JFrame {
     private Image peaShooterFull;
     private Image freezeShooterFull;
     private Image cherryFull;
+    private Image mushroomFull;
     private String type;
 
     private BufferStrategy bufferStrategy;
@@ -63,13 +64,14 @@ public class GameFrame extends JFrame {
         cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
         wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
         freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
-        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\cars_Sun-shroom.jpg").getImage();
+        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
         lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
         walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
         sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
         peaShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter.gif").getImage();
         freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
         cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
+        mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
     }
 
     /**
@@ -158,7 +160,8 @@ public class GameFrame extends JFrame {
             g2d.drawImage(wallNutCard, 110+3*x, 38, null);
         if(!state.getFreezePea() && state.getSunNumber() >= 175)
             g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
-        g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-5, y, null);
+        if(!state.getMushroom() && state.getSunNumber() >= 25)
+            g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-2, y, null);
     }
 
     /**
@@ -220,6 +223,8 @@ public class GameFrame extends JFrame {
                         g2d.drawImage(walnutFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))
                         g2d.drawImage(freezeShooterFull, locX, locY, null);
+                    else if(state.getInfo().get(loc).equals("mushroom"))
+                        g2d.drawImage(mushroomFull, locX-15, locY, 100, 100, null);
 
                 }
 
