@@ -24,7 +24,7 @@ public class GameState {
     private HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
-    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter;
+    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter, lock;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
     private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState;
@@ -44,6 +44,7 @@ public class GameState {
         sunFlower = false;
         cherryBomb = false;
         wallNut = false;
+        lock = false;
         sunFlowerState = new HashMap<>();
         for (int i = 1; i <= 9; i++)
         {
@@ -80,6 +81,26 @@ public class GameState {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
+        //set cards
+        setCardsState();
+        //checks time of dropping
+        if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
+                (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
+        {
+            sunState = false;
+            changeSunState();
+        }
+        else if(!sunState)
+            changeSunState();
+        //checks sunflower's sun time
+        setSunFlowerState();
+    }
+
+    /**
+     * makes state of cards based on proper time
+     */
+    private void setCardsState()
+    {
         if(sunFlower && (System.currentTimeMillis() - sunFlowerTime) >= 7500)
             sunFlower = false;
         if(peaShooter && (System.currentTimeMillis() - peaShooterTime) >= 7500)
@@ -92,7 +113,7 @@ public class GameState {
                 cherryBomb = false;
             else if(type.equals("hard") && (System.currentTimeMillis() - cherryBombTime) >= 45000)
                 cherryBomb = false;
-            if((System.currentTimeMillis() - cherryBombState) >= 1500)
+            if((System.currentTimeMillis() - cherryBombState) >= 2000)
             {
                 for (HashMap.Entry<Integer, String> set : info.entrySet()) {
                     if (set.getValue() != null)
@@ -112,17 +133,9 @@ public class GameState {
             else if(type.equals("hard") && (System.currentTimeMillis() - freezePeaShooterTime) >= 30000)
                 freezePeaShooter = false;
         }
-        //checks time of dropping
-        if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
-                (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
-        {
-            sunState = false;
-            changeSunState();
-        }
-        else if(!sunState)
-            changeSunState();
-        //checks sunflower's sun time
-        setSunFlowerState();
+        //Unlock --> new flower can be added to the playground
+        if(!sunFlower && !peaShooter && !wallNut && !cherryBomb && !freezePeaShooter)
+            lock = false;
     }
 
     /**
@@ -326,6 +339,7 @@ public class GameState {
                     peaShooter = true;
                     sunNumber -= 100;
                     peaShooterTime = System.currentTimeMillis();
+                    lock = false;
                 }
             }
             //sunFlower has been chosen
@@ -339,6 +353,7 @@ public class GameState {
                     sunFlower = true;
                     sunNumber -= 50;
                     sunFlowerTime = System.currentTimeMillis();
+                    lock = false;
                 }
             }
             //cherryBomb has been chosen
@@ -352,6 +367,7 @@ public class GameState {
                     cherryBomb = true;
                     sunNumber -= 150;
                     cherryBombTime = System.currentTimeMillis();
+                    lock = false;
                 }
             }
             //walletNut has been chosen
@@ -365,6 +381,7 @@ public class GameState {
                     wallNut = true;
                     sunNumber -= 50;
                     wallNutTime = System.currentTimeMillis();
+                    lock = false;
                 }
             }
             //freezePeaShooter has been chosen
@@ -378,6 +395,7 @@ public class GameState {
                     freezePeaShooter = true;
                     sunNumber -= 175;
                     freezePeaShooterTime = System.currentTimeMillis();
+                    lock = false;
                 }
             }
         }
@@ -413,7 +431,7 @@ public class GameState {
             int x = e.getX();
             int y = e.getY();
             //find the selected location for putting flowers
-            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter))
+            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter) && !lock)
             {
                 int loc = findLoc(x, y);
                 if(info.get(loc) == null)
@@ -438,6 +456,7 @@ public class GameState {
                         info.replace(loc, "wallNut");
                     else if(freezePeaShooter)
                         info.replace(loc, "freezePeaShooter");
+                    lock = true;
                 }
             }
         }
