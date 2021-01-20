@@ -23,10 +23,11 @@ public class GameState {
     private final HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
-    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter, lock, shovel;
+    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter,mushroom, lock, shovel;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
-    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState;
+    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState,
+    mushroomTime;
     private String type;
 
 
@@ -43,6 +44,7 @@ public class GameState {
         sunFlower = false;
         cherryBomb = false;
         wallNut = false;
+        mushroom = false;
         lock = false;
         shovel = false;
         sunFlowerState = new HashMap<>();
@@ -134,7 +136,7 @@ public class GameState {
                 freezePeaShooter = false;
         }
         //Unlock --> new flower can be added to the playground
-        if(!sunFlower && !peaShooter && !wallNut && !cherryBomb && !freezePeaShooter)
+        if(!sunFlower && !peaShooter && !wallNut && !cherryBomb && !freezePeaShooter && !mushroom)
             lock = false;
     }
 
@@ -246,6 +248,13 @@ public class GameState {
     public boolean getFreezePea()
     {
         return freezePeaShooter;
+    }
+    /**
+     * If mushroom's card can be appeared, returns false.
+     */
+    public boolean getMushroom()
+    {
+        return mushroom;
     }
     /**
      * If shovel has been chosen, returns true.
@@ -404,6 +413,20 @@ public class GameState {
                     lock = false;
                 }
             }
+            //mushroom has been chosen
+            else if(e.getX() >= 110 - cardW + cardW*5 &&
+                    e.getX() <= 110 + cardW + cardW*5 &&
+                    e.getY() >= 38 - cardH &&
+                    e.getY() <= 38 + cardH)
+            {
+                if(sunNumber >= 25 && !mushroom)
+                {
+                    mushroom = true;
+                    sunNumber -= 25;
+                    mushroomTime = System.currentTimeMillis();
+                    lock = false;
+                }
+            }
             //shovel has been chosen
             else if(e.getX() >= 600 &&
                     e.getX() <= 700 &&
@@ -445,7 +468,7 @@ public class GameState {
             int x = e.getX();
             int y = e.getY();
             //find the selected location for putting flowers
-            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter) && !lock)
+            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter || mushroom) && !lock)
             {
                 int loc = findLoc(x, y);
                 if(info.get(loc) == null)
@@ -470,6 +493,8 @@ public class GameState {
                         info.replace(loc, "wallNut");
                     else if(freezePeaShooter)
                         info.replace(loc, "freezePeaShooter");
+                    else if(mushroom)
+                        info.replace(loc, "mushroom");
                     lock = true;
                 }
             }
