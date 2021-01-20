@@ -110,7 +110,8 @@ public class GameFrame extends JFrame {
     private void doRendering(Graphics2D g2d, GameState state) {
         GameCanvas canvas = new GameCanvas();
         canvas.paintComponent(g2d);
-        g2d.drawImage(shovel, 600, 38, null);
+        //set shovel
+        setShovel(g2d, state);
         //set cards
         putCards(g2d, state);
         //set lawn mowers
@@ -125,6 +126,19 @@ public class GameFrame extends JFrame {
         // Draw all game elements according
         //  to the game 'state' using 'g2d' ...
         //
+    }
+
+    /**
+     * Shows Shovel and makes it bigger when it has been selected.
+     */
+    private void setShovel(Graphics2D g2d, GameState state)
+    {
+        int x = shovel.getWidth(null);
+        int y = shovel.getHeight(null);
+        if(!state.getShovel())
+            g2d.drawImage(shovel, 600, 38, null);
+        else
+            g2d.drawImage(shovel, 600, 38, x+10, y+10, null);
     }
 
     /**
@@ -144,7 +158,7 @@ public class GameFrame extends JFrame {
             g2d.drawImage(wallNutCard, 110+3*x, 38, null);
         if(!state.getFreezePea() && state.getSunNumber() >= 175)
             g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
-        g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x, y, null);
+        g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-5, y, null);
     }
 
     /**
