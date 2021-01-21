@@ -36,11 +36,13 @@ public class GameFrame extends JFrame {
     private Image cherryFull;
     private Image mushroomFull;
     private String type;
+    private String timeType;
 
     private BufferStrategy bufferStrategy;
 
-    public GameFrame(String title, String type) {
+    public GameFrame(String title, String type, String timeType) {
         super(title);
+        this.timeType = timeType;
         this.type = type;
         setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -90,6 +92,8 @@ public class GameFrame extends JFrame {
      * Game rendering with triple-buffering using BufferStrategy.
      */
     public void render(GameState state) {
+//        if(timeType.equals("night"))
+//            state = new Night(type);
         // Get a new graphics context to render the current frame
         Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
         try {
@@ -110,7 +114,9 @@ public class GameFrame extends JFrame {
      * Rendering all game elements based on the game state.
      */
     private void doRendering(Graphics2D g2d, GameState state) {
-        GameCanvas canvas = new GameCanvas();
+//        if(timeType.equals("night"))
+//            state = new Night(type);
+        GameCanvas canvas = new GameCanvas(timeType);
         canvas.paintComponent(g2d);
         //set shovel
         setShovel(g2d, state);
@@ -148,20 +154,22 @@ public class GameFrame extends JFrame {
      */
     private void putCards(Graphics2D g2d, GameState state)
     {
+//        System.out.println(state.getSunFlower().getCard());
         int x = peaShooterCard.getWidth(null);
         int y = peaShooterCard.getHeight(null);
-        if(!state.getPea() && state.getSunNumber() >= 100)
+        if(!state.getPea().getCard() && state.getSunNumber() >= 100)
             g2d.drawImage(peaShooterCard, 110, 38, null);
-        if(!state.getSunFlower() && state.getSunNumber() >= 50)
+        if(!state.getSunFlower().getCard() && state.getSunNumber() >= 50)
             g2d.drawImage(sunFlowerCard, 110+x, 38, null);
-        if(!state.getCherry() && state.getSunNumber() >= 150)
+        if(!state.getCherry().getCard() && state.getSunNumber() >= 150)
             g2d.drawImage(cherryBombCard, 110+2*x, 38, null);
-        if(!state.getWallNut() && state.getSunNumber() >= 50)
+        if(!state.getWallNut().getCard() && state.getSunNumber() >= 50)
             g2d.drawImage(wallNutCard, 110+3*x, 38, null);
-        if(!state.getFreezePea() && state.getSunNumber() >= 175)
+        if(!state.getFreezePea().getCard() && state.getSunNumber() >= 175)
             g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
-        if(!state.getMushroom() && state.getSunNumber() >= 25)
-            g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-2, y, null);
+        if(timeType.equals("night"))
+            if(!state.getMushroom().getCard() && state.getSunNumber() >= 25)
+                g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-2, y, null);
     }
 
     /**
