@@ -30,6 +30,7 @@ public class GameState {
     private CherryBomb cherryBomb;
     private WallNut wallNut;
     private FreezePeaShooter freezePeaShooter;
+    private Squash squash;
     private Mushroom mushroom;
 
     /**
@@ -54,6 +55,7 @@ public class GameState {
         cherryBomb = new CherryBomb(type, timeType);
         wallNut = new WallNut(type, timeType);
         freezePeaShooter = new FreezePeaShooter(type, timeType);
+        squash = new Squash(type, timeType);
         if(timeType.equals("night"))
             mushroom = new Mushroom(type, timeType);
         sunState = false;
@@ -89,14 +91,17 @@ public class GameState {
         //set cards
         setCardsState();
         //checks time of dropping
-        if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
-                (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
+        if(timeType.equals("day"))
         {
-            sunState = false;
-            changeSunState();
+            if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
+                    (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
+            {
+                sunState = false;
+                changeSunState();
+            }
+            else if(!sunState)
+                changeSunState();
         }
-        else if(!sunState)
-            changeSunState();
         //checks sunflower's sun time
         setSunFlowerState();
     }
@@ -128,7 +133,7 @@ public class GameState {
         freezePeaShooter.setCard();
         //Unlock --> new flower can be added to the playground
         if(!sunFlower.getCard() && !peashooter.getCard() && !wallNut.getCard() &&
-                !cherryBomb.getCard() && !freezePeaShooter.getCard())
+                !cherryBomb.getCard() && !freezePeaShooter.getCard() && !squash.getCard())
             if((timeType.equals(" night") && !mushroom.getCard()) || timeType.equals(" day"))
                 lock = false;
     }
@@ -235,6 +240,13 @@ public class GameState {
     public WallNut getWallNut()
     {
         return wallNut;
+    }
+    /**
+     * Returns squash
+     */
+    public Squash getSquash()
+    {
+        return squash;
     }
     /**
      * Returns freeze pea shooter
@@ -365,9 +377,18 @@ public class GameState {
             sunNumber = freezePeaShooter.chooseFlower(sunNumber);
             lock = false;
         }
-        //mushroom has been chosen
+        //squash has been chosen
         else if(e.getX() >= 110 - cardW + cardW*5 &&
                 e.getX() <= 110 + cardW + cardW*5 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = squash.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //mushroom has been chosen
+        else if(e.getX() >= 110 - cardW + cardW*6 &&
+                e.getX() <= 110 + cardW + cardW*6 &&
                 e.getY() >= 38 - cardH &&
                 e.getY() <= 38 + cardH && timeType.equals("night"))
         {
@@ -424,7 +445,7 @@ public class GameState {
         int y = e.getY();
         //find the selected location for putting flowers
         if((peashooter.getCard() || sunFlower.getCard() || cherryBomb.getCard()
-                || wallNut.getCard() || freezePeaShooter.getCard() ||
+                || wallNut.getCard() || freezePeaShooter.getCard() || squash.getCard() ||
                 (timeType.equals("night") && mushroom.getCard())) && !lock)
         {
             int loc = findLoc(x, y);
@@ -450,8 +471,13 @@ public class GameState {
                     info.replace(loc, "wallNut");
                 else if(freezePeaShooter.getCard())
                     info.replace(loc, "freezePeaShooter");
-                else if(mushroom.getCard())
-                    info.replace(loc, "mushroom");
+                else if(squash.getCard())
+                {
+                    info.replace(loc, "squash");
+                }
+                else if(timeType.equals("night"))
+                    if(mushroom.getCard())
+                        info.replace(loc, "mushroom");
                 lock = true;
             }
         }
