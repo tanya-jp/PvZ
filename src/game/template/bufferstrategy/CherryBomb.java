@@ -1,5 +1,14 @@
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * This class controls the time of showing card of cherry bomb and showing it.
+ * Sets cherry bomb images.
+ * @version 1.0
+ * @author Tanya Djavaherpour
+ */
 public class CherryBomb implements Card{
 
     private final int neededSuns;
@@ -8,6 +17,8 @@ public class CherryBomb implements Card{
     private boolean card;
     private long flowerTime;
     private boolean lock;
+    private Image cherryBombCard;
+    private Image cherryFull;
 
     /**
      * Constructs a new cherry bomb
@@ -21,6 +32,31 @@ public class CherryBomb implements Card{
         this.card = false;
         this.lock = true;
         neededSuns = 150;
+        setImages();
+    }
+    /**
+     * Sets all images of that cherryBomb
+     */
+    @Override
+    public void setImages()
+    {
+        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
+    }
+    /**
+     *Returns the image of card
+     */
+    @Override
+    public Image getCardImage()
+    {
+        return cherryBombCard;
+    }
+    /**
+     * Returns the image of full flower
+     */
+    public Image getFullImage()
+    {
+        return cherryFull;
     }
     /**
      * makes state of cards based on proper time

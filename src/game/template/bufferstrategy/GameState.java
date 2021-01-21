@@ -15,8 +15,6 @@ public class GameState {
     public static final int GAME_WIDTH = 1010;
     private final MouseHandler mouseHandler;
     private boolean sunState;
-    private HashMap<Integer, Boolean> sunFlowerState;
-    private final HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
     private boolean lock, shovel;
@@ -44,8 +42,6 @@ public class GameState {
         //
         sunX = rand.nextInt(GAME_WIDTH);
         info = new HashMap<>();
-        sunFlowerState = new HashMap<>();
-        sunFlowerSunTime = new HashMap<>();
         this.type = type;
         this.timeType = timeType;
         sunY = 60;
@@ -61,15 +57,12 @@ public class GameState {
         sunState = false;
         lock = false;
         shovel = false;
-        sunFlowerState = new HashMap<>();
         for (int i = 1; i <= 9; i++)
         {
             for(int j = 1; j <= 5; j++)
             {
                 int loc = j*10 + i;
                 info.put(loc, null);
-                sunFlowerState.put(loc, null);
-                sunFlowerSunTime.put(loc, null);
             }
         }
         sunTime = System.currentTimeMillis() + 50000;
@@ -103,17 +96,10 @@ public class GameState {
                 changeSunState();
         }
         //checks sunflower's sun time
-        setSunFlowerState();
+        sunFlower.setSunFlowerState();
+        //shoots peas
         peashooter.setBullets();
         freezePeaShooter.setBullets();
-//        for(HashMap.Entry<Integer, String> set : info.entrySet())
-//        {
-//            if(set.getValue().equals("peaShooter"))
-//            {
-//                peashooter.setBullets();
-//                break;
-//            }
-//        }
     }
 
     /**
@@ -176,26 +162,6 @@ public class GameState {
                 }
                 sunDropping = System.currentTimeMillis();
             }
-        }
-    }
-
-    /**
-     * Checks if sun flower can make based on game type.
-     * If it is possible, sets it location.
-     */
-    private void setSunFlowerState()
-    {
-        long time = System.currentTimeMillis();
-        for (HashMap.Entry<Integer, Boolean> set : sunFlowerState.entrySet()) {
-            if (set.getValue() != null)
-                if(!set.getValue())
-                {
-                    int loc = set.getKey();
-                    if(type.equals("normal") && time - sunFlowerSunTime.get(loc) >= 20000)
-                        sunFlowerState.replace(loc, true);
-                    else if(type.equals("hard") && time - sunFlowerSunTime.get(loc) >= 25000)
-                        sunFlowerState.replace(loc, true);
-                }
         }
     }
 
@@ -278,14 +244,8 @@ public class GameState {
         return shovel;
     }
     /**
-     * If sunflower's sun can be appeared, returns true.
+     * Returns info
      */
-    public HashMap<Integer, Boolean> getSunFlowerState()
-    {
-        return sunFlowerState;
-    }
-
-
     public HashMap<Integer, String> getInfo()
     {
         return info;
@@ -436,25 +396,20 @@ public class GameState {
         int x = e.getX();
         int y = e.getY();
         //saves sun
-        if((e.getX() >= sunX - sun.getWidth(null) &&
-                e.getX() <= sunX + sun.getWidth(null)) &&
-                (e.getY() >= sunY - sun.getHeight(null) &&
-                        e.getY() <= sunY + sun.getHeight(null)))
-        {
-            sunState = true;
-            sunNumber += 25;
-            sunY = GAME_HEIGHT;
-            sunTime = System.currentTimeMillis();
-        }
+        if(timeType.equals("day"))
+            if((e.getX() >= sunX - sun.getWidth(null) &&
+                    e.getX() <= sunX + sun.getWidth(null)) &&
+                    (e.getY() >= sunY - sun.getHeight(null) &&
+                            e.getY() <= sunY + sun.getHeight(null)))
+            {
+                sunState = true;
+                sunNumber += 25;
+                sunY = GAME_HEIGHT;
+                sunTime = System.currentTimeMillis();
+            }
 
         int loc = findLoc(x,y);
-        if(sunFlowerState.get(loc) != null)
-            if (sunFlowerState.get(loc))
-            {
-                sunFlowerState.replace(loc, false);
-                sunFlowerSunTime.replace(loc, System.currentTimeMillis());
-                sunNumber += 25;
-            }
+        sunNumber = sunFlower.saveSun(loc, sunNumber);
     }
 
     /**
@@ -482,11 +437,7 @@ public class GameState {
                 else if(sunFlower.getCard() && !sunFlower.getLock())
                 {
                     info.replace(loc, "sunFlower");
-                    if(sunFlowerState.get(loc) == null)
-                        sunFlowerState.replace(loc, true);
-                    long time = System.currentTimeMillis();
-                    if(sunFlowerSunTime.get(loc) == null)
-                        sunFlowerSunTime.replace(loc, time);
+                    sunFlower.addSunFlower(loc);
                     sunFlower.setLock(true);
                 }
                 else if(cherryBomb.getCard() && !cherryBomb.getLock())
@@ -538,8 +489,7 @@ public class GameState {
             {
                 if(info.get(loc).equals("sunFlower"))
                 {
-                    sunFlowerState.replace(loc, null);
-                    sunFlowerSunTime.replace(loc, null);
+                    sunFlower.removeSunFlower(loc);
                 }
                 info.replace(loc, null);
                 shovel = false;

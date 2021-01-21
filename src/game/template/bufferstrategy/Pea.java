@@ -1,16 +1,42 @@
 package game.template.bufferstrategy;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Pea{
+/**
+ * This  class fixes the location of peas that peashooter and freeze pea shooter shoots,
+ * and controls the time of shooting peas.
+ * Sets and gets images of pea.
+ * @version 2021
+ * @author Tanya Djavaherpour
+ */
+public abstract class Pea{
     private long bulletTime;
+    //key --> location , values --> location of shooting peas
     private HashMap<Integer, ArrayList<Integer>> bullets;
+    /**
+     * Constructs a new arraylist of peas for new peashooter that has benn added recently.
+     * @param type normal / hard
+     * @param timeType day / night
+     */
     public Pea(String type, String timeType)
     {
         bulletTime = System.currentTimeMillis();
         bullets = new HashMap<>();
     }
+    /**
+     * Sets related pea image.
+     */
+    public abstract void setPeaImage();
+    /**
+     *Returns related pea image.
+     */
+    public abstract Image getPea();
+    /**
+     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
+     * @param peaLoc location of new peashooter in the form of yx
+     */
     public void addPea(int peaLoc) {
         if(bullets.isEmpty())
             bulletTime = System.currentTimeMillis();
@@ -18,10 +44,16 @@ public class Pea{
             bullets.put(peaLoc, new ArrayList<Integer>()); //no ArrayList assigned, create new ArrayList
         bullets.get(peaLoc).add(peaLoc % 10);
     }
+    /**
+     * Returns the hashmap of peas
+     */
     public HashMap<Integer, ArrayList<Integer>> getBullets()
     {
         return bullets;
     }
+    /**
+     * Changes the location of peas and adds a new pea when its time arrives.
+     */
     public void setBullets()
     {
         int flag = 0;

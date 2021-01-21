@@ -1,5 +1,14 @@
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * This class controls the time of showing card of mushroom and showing it.(only at night)
+ * Sets all images of mushroom.
+ * @version 1.0
+ * @author Tanya Djavaherpour
+ */
 public class Mushroom implements Card{
     private final int neededSuns;
     private String type;
@@ -7,6 +16,8 @@ public class Mushroom implements Card{
     private boolean card;
     private long flowerTime;
     private boolean lock;
+    private Image mushroomCard;
+    private Image mushroomFull;
 
     /**
      * Constructs a new mushroom when it is night.
@@ -20,6 +31,31 @@ public class Mushroom implements Card{
         this.card = false;
         this.lock = true;
         neededSuns = 25;
+        setImages();
+    }
+    /**
+     * Sets all images of that mushroom
+     */
+    @Override
+    public void setImages()
+    {
+        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
+        mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
+    }
+    /**
+     *Returns the image of card
+     */
+    @Override
+    public Image getCardImage()
+    {
+        return mushroomCard;
+    }
+    /**
+     * Returns the image of full flower
+     */
+    public Image getFullImage()
+    {
+        return mushroomFull;
     }
     /**
      * makes state of cards based on proper time
