@@ -1,13 +1,18 @@
 package game.template.bufferstrategy;
 
-public class PeaShooter implements Card {
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class PeaShooter extends Pea implements Card {
 
     private int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
+//    private long bulletTime;
     private boolean lock;
+//    private HashMap<Integer, ArrayList<Integer>> bullets;
     /**
      * Constructs a new peaShooter
      * @param type normal / hard
@@ -15,17 +20,30 @@ public class PeaShooter implements Card {
      */
     public PeaShooter(String type, String timeType)
     {
+        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
         neededSuns = 100;
     }
+    public void addPea(int peaLoc) {
+        super.addPea(peaLoc);
+    }
+    public HashMap<Integer, ArrayList<Integer>> getBullets()
+    {
+        return super.getBullets();
+    }
+    public void setBullets()
+    {
+        super.setBullets();
+    }
     /**
      * makes state of cards based on proper time
      */
     @Override
-    public void setCard() {
+    public void setCard()
+    {
         if(card && (System.currentTimeMillis() - flowerTime) >= 7500)
             card = false;
     }

@@ -3,6 +3,8 @@ package game.template.bufferstrategy;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import game.template.doublebuffering.GameCanvas;
 
@@ -19,7 +21,7 @@ import game.template.doublebuffering.GameCanvas;
 public class GameFrame extends JFrame {
 
     public static final int GAME_HEIGHT = 772;
-    public static final int GAME_WIDTH = 1010;
+    public static final int GAME_WIDTH = 1005;
     private Image sun;
     private Image shovel;
     private Image peaShooterCard;
@@ -37,6 +39,8 @@ public class GameFrame extends JFrame {
     private Image cherryFull;
     private Image squashFull;
     private Image mushroomFull;
+    private Image pea;
+    private Image freezePea;
     private String type;
     private String timeType;
 
@@ -78,6 +82,8 @@ public class GameFrame extends JFrame {
         cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
         mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
         squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
+        pea = new ImageIcon(".\\PVS Design Kit\\images\\Pea1.png").getImage();
+        freezePea = new ImageIcon(".\\PVS Design Kit\\images\\freezepea.png").getImage();
     }
 
     /**
@@ -224,7 +230,13 @@ public class GameFrame extends JFrame {
                     locY = y + (j-1)*118;
 
                     if(state.getInfo().get(loc).equals("peaShooter"))
+                    {
                         g2d.drawImage(peaShooterFull, locX, locY, null);
+                        for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
+                            if(set.getKey() == loc)
+                                for (Integer value : set.getValue())
+                                    g2d.drawImage(pea, locX+value+51, locY+10, null);
+                    }
                     else if(state.getInfo().get(loc).equals("sunFlower"))
                     {
                         g2d.drawImage(sunFlowerFull, locX, locY, null);
@@ -237,7 +249,13 @@ public class GameFrame extends JFrame {
                     else if(state.getInfo().get(loc).equals("wallNut"))
                         g2d.drawImage(walnutFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))
+                    {
                         g2d.drawImage(freezeShooterFull, locX, locY, null);
+                        for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getFreezePea().getBullets().entrySet())
+                            if(set.getKey() == loc)
+                                for (Integer value : set.getValue())
+                                    g2d.drawImage(freezePea, locX+value+51, locY+10, null);
+                    }
                     else if(state.getInfo().get(loc).equals("mushroom"))
                         g2d.drawImage(mushroomFull, locX-20, locY, 100, 100, null);
                     else if(state.getInfo().get(loc).equals("squash"))
