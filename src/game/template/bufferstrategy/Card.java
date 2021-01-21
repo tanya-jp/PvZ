@@ -1,5 +1,7 @@
 package game.template.bufferstrategy;
 
+import java.awt.*;
+
 /**
  * This interface sets cards and makes them available on the cards box if it is possible,
  * also choose cards if it is possible.
@@ -7,6 +9,18 @@ package game.template.bufferstrategy;
  * @author Tanya Djavaherpour
  */
 public interface Card {
+    /**
+     * Sets all images of that flower
+     */
+    void setImages();
+    /**
+     *Returns the image of card
+     */
+    Image getCardImage();
+    /**
+     * Returns the image of full flower
+     */
+    Image getFullImage();
     /**
      * makes state of cards based on proper time
      */
@@ -30,4 +44,5 @@ public interface Card {
      * Locks or unlocks the flower.
      */
     void setLock(boolean lock);
+
 }

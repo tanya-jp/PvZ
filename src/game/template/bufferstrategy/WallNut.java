@@ -1,5 +1,14 @@
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * This class controls the time of showing card of wall nut and showing it.
+ * Sets all images of wall nut.
+ * @version 1.0
+ * @author Tanya Djavaherpour
+ */
 public class WallNut implements Card{
 
     private final int neededSuns;
@@ -8,6 +17,8 @@ public class WallNut implements Card{
     private boolean card;
     private long flowerTime;
     private boolean lock;
+    private Image wallNutCard;
+    private Image walnutFull;
 
     /**
      * Constructs a new wall nut
@@ -21,6 +32,31 @@ public class WallNut implements Card{
         this.card = false;
         this.lock = true;
         neededSuns = 50;
+        setImages();
+    }
+    /**
+     * Sets all images of that wallNut
+     */
+    @Override
+    public void setImages()
+    {
+        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
+        walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
+    }
+    /**
+     *Returns the image of card
+     */
+    @Override
+    public Image getCardImage()
+    {
+        return wallNutCard;
+    }
+    /**
+     * Returns the image of full flower
+     */
+    public Image getFullImage()
+    {
+        return walnutFull;
     }
     /**
      * makes state of cards based on proper time

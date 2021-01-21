@@ -1,5 +1,14 @@
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * This class controls the time of showing card of squash and showing it.
+ * Sets all images of squash.
+ * @version 1.0
+ * @author Tanya Djavaherpour
+ */
 public class Squash implements Card{
     private final int neededSuns;
     private String type;
@@ -7,6 +16,8 @@ public class Squash implements Card{
     private boolean card;
     private long flowerTime;
     private boolean lock;
+    private Image squashCard;
+    private Image squashFull;
 
     /**
      * Constructs a new mushroom when it is night.
@@ -20,6 +31,31 @@ public class Squash implements Card{
         this.card = false;
         this.lock = true;
         neededSuns = 50;
+        setImages();
+    }
+    /**
+     * Sets all images of that squash
+     */
+    @Override
+    public void setImages()
+    {
+        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
+        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
+    }
+    /**
+     *Returns the image of card
+     */
+    @Override
+    public Image getCardImage()
+    {
+        return squashCard;
+    }
+    /**
+     * Returns the image of full flower
+     */
+    public Image getFullImage()
+    {
+        return squashFull;
     }
     /**
      * makes state of cards based on proper time

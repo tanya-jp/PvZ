@@ -1,8 +1,16 @@
 package game.template.bufferstrategy;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * This class controls the time of showing card of freeze pea shooter, showing freeze pea shooter
+ * and shooting peas.
+ * Sets all freeze pea shooter images
+ * @version 2021
+ * @author Tanya Djavaherpour
+ */
 public class FreezePeaShooter extends Pea implements Card{
     private final int neededSuns;
     private String type;
@@ -10,6 +18,9 @@ public class FreezePeaShooter extends Pea implements Card{
     private boolean card;
     private long flowerTime;
     private boolean lock;
+    private Image freezePeaShooterCard;
+    private Image freezeShooterFull;
+    private Image pea;
 
     /**
      * Constructs a new freeze pea shooter
@@ -24,14 +35,65 @@ public class FreezePeaShooter extends Pea implements Card{
         this.card = false;
         this.lock = true;
         neededSuns = 175;
+        setImages();
     }
+    /**
+     * Sets related pea image.
+     */
+    @Override
+    public void setPeaImage() {
+        pea = new ImageIcon(".\\PVS Design Kit\\images\\freezepea.png").getImage();
+    }
+    /**
+     *Returns related pea image.
+     */
+    @Override
+    public Image getPea(){return pea;}
+    /**
+     * Sets all images of that sunFlower
+     */
+    @Override
+    public void setImages()
+    {
+        freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
+        freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
+        setPeaImage();
+    }
+    /**
+     *Returns the image of card
+     */
+    @Override
+    public Image getCardImage()
+    {
+        return freezePeaShooterCard;
+    }
+    /**
+     * Returns the image of full flower
+     */
+    public Image getFullImage()
+    {
+        return freezeShooterFull;
+    }
+    /**
+     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
+     * @param peaLoc location of new peashooter in the form of yx
+     */
+    @Override
     public void addPea(int peaLoc) {
         super.addPea(peaLoc);
     }
+    /**
+     * Returns the hashmap of peas
+     */
+    @Override
     public HashMap<Integer, ArrayList<Integer>> getBullets()
     {
         return super.getBullets();
     }
+    /**
+     * Changes the location of peas and adds a new pea when its time arrives.
+     */
+    @Override
     public void setBullets()
     {
         super.setBullets();

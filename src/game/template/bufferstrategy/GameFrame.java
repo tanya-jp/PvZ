@@ -24,23 +24,7 @@ public class GameFrame extends JFrame {
     public static final int GAME_WIDTH = 1005;
     private Image sun;
     private Image shovel;
-    private Image peaShooterCard;
-    private Image sunFlowerCard;
-    private Image cherryBombCard;
-    private Image wallNutCard;
-    private Image freezePeaShooterCard;
-    private Image squashCard;
-    private Image mushroomCard;
     private Image lawnMower;
-    private Image walnutFull;
-    private Image sunFlowerFull;
-    private Image peaShooterFull;
-    private Image freezeShooterFull;
-    private Image cherryFull;
-    private Image squashFull;
-    private Image mushroomFull;
-    private Image pea;
-    private Image freezePea;
     private String type;
     private String timeType;
 
@@ -62,28 +46,11 @@ public class GameFrame extends JFrame {
     /**
      * Sets all images and gifs
      */
-    private void setImages()
-    {
+    private void setImages() {
 //        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
-        peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
-        sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
-        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
-        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
-        freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
-        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
-        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
         lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
-        walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
-        sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
-        peaShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter.gif").getImage();
-        freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
-        cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
-        mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
-        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
-        pea = new ImageIcon(".\\PVS Design Kit\\images\\Pea1.png").getImage();
-        freezePea = new ImageIcon(".\\PVS Design Kit\\images\\freezepea.png").getImage();
     }
 
     /**
@@ -165,23 +132,23 @@ public class GameFrame extends JFrame {
     private void putCards(Graphics2D g2d, GameState state)
     {
 //        System.out.println(state.getSunFlower().getCard());
-        int x = peaShooterCard.getWidth(null);
-        int y = peaShooterCard.getHeight(null);
+        int x = state.getPea().getCardImage().getWidth(null);
+        int y = state.getPea().getCardImage().getHeight(null);
         if(!state.getPea().getCard() && state.getSunNumber() >= 100)
-            g2d.drawImage(peaShooterCard, 110, 38, null);
+            g2d.drawImage(state.getPea().getCardImage(), 110, 38, null);
         if(!state.getSunFlower().getCard() && state.getSunNumber() >= 50)
-            g2d.drawImage(sunFlowerCard, 110+x, 38, null);
+            g2d.drawImage(state.getSunFlower().getCardImage(), 110+x, 38, null);
         if(!state.getCherry().getCard() && state.getSunNumber() >= 150)
-            g2d.drawImage(cherryBombCard, 110+2*x, 38, null);
+            g2d.drawImage(state.getCherry().getCardImage(), 110+2*x, 38, null);
         if(!state.getWallNut().getCard() && state.getSunNumber() >= 50)
-            g2d.drawImage(wallNutCard, 110+3*x, 38, null);
+            g2d.drawImage(state.getWallNut().getCardImage(), 110+3*x, 38, null);
         if(!state.getFreezePea().getCard() && state.getSunNumber() >= 175)
-            g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
+            g2d.drawImage(state.getFreezePea().getCardImage(), 110+4*x, 38, null);
         if(!state.getSquash().getCard() && state.getSunNumber() >= 50)
-            g2d.drawImage(squashCard, 110+5*x, 38, x, y, null);
+            g2d.drawImage(state.getSquash().getCardImage(), 110+5*x, 38, x, y, null);
         if(timeType.equals("night"))
             if(!state.getMushroom().getCard() && state.getSunNumber() >= 25)
-                g2d.drawImage(mushroomCard, 110+6*x, 38, x-2, y, null);
+                g2d.drawImage(state.getMushroom().getCardImage(), 110+6*x, 38, x-2, y, null);
     }
 
     /**
@@ -231,40 +198,37 @@ public class GameFrame extends JFrame {
 
                     if(state.getInfo().get(loc).equals("peaShooter"))
                     {
-                        g2d.drawImage(peaShooterFull, locX, locY, null);
+                        g2d.drawImage(state.getPea().getFullImage(), locX, locY, null);
                         for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
                             if(set.getKey() == loc)
                                 for (Integer value : set.getValue())
-                                    g2d.drawImage(pea, locX+value+51, locY+10, null);
+                                    g2d.drawImage(state.getPea().getPea(), locX+value+51, locY+10, null);
                     }
                     else if(state.getInfo().get(loc).equals("sunFlower"))
                     {
-                        g2d.drawImage(sunFlowerFull, locX, locY, null);
-                        if(state.getSunFlowerState().containsKey(loc) &&
-                        state.getSunFlowerState().get(loc))
+                        g2d.drawImage(state.getSunFlower().getFullImage(), locX, locY, null);
+                        if(state.getSunFlower().getSunFlowerState().containsKey(loc) &&
+                        state.getSunFlower().getSunFlowerState().get(loc))
                             g2d.drawImage(sun, locX-25, locY+15, null);
                     }
                     else if(state.getInfo().get(loc).equals("cherryBomb"))
-                        g2d.drawImage(cherryFull, locX, locY+30, null);
+                        g2d.drawImage(state.getCherry().getFullImage(), locX, locY+30, null);
                     else if(state.getInfo().get(loc).equals("wallNut"))
-                        g2d.drawImage(walnutFull, locX, locY, null);
+                        g2d.drawImage(state.getWallNut().getFullImage(), locX, locY, null);
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))
                     {
-                        g2d.drawImage(freezeShooterFull, locX, locY, null);
+                        g2d.drawImage(state.getFreezePea().getFullImage(), locX, locY, null);
                         for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getFreezePea().getBullets().entrySet())
                             if(set.getKey() == loc)
                                 for (Integer value : set.getValue())
-                                    g2d.drawImage(freezePea, locX+value+51, locY+10, null);
+                                    g2d.drawImage(state.getFreezePea().getPea(), locX+value+51, locY+10, null);
                     }
                     else if(state.getInfo().get(loc).equals("mushroom"))
-                        g2d.drawImage(mushroomFull, locX-20, locY, 100, 100, null);
+                        g2d.drawImage(state.getMushroom().getFullImage(), locX-20, locY, 100, 100, null);
                     else if(state.getInfo().get(loc).equals("squash"))
-                        g2d.drawImage(squashFull, locX-15, locY, 100, 100, null);
-
+                        g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
                 }
-
             }
         }
     }
-
 }
