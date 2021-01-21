@@ -104,6 +104,16 @@ public class GameState {
         }
         //checks sunflower's sun time
         setSunFlowerState();
+        peashooter.setBullets();
+        freezePeaShooter.setBullets();
+//        for(HashMap.Entry<Integer, String> set : info.entrySet())
+//        {
+//            if(set.getValue().equals("peaShooter"))
+//            {
+//                peashooter.setBullets();
+//                break;
+//            }
+//        }
     }
 
     /**
@@ -467,6 +477,7 @@ public class GameState {
                 {
                     info.replace(loc, "peaShooter");
                     peashooter.setLock(true);
+                    peashooter.addPea(loc);
                 }
                 else if(sunFlower.getCard() && !sunFlower.getLock())
                 {
@@ -493,6 +504,7 @@ public class GameState {
                 {
                     info.replace(loc, "freezePeaShooter");
                     freezePeaShooter.setLock(true);
+                    freezePeaShooter.addPea(loc);
                 }
                 else if(squash.getCard() && !squash.getLock())
                 {

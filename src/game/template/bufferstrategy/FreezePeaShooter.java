@@ -1,6 +1,9 @@
 package game.template.bufferstrategy;
 
-public class FreezePeaShooter implements Card{
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class FreezePeaShooter extends Pea implements Card{
     private final int neededSuns;
     private String type;
     private String timeType;
@@ -15,11 +18,23 @@ public class FreezePeaShooter implements Card{
      */
     public FreezePeaShooter(String type, String timeType)
     {
+        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
         neededSuns = 175;
+    }
+    public void addPea(int peaLoc) {
+        super.addPea(peaLoc);
+    }
+    public HashMap<Integer, ArrayList<Integer>> getBullets()
+    {
+        return super.getBullets();
+    }
+    public void setBullets()
+    {
+        super.setBullets();
     }
     /**
      * makes state of cards based on proper time
