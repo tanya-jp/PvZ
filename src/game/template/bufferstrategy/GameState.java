@@ -1,50 +1,62 @@
 package game.template.bufferstrategy;
 
-//import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.swing.*;
-//import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
 /**
-        * This class holds the state of game and all of its elements.
-        * This class also handles user inputs, which affect the game state.
-        */
+ * This class holds the state of game and all of its elements.
+ * This class also handles user inputs, which affect the game state.
+ */
 public class GameState {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
-//    private KeyHandler keyHandler;
     private final MouseHandler mouseHandler;
     private boolean sunState;
     private HashMap<Integer, Boolean> sunFlowerState;
     private final HashMap<Integer, Long> sunFlowerSunTime;
     public int sunX, sunY,sunNumber, cardW, cardH;
     private final Image sun;
-    private boolean peaShooter, sunFlower, cherryBomb, wallNut, freezePeaShooter,mushroom, lock, shovel;
+    private boolean lock, shovel;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
-    private long peaShooterTime, sunFlowerTime, cherryBombTime, wallNutTime, freezePeaShooterTime, sunTime, cherryBombState,
-    mushroomTime;
+    private long sunTime, cherryBombState;
     private String type;
+    private String timeType;
+    private PeaShooter peashooter;
+    private SunFlower sunFlower;
+    private CherryBomb cherryBomb;
+    private WallNut wallNut;
+    private FreezePeaShooter freezePeaShooter;
+    private Mushroom mushroom;
 
-
-    public GameState(String type) {
+    /**
+     * Constructs game state and sets first state of game lements
+     * @param type normal/hard
+     * @param timeType day/night
+     */
+    public GameState(String type, String timeType) {
+        //
+        // Initialize the game state and all elements ...
+        //
         sunX = rand.nextInt(GAME_WIDTH);
         info = new HashMap<>();
         sunFlowerState = new HashMap<>();
         sunFlowerSunTime = new HashMap<>();
         this.type = type;
+        this.timeType = timeType;
         sunY = 60;
         sunNumber = 0;
+        peashooter = new PeaShooter(type, timeType);
+        sunFlower = new SunFlower(type, timeType);
+        cherryBomb = new CherryBomb(type, timeType);
+        wallNut = new WallNut(type, timeType);
+        freezePeaShooter = new FreezePeaShooter(type, timeType);
+        if(timeType.equals("night"))
+            mushroom = new Mushroom(type, timeType);
         sunState = false;
-        peaShooter = false;
-        sunFlower = false;
-        cherryBomb = false;
-        wallNut = false;
-        mushroom = false;
         lock = false;
         shovel = false;
         sunFlowerState = new HashMap<>();
@@ -58,18 +70,9 @@ public class GameState {
                 sunFlowerSunTime.put(loc, null);
             }
         }
-        peaShooterTime = 0;
-        sunFlowerTime = 0;
-        cherryBombTime = 0;
-        wallNutTime = 0;
         sunTime = System.currentTimeMillis() + 50000;
-        freezePeaShooterTime = 0;
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
-        //
-        // Initialize the game state and all elements ...
-        //
-//        keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
     }
@@ -103,18 +106,12 @@ public class GameState {
      */
     private void setCardsState()
     {
-        if(sunFlower && (System.currentTimeMillis() - sunFlowerTime) >= 7500)
-            sunFlower = false;
-        if(peaShooter && (System.currentTimeMillis() - peaShooterTime) >= 7500)
-            peaShooter = false;
-        if(wallNut && (System.currentTimeMillis() - wallNutTime) >= 30000)
-            wallNut = false;
-        if(cherryBomb)
+        sunFlower.setCard();
+        peashooter.setCard();
+        wallNut.setCard();
+        cherryBomb.setCard();
+        if(cherryBomb.getCard())
         {
-            if(type.equals("normal") && (System.currentTimeMillis() - cherryBombTime) >= 30000)
-                cherryBomb = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - cherryBombTime) >= 45000)
-                cherryBomb = false;
             if((System.currentTimeMillis() - cherryBombState) >= 2000)
             {
                 for (HashMap.Entry<Integer, String> set : info.entrySet()) {
@@ -128,16 +125,12 @@ public class GameState {
             }
 
         }
-        if(freezePeaShooter)
-        {
-            if(type.equals("normal") && (System.currentTimeMillis() - freezePeaShooterTime) >= 7500)
-                freezePeaShooter = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - freezePeaShooterTime) >= 30000)
-                freezePeaShooter = false;
-        }
+        freezePeaShooter.setCard();
         //Unlock --> new flower can be added to the playground
-        if(!sunFlower && !peaShooter && !wallNut && !cherryBomb && !freezePeaShooter && !mushroom)
-            lock = false;
+        if(!sunFlower.getCard() && !peashooter.getCard() && !wallNut.getCard() &&
+                !cherryBomb.getCard() && !freezePeaShooter.getCard())
+            if((timeType.equals(" night") && !mushroom.getCard()) || timeType.equals(" day"))
+                lock = false;
     }
 
     /**
@@ -173,25 +166,26 @@ public class GameState {
         }
     }
 
+    /**
+     * Checks if sun flower can make based on game type.
+     * If it is possible, sets it location.
+     */
     private void setSunFlowerState()
     {
         long time = System.currentTimeMillis();
         for (HashMap.Entry<Integer, Boolean> set : sunFlowerState.entrySet()) {
             if (set.getValue() != null)
                 if(!set.getValue())
-            {
-                int loc = set.getKey();
-                if(type.equals("normal") && time - sunFlowerSunTime.get(loc) >= 20000)
-                    sunFlowerState.replace(loc, true);
-                else if(type.equals("hard") && time - sunFlowerSunTime.get(loc) >= 25000)
-                    sunFlowerState.replace(loc, true);
-            }
+                {
+                    int loc = set.getKey();
+                    if(type.equals("normal") && time - sunFlowerSunTime.get(loc) >= 20000)
+                        sunFlowerState.replace(loc, true);
+                    else if(type.equals("hard") && time - sunFlowerSunTime.get(loc) >= 25000)
+                        sunFlowerState.replace(loc, true);
+                }
         }
     }
 
-//    public KeyListener getKeyListener() {
-//        return keyHandler;
-//    }
     public MouseListener getMouseListener() {
         return mouseHandler;
     }
@@ -215,44 +209,44 @@ public class GameState {
         return sunNumber;
     }
     /**
-     * If peaShooter's card can be appeared, returns false.
+     * Returns peashooter
      */
-    public boolean getPea()
+    public PeaShooter getPea()
     {
-        return peaShooter;
+        return peashooter;
     }
     /**
-     * If sunFlower's card can be appeared, returns false.
+     * Returns sunFlower
      */
-    public boolean getSunFlower()
+    public SunFlower getSunFlower()
     {
         return sunFlower;
     }
     /**
-     * If cherryBomb's card can be appeared, returns false.
+     * Returns getCherry
      */
-    public boolean getCherry()
+    public CherryBomb getCherry()
     {
         return cherryBomb;
     }
     /**
-     * If wallNut's card can be appeared, returns false.
+     * Returns wall nut
      */
-    public boolean getWallNut()
+    public WallNut getWallNut()
     {
         return wallNut;
     }
     /**
-     * If freezePeaShooter's card can be appeared, returns false.
+     * Returns freeze pea shooter
      */
-    public boolean getFreezePea()
+    public FreezePeaShooter getFreezePea()
     {
         return freezePeaShooter;
     }
     /**
-     * If mushroom's card can be appeared, returns false.
+     *Returns mushroom
      */
-    public boolean getMushroom()
+    public Mushroom getMushroom()
     {
         return mushroom;
     }
@@ -276,243 +270,236 @@ public class GameState {
     {
         return info;
     }
-//    /**
-//     * The keyboard handler.
-//     */
-//    class KeyHandler implements KeyListener {
-//
-//        @Override
-//        public void keyTyped(KeyEvent e) {
-//        }
-//
-//        @Override
-//        public void keyPressed(KeyEvent e) {
-//        }
-//
-//        @Override
-//        public void keyReleased(KeyEvent e) {
-//        }
-//
-//    }
 
+    /**
+     * Finds the row and the column of the chosen cell.
+     * @param x of clicked location
+     * @param y of clicked location
+     * @return chosen location in the form of yx -> row*10 + column
+     */
+    private int findLoc(int x, int y)
+    {
+        int c=0, r=0;
+        //find row of chosen cell
+        if( y > 138 && y <= 246)
+            r = 1;
+        else if( y > 246 && y <= 370)
+            r = 2;
+        else if( y > 370 && y <= 500)
+            r = 3;
+        else if( y > 500 && y <= 618)
+            r = 4;
+        else if( y > 618 && y <= 742)
+            r = 5;
+        //find column on chosen cell
+        if( x > 38 && x <= 144)
+            c = 1;
+        else if(x > 144 && x <= 244)
+            c = 2;
+        else if(x > 244 && x <= 348)
+            c = 3;
+        else if(x > 348 && x <= 446)
+            c = 4;
+        else if(x > 446 && x <= 552)
+            c = 5;
+        else if(x > 552 && x <= 650)
+            c = 6;
+        else if(x > 650 && x <= 748)
+            c = 7;
+        else if(x > 748 && x <= 844)
+            c = 8;
+        else if(x > 748 && x <= 972)
+            c = 9;
+        return r*10 + c;
+    }
+
+    /**
+     * Finds which item has been chosen. Flower or shovel.
+     * If a flower had been chosen will find which flower
+     * @param e clicked location
+     */
+    private void chooseItem(MouseEvent e)
+    {
+        //peaShooter has been chosen
+        if(e.getX() >= 110 - cardW &&
+                e.getX() <= 110 + cardW &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = peashooter.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //sunFlower has been chosen
+        else if(e.getX() >= 110 - cardW + cardW &&
+                e.getX() <= 110 + cardW + cardW &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = sunFlower.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //cherryBomb has been chosen
+        else if(e.getX() >= 110 - cardW + cardW*2 &&
+                e.getX() <= 110 + cardW + cardW*2 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = cherryBomb.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //walletNut has been chosen
+        else if(e.getX() >= 110 - cardW + cardW*3 &&
+                e.getX() <= 110 + cardW + cardW*3 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = wallNut.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //freezePeaShooter has been chosen
+        else if(e.getX() >= 110 - cardW + cardW*4 &&
+                e.getX() <= 110 + cardW + cardW*4 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            sunNumber = freezePeaShooter.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //mushroom has been chosen
+        else if(e.getX() >= 110 - cardW + cardW*5 &&
+                e.getX() <= 110 + cardW + cardW*5 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH && timeType.equals("night"))
+        {
+            sunNumber = mushroom.chooseFlower(sunNumber);
+            lock = false;
+        }
+        //shovel has been chosen
+        else if(e.getX() >= 600 &&
+                e.getX() <= 700 &&
+                e.getY() >= 38 - cardH &&
+                e.getY() <= 38 + cardH)
+        {
+            shovel = true;
+        }
+    }
+
+    /**
+     * Saves dropping sun after clicking
+     * @param e clicked location
+     */
+    private void saveSun(MouseEvent e)
+    {
+        int x = e.getX();
+        int y = e.getY();
+        //saves sun
+        if((e.getX() >= sunX - sun.getWidth(null) &&
+                e.getX() <= sunX + sun.getWidth(null)) &&
+                (e.getY() >= sunY - sun.getHeight(null) &&
+                        e.getY() <= sunY + sun.getHeight(null)))
+        {
+            sunState = true;
+            sunNumber += 25;
+            sunY = GAME_HEIGHT;
+            sunTime = System.currentTimeMillis();
+        }
+
+        int loc = findLoc(x,y);
+        if(sunFlowerState.get(loc) != null)
+            if (sunFlowerState.get(loc))
+            {
+                sunFlowerState.replace(loc, false);
+                sunFlowerSunTime.replace(loc, System.currentTimeMillis());
+                sunNumber += 25;
+            }
+    }
+
+    /**
+     * Puts flower in selected cell after choosing its card
+     * @param e clicked location
+     */
+    private void putFlower(MouseEvent e)
+    {
+        int x = e.getX();
+        int y = e.getY();
+        //find the selected location for putting flowers
+        if((peashooter.getCard() || sunFlower.getCard() || cherryBomb.getCard()
+                || wallNut.getCard() || freezePeaShooter.getCard() ||
+                (timeType.equals("night") && mushroom.getCard())) && !lock)
+        {
+            int loc = findLoc(x, y);
+            if(info.get(loc) == null)
+            {
+                if(peashooter.getCard())
+                    info.replace(loc, "peaShooter");
+                else if(sunFlower.getCard())
+                {
+                    info.replace(loc, "sunFlower");
+                    if(sunFlowerState.get(loc) == null)
+                        sunFlowerState.replace(loc, true);
+                    long time = System.currentTimeMillis();
+                    if(sunFlowerSunTime.get(loc) == null)
+                        sunFlowerSunTime.replace(loc, time);
+                }
+                else if(cherryBomb.getCard())
+                {
+                    info.replace(loc, "cherryBomb");
+                    cherryBombState = System.currentTimeMillis();
+                }
+                else if(wallNut.getCard())
+                    info.replace(loc, "wallNut");
+                else if(freezePeaShooter.getCard())
+                    info.replace(loc, "freezePeaShooter");
+                else if(mushroom.getCard())
+                    info.replace(loc, "mushroom");
+                lock = true;
+            }
+        }
+    }
+
+    /**
+     * After choosing shovel, removes selected flower.
+     * @param e clicked location
+     */
+    private void removeFlower(MouseEvent e)
+    {
+        int x = e.getX();
+        int y = e.getY();
+        //removes a flower by shovel
+        if(shovel)
+        {
+            int loc = findLoc(x, y);
+            if(info.get(loc) != null)
+            {
+                if(info.get(loc).equals("sunFlower"))
+                {
+                    sunFlowerState.replace(loc, null);
+                    sunFlowerSunTime.replace(loc, null);
+                }
+                info.replace(loc, null);
+                shovel = false;
+            }
+        }
+    }
     /**
      * The mouse handler.
      */
     class MouseHandler implements MouseListener, MouseMotionListener {
-        /**
-         * Finds the row and the column of the chosen cell.
-         * @param x of clicked location
-         * @param y of clicked location
-         * @return chosen location in the form of yx -> row*10 + column
-         */
-        private int findLoc(int x, int y)
-        {
-            int c=0, r=0;
-            //find row of chosen cell
-            if( y > 138 && y <= 246)
-                r = 1;
-            else if( y > 246 && y <= 370)
-                r = 2;
-            else if( y > 370 && y <= 500)
-                r = 3;
-            else if( y > 500 && y <= 618)
-                r = 4;
-            else if( y > 618 && y <= 742)
-                r = 5;
-            //find column on chosen cell
-            if( x > 38 && x <= 144)
-                c = 1;
-            else if(x > 144 && x <= 244)
-                c = 2;
-            else if(x > 244 && x <= 348)
-                c = 3;
-            else if(x > 348 && x <= 446)
-                c = 4;
-            else if(x > 446 && x <= 552)
-                c = 5;
-            else if(x > 552 && x <= 650)
-                c = 6;
-            else if(x > 650 && x <= 748)
-                c = 7;
-            else if(x > 748 && x <= 844)
-                c = 8;
-            else if(x > 748 && x <= 972)
-                c = 9;
-            return r*10 + c;
-        }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            //peaShooter has been chosen
-            if(e.getX() >= 110 - cardW &&
-                    e.getX() <= 110 + cardW &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 100 && !peaShooter)
-                {
-                    peaShooter = true;
-                    sunNumber -= 100;
-                    peaShooterTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //sunFlower has been chosen
-            else if(e.getX() >= 110 - cardW + cardW &&
-                    e.getX() <= 110 + cardW + cardW &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 50 && !sunFlower)
-                {
-                    sunFlower = true;
-                    sunNumber -= 50;
-                    sunFlowerTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //cherryBomb has been chosen
-            else if(e.getX() >= 110 - cardW + cardW*2 &&
-                    e.getX() <= 110 + cardW + cardW*2 &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 150 && !cherryBomb)
-                {
-                    cherryBomb = true;
-                    sunNumber -= 150;
-                    cherryBombTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //walletNut has been chosen
-            else if(e.getX() >= 110 - cardW + cardW*3 &&
-                    e.getX() <= 110 + cardW + cardW*3 &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 50 && !wallNut)
-                {
-                    wallNut = true;
-                    sunNumber -= 50;
-                    wallNutTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //freezePeaShooter has been chosen
-            else if(e.getX() >= 110 - cardW + cardW*4 &&
-                    e.getX() <= 110 + cardW + cardW*4 &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 175 && !freezePeaShooter)
-                {
-                    freezePeaShooter = true;
-                    sunNumber -= 175;
-                    freezePeaShooterTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //mushroom has been chosen
-            else if(e.getX() >= 110 - cardW + cardW*5 &&
-                    e.getX() <= 110 + cardW + cardW*5 &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                if(sunNumber >= 25 && !mushroom)
-                {
-                    mushroom = true;
-                    sunNumber -= 25;
-                    mushroomTime = System.currentTimeMillis();
-                    lock = false;
-                }
-            }
-            //shovel has been chosen
-            else if(e.getX() >= 600 &&
-                    e.getX() <= 700 &&
-                    e.getY() >= 38 - cardH &&
-                    e.getY() <= 38 + cardH)
-            {
-                shovel = true;
-            }
+            chooseItem(e);
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            //saves sun
-            if((e.getX() >= sunX - sun.getWidth(null) &&
-                    e.getX() <= sunX + sun.getWidth(null)) &&
-                    (e.getY() >= sunY - sun.getHeight(null) &&
-                            e.getY() <= sunY + sun.getHeight(null)))
-            {
-                sunState = true;
-                sunNumber += 25;
-                sunY = GAME_HEIGHT;
-                sunTime = System.currentTimeMillis();
-            }
-
-            int loc = findLoc(x,y);
-            if(sunFlowerState.get(loc) != null)
-                if (sunFlowerState.get(loc))
-                {
-                    sunFlowerState.replace(loc, false);
-                    sunFlowerSunTime.replace(loc, System.currentTimeMillis());
-                    sunNumber += 25;
-                }
+           saveSun(e);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            //find the selected location for putting flowers
-            if((peaShooter || sunFlower || cherryBomb || wallNut || freezePeaShooter || mushroom) && !lock)
-            {
-                int loc = findLoc(x, y);
-                if(info.get(loc) == null)
-                {
-                    if(peaShooter)
-                        info.replace(loc, "peaShooter");
-                    else if(sunFlower)
-                    {
-                        info.replace(loc, "sunFlower");
-                        if(sunFlowerState.get(loc) == null)
-                            sunFlowerState.replace(loc, true);
-                        long time = System.currentTimeMillis();
-                        if(sunFlowerSunTime.get(loc) == null)
-                            sunFlowerSunTime.replace(loc, time);
-                    }
-                    else if(cherryBomb)
-                    {
-                        info.replace(loc, "cherryBomb");
-                        cherryBombState = System.currentTimeMillis();
-                    }
-                    else if(wallNut)
-                        info.replace(loc, "wallNut");
-                    else if(freezePeaShooter)
-                        info.replace(loc, "freezePeaShooter");
-                    else if(mushroom)
-                        info.replace(loc, "mushroom");
-                    lock = true;
-                }
-            }
-            //removes a flower by shovel
-            if(shovel)
-            {
-                int loc = findLoc(x, y);
-                if(info.get(loc) != null)
-                {
-                    if(info.get(loc).equals("sunFlower"))
-                    {
-                        sunFlowerState.replace(loc, null);
-                        sunFlowerSunTime.replace(loc, null);
-                    }
-                    info.replace(loc, null);
-                    shovel = false;
-                }
-            }
+            putFlower(e);
+            removeFlower(e);
         }
 
         @Override

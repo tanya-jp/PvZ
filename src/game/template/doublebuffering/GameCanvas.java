@@ -19,15 +19,15 @@ public class GameCanvas extends JPanel {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
-    private final Image background;
-
-    private int y, x, flag;
+    private Image background;
 
     private BufferedImage bufferedScreen;
     private Graphics2D bufferedGraphics;
+    private String type;
 
-    public GameCanvas() {
+    public GameCanvas(String type) {
         super(null);
+        this.type = type;
         setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
         //
         // Other initializations ...
@@ -36,7 +36,10 @@ public class GameCanvas extends JPanel {
         bufferedScreen = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Get the graphics of the offscreen buffer;
         bufferedGraphics = (Graphics2D) bufferedScreen.createGraphics();
-        background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
+        if(type.equals("day"))
+            background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
+        else if(type.equals("night"))
+            background = new ImageIcon(".\\PVS Design Kit\\images\\Night.png").getImage();
     }
 
     /**
@@ -47,7 +50,9 @@ public class GameCanvas extends JPanel {
         // Call super class's paint
         super.paintComponent(g);
         // Now, draw the offscreen image to the screen like a normal image.
-        g.drawImage(background, 2,30, null);
+        int x = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage().getWidth(null);
+        int y = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage().getHeight(null);
+        g.drawImage(background, 2,30, x, y, null);
     }
 
 

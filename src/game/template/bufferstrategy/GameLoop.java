@@ -26,9 +26,11 @@ public class GameLoop implements Runnable {
     private GameFrame canvas;
     private GameState state;
     private String type;
+    private String timeType;
 
-    public GameLoop(GameFrame frame, String type) {
+    public GameLoop(GameFrame frame, String type, String timeType) {
         this.type = type;
+        this.timeType = timeType;
         canvas = frame;
     }
 
@@ -37,7 +39,7 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-        state = new GameState(type);
+        state = new GameState(type, timeType);
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
