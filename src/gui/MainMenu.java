@@ -21,15 +21,20 @@ public class MainMenu{
 
 
     private ImageIcon startImg;
-
+    //menu buttons
     private final JButton newGameButton;
     private final JButton loadButton;
     private final JButton rankingButton;
     private final JButton settingButton;
     private final JButton quitButton;
+    //extra button and label
+    private JButton changeUsername;
+    //label to show username of the player
+    private JLabel usernameLabel;
 
-    private JFrame startFrame;
-    private JFrame mainFrame;
+    //start and main frame
+    private final JFrame startFrame;
+    private final JFrame mainFrame;
 
     private JPanel menuPanel;
     private JPanel bgPanel;
@@ -39,9 +44,12 @@ public class MainMenu{
         //create buttons
         newGameButton = new JButton("Adventure");
         loadButton = new JButton("Load Game");
-        rankingButton = new JButton("Rankings");
+        rankingButton = new JButton("Leaderboards");
         settingButton = new JButton("Setting");
         quitButton = new JButton("Quit Game");
+        changeUsername = new JButton("Change Profile");
+        //create label
+        usernameLabel = new JLabel("Username",SwingConstants.CENTER);//This changes with each user
         //create frames
         startFrame = new JFrame("Start");//start frame
         mainFrame = new JFrame("Plants Vs Zombies");//main frame
@@ -53,7 +61,6 @@ public class MainMenu{
     }
 //This class creates the start GUI
     private void createStartGUI(){
-//        startPanel = new JPanel();
         startFrame.setSize(1050,650);
         startFrame.setLocationRelativeTo(null);
         startFrame.setResizable(false);
@@ -64,7 +71,6 @@ public class MainMenu{
         startImg = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\click_to_start.gif");
 
         JLabel startLabel = new JLabel (startImg);
-//        startPanel.add(startLabel);
 
         startBackground.setLayout(new BorderLayout());
         startBackground.add(startLabel,BorderLayout.SOUTH);
@@ -74,12 +80,12 @@ public class MainMenu{
             @Override
             public void mouseClicked(MouseEvent e) {
                 createMainMenu();
+                startFrame.setVisible(false);
+                mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
 
-//        startFrame.pack();
         startFrame.setVisible(true);
-//        startFrame.add(startPanel,BorderLayout.SOUTH);
 
     }
 
@@ -87,28 +93,44 @@ public class MainMenu{
         //set button shapes
         makeButtons();
 
-//        menuPanel.setLayout(null);
+
         JPanel menuPanel = new JPanel();
         mainFrame.setLayout(null);
         mainFrame.setSize(1050,650);
         mainFrame.setLocationRelativeTo(null);
-//        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setContentPane(mainBackground);
 
         mainBackground.setLayout(null);
 
 
-        menuPanel.setLayout(new GridLayout(5,1,5,5));
-//        menuPanel.setLayout(null);
+        menuPanel.setLayout(new GridLayout(4,1,5,5));
+        //menu buttons
+        newGameButton.setPreferredSize(new Dimension(300,80));
+        loadButton.setPreferredSize(new Dimension(300,80));
+        quitButton.setPreferredSize(new Dimension(300,80));
+        //setting button
+        settingButton.setBounds(15,530,100,55);
+        //username label
+        usernameLabel.setBounds(80,30,150,40);
+
+        //change username button
+
+//        newGameButton.setBounds(525,170,300,60);
+//        loadButton.setBounds(525,230,300,60);
+//        quitButton.setBounds(525,290,300,60);
         menuPanel.add(newGameButton);
         menuPanel.add(loadButton);
         menuPanel.add(rankingButton);
-        menuPanel.add(settingButton);
+//        menuPanel.add(settingButton);
         menuPanel.add(quitButton);
+        menuPanel.setBounds(525,130,290,320);
         menuPanel.setBackground(Color.darkGray);
 
-        menuPanel.setBounds(525,130,300,280);
+
         mainBackground.add(menuPanel);
+        mainBackground.add(settingButton);
+        mainBackground.add(usernameLabel);
         mainBackground.revalidate();
 
         mainFrame.setVisible(true);
@@ -118,7 +140,7 @@ public class MainMenu{
         Font font = new Font("new",Font.ITALIC,20);
 
         newGameButton.setBackground(Color.darkGray);
-        newGameButton.setFont(font);
+        newGameButton.setFont(new Font("new",Font.ITALIC,32));
         newGameButton.setForeground(Color.WHITE);
         changeColor(newGameButton);
 
@@ -142,6 +164,16 @@ public class MainMenu{
         quitButton.setForeground(Color.WHITE);
         changeColor(quitButton);
 
+        //username label
+        usernameLabel.setFont(font);
+        usernameLabel.setBackground(new Color(51,0,0));
+        usernameLabel.setOpaque(true);
+        usernameLabel.setForeground(Color.WHITE);
+
+//        changeUsername.setBackground(Color.darkGray);
+//        changeUsername.setFont(new Font("change",Font.ITALIC,12));
+//        changeUsername.setForeground(Color.WHITE);
+//        changeColor(changeUsername);
 
     }
 
