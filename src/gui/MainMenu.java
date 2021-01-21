@@ -1,8 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -23,7 +21,6 @@ public class MainMenu{
     }
 
 
-    private ImageIcon startImg;
     //menu buttons
     private final JButton newGameButton;
     private final JButton loadButton;
@@ -31,17 +28,14 @@ public class MainMenu{
     private final JButton settingButton;
     private final JButton quitButton;
     //extra button and label
-    private JLabel changeUsername;
+    private final JLabel changeUsername;
     //label to show username of the player
-    private JLabel usernameLabel;
+    private final JLabel usernameLabel;
 
     //start and main frame
     private final JFrame startFrame;
     private final JFrame mainFrame;
 
-    private JPanel menuPanel;
-    private JPanel bgPanel;
-    private JPanel startPanel;
 
     public MainMenu(){
         //create buttons
@@ -56,14 +50,13 @@ public class MainMenu{
         //create frames
         startFrame = new JFrame("Start");//start frame
         mainFrame = new JFrame("Plants Vs Zombies");//main frame
-        //create panels
-        menuPanel = new JPanel();
-        bgPanel = new JPanel();
 
         createStartGUI();
     }
+
 //This class creates the start GUI
     private void createStartGUI(){
+        //create start frame
         startFrame.setSize(1050,650);
         startFrame.setLocationRelativeTo(null);
         startFrame.setResizable(false);
@@ -71,7 +64,7 @@ public class MainMenu{
         startFrame.setLayout(new GridLayout(2,1,5,5));
         startFrame.setContentPane(startBackground);
 
-        startImg = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\click_to_start.gif");
+        ImageIcon startImg = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\click_to_start.gif");
 
         JLabel startLabel = new JLabel (startImg);
 
@@ -108,11 +101,7 @@ public class MainMenu{
 
 
         menuPanel.setLayout(new GridLayout(4,1,5,5));
-        //menu buttons
-//        newGameButton.setPreferredSize(new Dimension(300,110));
-//        loadButton.setPreferredSize(new Dimension(300,70));
-//        rankingButton.setPreferredSize(new Dimension(300,70));
-//        quitButton.setPreferredSize(new Dimension(300,70));
+
         //setting button
         settingButton.setBounds(15,530,100,55);
         //username label
