@@ -7,6 +7,7 @@ public class SunFlower implements Card {
     private String timeType;
     private boolean card;
     private long flowerTime;
+    private boolean lock;
 
     /**
      * Constructs a new sunflower
@@ -18,6 +19,7 @@ public class SunFlower implements Card {
         this.type = type;
         this.timeType = timeType;
         this.card = false;
+        this.lock = true;
         neededSuns = 50;
     }
     /**
@@ -51,5 +53,22 @@ public class SunFlower implements Card {
             card = true;
         }
         return sunsNumber;
+    }
+    /**
+     * Defines if the flower can be placed.
+     * @return true if the flower is lock and can not be placed and false when it is unlocked and can be placed
+     */
+    @Override
+    public boolean getLock()
+    {
+        return lock;
+    }
+    /**
+     * Locks or unlocks the flower.
+     */
+    @Override
+    public void setLock(boolean lock)
+    {
+        this.lock = lock;
     }
 }

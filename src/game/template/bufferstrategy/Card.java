@@ -21,4 +21,13 @@ public interface Card {
      * @return the number of available suns
      */
     int chooseFlower(int sunsNumber);
+    /**
+     * Defines if the flower can be placed.
+     * @return true if the flower is lock and can not be placed and false when it is unlocked and can be placed
+     */
+    boolean getLock();
+    /**
+     * Locks or unlocks the flower.
+     */
+    void setLock(boolean lock);
 }
