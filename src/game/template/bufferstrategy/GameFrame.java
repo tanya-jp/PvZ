@@ -27,6 +27,7 @@ public class GameFrame extends JFrame {
     private Image cherryBombCard;
     private Image wallNutCard;
     private Image freezePeaShooterCard;
+    private Image squashCard;
     private Image mushroomCard;
     private Image lawnMower;
     private Image walnutFull;
@@ -34,6 +35,7 @@ public class GameFrame extends JFrame {
     private Image peaShooterFull;
     private Image freezeShooterFull;
     private Image cherryFull;
+    private Image squashFull;
     private Image mushroomFull;
     private String type;
     private String timeType;
@@ -67,6 +69,7 @@ public class GameFrame extends JFrame {
         wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
         freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
         mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
+        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
         lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
         walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
         sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
@@ -74,6 +77,7 @@ public class GameFrame extends JFrame {
         freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
         cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
         mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
+        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
     }
 
     /**
@@ -127,7 +131,8 @@ public class GameFrame extends JFrame {
         //set flowers
         setFlowers(g2d, state);
         //set sun
-        setSun(g2d, state);
+        if(timeType.equals("day"))
+            setSun(g2d, state);
 
 //        canvas.render(state);
         //
@@ -167,9 +172,11 @@ public class GameFrame extends JFrame {
             g2d.drawImage(wallNutCard, 110+3*x, 38, null);
         if(!state.getFreezePea().getCard() && state.getSunNumber() >= 175)
             g2d.drawImage(freezePeaShooterCard, 110+4*x, 38, null);
+        if(!state.getSquash().getCard() && state.getSunNumber() >= 50)
+            g2d.drawImage(squashCard, 110+5*x, 38, x, y, null);
         if(timeType.equals("night"))
             if(!state.getMushroom().getCard() && state.getSunNumber() >= 25)
-                g2d.drawImage(mushroomCard, 110+5*peaShooterCard.getWidth(null), 38, x-2, y, null);
+                g2d.drawImage(mushroomCard, 110+6*x, 38, x-2, y, null);
     }
 
     /**
@@ -232,7 +239,9 @@ public class GameFrame extends JFrame {
                     else if(state.getInfo().get(loc).equals("freezePeaShooter"))
                         g2d.drawImage(freezeShooterFull, locX, locY, null);
                     else if(state.getInfo().get(loc).equals("mushroom"))
-                        g2d.drawImage(mushroomFull, locX-15, locY, 100, 100, null);
+                        g2d.drawImage(mushroomFull, locX-20, locY, 100, 100, null);
+                    else if(state.getInfo().get(loc).equals("squash"))
+                        g2d.drawImage(squashFull, locX-15, locY, 100, 100, null);
 
                 }
 

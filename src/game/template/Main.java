@@ -20,13 +20,13 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GameFrame frame = new GameFrame("Plants Vs. Zombies !", "normal", "day");
+                GameFrame frame = new GameFrame("Plants Vs. Zombies !", "normal", "night");
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                 frame.initBufferStrategy();
                 // Create and execute the game-loop
-                GameLoop game = new GameLoop(frame, "normal", "day");
+                GameLoop game = new GameLoop(frame, "normal", "night");
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
