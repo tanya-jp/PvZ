@@ -1,10 +1,12 @@
 package gui;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 
 public class MainMenu{
@@ -37,7 +39,7 @@ public class MainMenu{
     private final JFrame mainFrame;
 
 
-    public MainMenu(){
+    public MainMenu() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         //create buttons
         newGameButton = new JButton("Adventure");
         loadButton = new JButton("Load Game");
@@ -55,7 +57,7 @@ public class MainMenu{
     }
 
 //This class creates the start GUI
-    private void createStartGUI(){
+    private void createStartGUI() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         //create start frame
         startFrame.setSize(1050,650);
         startFrame.setLocationRelativeTo(null);
@@ -82,6 +84,7 @@ public class MainMenu{
         });
 
         startFrame.setVisible(true);
+        audioPlayer();
 
     }
 
@@ -200,6 +203,35 @@ public class MainMenu{
             }
         });
 
+    }
+
+    public void audioPlayer() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        Long currentFrame;
+        Clip clip;
+
+        // current status of clip
+        String status;
+
+        AudioInputStream audioInputStream;
+        String filePath = ".\\PVS Design Kit\\sounds\\atebrains.wav";
+            // create AudioInputStream object
+            audioInputStream =
+                    AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+
+            // create clip reference
+            clip = AudioSystem.getClip();
+
+            // open audioInputStream to the clip
+            clip.open(audioInputStream);
+
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+            usernameLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    clip.start();
+                }
+            });
     }
 
 }
