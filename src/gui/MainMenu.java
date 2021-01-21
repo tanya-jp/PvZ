@@ -1,6 +1,9 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,7 +31,7 @@ public class MainMenu{
     private final JButton settingButton;
     private final JButton quitButton;
     //extra button and label
-    private JButton changeUsername;
+    private JLabel changeUsername;
     //label to show username of the player
     private JLabel usernameLabel;
 
@@ -47,7 +50,7 @@ public class MainMenu{
         rankingButton = new JButton("Leaderboards");
         settingButton = new JButton("Setting");
         quitButton = new JButton("Quit Game");
-        changeUsername = new JButton("Change Profile");
+        changeUsername = new JLabel("Change Profile",SwingConstants.CENTER);
         //create label
         usernameLabel = new JLabel("Username",SwingConstants.CENTER);//This changes with each user
         //create frames
@@ -106,23 +109,22 @@ public class MainMenu{
 
         menuPanel.setLayout(new GridLayout(4,1,5,5));
         //menu buttons
-        newGameButton.setPreferredSize(new Dimension(300,80));
-        loadButton.setPreferredSize(new Dimension(300,80));
-        quitButton.setPreferredSize(new Dimension(300,80));
+//        newGameButton.setPreferredSize(new Dimension(300,110));
+//        loadButton.setPreferredSize(new Dimension(300,70));
+//        rankingButton.setPreferredSize(new Dimension(300,70));
+//        quitButton.setPreferredSize(new Dimension(300,70));
         //setting button
         settingButton.setBounds(15,530,100,55);
         //username label
         usernameLabel.setBounds(80,30,150,40);
 
         //change username button
+        changeUsername.setBounds(40,100,220,40);
+        changeUsername.setVisible(false);
 
-//        newGameButton.setBounds(525,170,300,60);
-//        loadButton.setBounds(525,230,300,60);
-//        quitButton.setBounds(525,290,300,60);
         menuPanel.add(newGameButton);
         menuPanel.add(loadButton);
         menuPanel.add(rankingButton);
-//        menuPanel.add(settingButton);
         menuPanel.add(quitButton);
         menuPanel.setBounds(525,130,290,320);
         menuPanel.setBackground(Color.darkGray);
@@ -131,7 +133,15 @@ public class MainMenu{
         mainBackground.add(menuPanel);
         mainBackground.add(settingButton);
         mainBackground.add(usernameLabel);
+        mainBackground.add(changeUsername);
         mainBackground.revalidate();
+
+        usernameLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                changeUsername.setVisible(!changeUsername.isVisible());
+            }
+        });
 
         mainFrame.setVisible(true);
     }
@@ -170,10 +180,22 @@ public class MainMenu{
         usernameLabel.setOpaque(true);
         usernameLabel.setForeground(Color.WHITE);
 
-//        changeUsername.setBackground(Color.darkGray);
-//        changeUsername.setFont(new Font("change",Font.ITALIC,12));
-//        changeUsername.setForeground(Color.WHITE);
-//        changeColor(changeUsername);
+        changeUsername.setBackground(new Color(51,0,0));
+        changeUsername.setBorder(new LineBorder(new Color(255,255,100),5));
+        changeUsername.setFont(new Font("change",Font.ITALIC,16));
+        changeUsername.setForeground(Color.WHITE);
+        changeUsername.setOpaque(true);
+        changeUsername.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                changeUsername.setForeground(new Color(255,255,40));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                changeUsername.setForeground(Color.WHITE);
+            }
+        });
 
     }
 
