@@ -22,7 +22,7 @@ public class GameState {
     private boolean lock, shovel;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
-    private long sunTime, cherryBombState;
+    private long sunTime, cherryBombState, sunDropping;
     private String type;
     private String timeType;
     private PeaShooter peashooter;
@@ -145,28 +145,26 @@ public class GameState {
     {
         if(sunY > (GAME_HEIGHT - 100))
         {
-            try {
-                Thread.sleep(500);
+            if(System.currentTimeMillis() - sunDropping > 3000 )
+            {
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
                 if(sunX < 150)
                     sunX = sunX + 150;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                sunDropping = System.currentTimeMillis();
             }
         }
         else
         {
-            try {
-                Thread.sleep(1000);
+            if(System.currentTimeMillis() - sunDropping > 1000 )
+            {
                 sunY = sunY + 30;
                 if(sunY > (GAME_HEIGHT - 100))
                 {
                     sunTime = System.currentTimeMillis();
                     sunState = true;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                sunDropping = System.currentTimeMillis();
             }
         }
     }
