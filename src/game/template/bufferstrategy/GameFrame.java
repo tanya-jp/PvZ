@@ -5,7 +5,10 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
+
+import game.template.Elements.*;
 import game.template.doublebuffering.GameCanvas;
 
 /**
@@ -27,6 +30,9 @@ public class GameFrame extends JFrame {
     private Image lawnMower;
     private String type;
     private String timeType;
+    private NormalZombie normalZombie;
+    private BucketHeadZombie bucketHeadZombie;
+    private ConeHeadZombie coneHeadZombie;
 
     private BufferStrategy bufferStrategy;
 
@@ -36,6 +42,9 @@ public class GameFrame extends JFrame {
         this.type = type;
         setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
+        normalZombie = new NormalZombie();
+        bucketHeadZombie = new BucketHeadZombie();
+        coneHeadZombie = new ConeHeadZombie();
 //        background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
         //
         // Initialize the JFrame ...
@@ -103,6 +112,8 @@ public class GameFrame extends JFrame {
         putLawnMower(g2d, state);
         //set flowers
         setFlowers(g2d, state);
+        //set zombies
+        setZombies(g2d, state);
         //set sun
         setSun(g2d, state);
 
@@ -111,6 +122,56 @@ public class GameFrame extends JFrame {
         // Draw all game elements according
         //  to the game 'state' using 'g2d' ...
         //
+    }
+    private void setZombies(Graphics2D g2d, GameState state)
+    {
+        int y = 0;
+        int x = 0;
+        int i = 0;
+        int sizeX = normalZombie.getFullImage().getWidth(null) - 25;
+        int sizeY = normalZombie.getFullImage().getHeight(null) - 35;
+        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getNormalInfo().entrySet())
+        {
+            i = 0;
+            for(Integer num: info.getValue())
+            {
+                if(i == 0)
+                    y = num;
+                else if(i == 1)
+                    x = num;
+                i++;
+            }
+            int locY = 154 + (y-1)*118;
+            g2d.drawImage(normalZombie.getFullImage(), x, locY, sizeX, sizeY, null);
+        }
+        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getConeInfo().entrySet())
+        {
+            i = 0;
+            for(Integer num: info.getValue())
+            {
+                if(i == 0)
+                    y = num;
+                else if(i == 1)
+                    x = num;
+                i++;
+            }
+            int locY = 154 + (y-1)*118;
+            g2d.drawImage(coneHeadZombie.getFullImage(), x, locY, null);
+        }
+        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getBucketInfo().entrySet())
+        {
+            i = 0;
+            for(Integer num: info.getValue())
+            {
+                if(i == 0)
+                    y = num;
+                else if(i == 1)
+                    x = num;
+                i++;
+            }
+            int locY = 154 + (y-1)*118;
+            g2d.drawImage(bucketHeadZombie.getFullImage(), x, locY, sizeX+10, sizeY+10, null);
+        }
     }
 
     /**
