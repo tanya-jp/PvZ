@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public interface Card {
     /**
-     *Returns the image of card
+     * Returns the image of card
      */
     Image getCardImage();
     /**

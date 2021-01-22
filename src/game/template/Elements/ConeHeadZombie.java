@@ -3,12 +3,14 @@ package game.template.Elements;
 import javax.swing.*;
 import java.awt.*;
 
-public class ConeHeadZombie implements Zombie, Images{
+public class ConeHeadZombie extends Zombie implements Images{
     private Image fullZombie;
     public ConeHeadZombie()
     {
+        super();
         setImages();
     }
+//    public void move
     /**
      * Sets all images of that flower
      */

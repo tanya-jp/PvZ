@@ -21,7 +21,7 @@ public class GameState {
     private boolean lock, shovel;
     private HashMap<Integer, String> info ;
     Random rand = new Random();
-    private long sunTime, cherryBombState, sunDropping;
+    private long sunTime, cherryBombState, sunDropping, startTime;
     private String type;
     private String timeType;
     private PeaShooter peashooter;
@@ -31,6 +31,10 @@ public class GameState {
     private FreezePeaShooter freezePeaShooter;
     private Squash squash;
     private Mushroom mushroom;
+    private Zombie zombie;
+    private NormalZombie normalZombie;
+    private ConeHeadZombie coneHead;
+    private BucketHeadZombie bucketHead;
 
     /**
      * Constructs game state and sets first state of game lements
@@ -55,6 +59,10 @@ public class GameState {
         squash = new Squash(type, timeType);
         if(timeType.equals("night"))
             mushroom = new Mushroom(type, timeType);
+        zombie = new Zombie();
+        normalZombie = new NormalZombie();
+        bucketHead = new BucketHeadZombie();
+        coneHead = new ConeHeadZombie();
         sunState = false;
         lock = false;
         shovel = false;
@@ -67,6 +75,7 @@ public class GameState {
             }
         }
         sunTime = System.currentTimeMillis() + 50000;
+        startTime = System.currentTimeMillis();
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
         mouseHandler = new MouseHandler();
@@ -101,6 +110,10 @@ public class GameState {
         //shoots peas
         peashooter.setBullets();
         freezePeaShooter.setBullets();
+        //find zombies location
+        zombie.findCells(info);
+        zombie.setZombies(1, 5000);
+        zombie.move();
     }
 
     /**
@@ -251,6 +264,7 @@ public class GameState {
     {
         return info;
     }
+    public Zombie getZombie(){return zombie;}
 
     /**
      * Finds the row and the column of the chosen cell.
