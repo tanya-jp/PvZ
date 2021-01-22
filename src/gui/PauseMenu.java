@@ -1,10 +1,8 @@
 package gui;
 
-import javafx.event.ActionEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -44,6 +42,7 @@ public class PauseMenu {
     }
 
     public PauseMenu(){
+        //create buttons
         resumeButton = new JButton("Back To Game");
         saveButton = new JButton("Save Your Game");
         exitButton = new JButton("Go To Main Menu");//will also save the game
