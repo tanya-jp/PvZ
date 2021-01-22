@@ -92,7 +92,13 @@ public class MainMenu{
 
     private void createMainMenu(){
         //set button shapes
-        makeButtons();
+        makeButtons(newGameButton);
+        makeButtons(settingButton);
+        makeButtons(loadButton);
+        makeButtons(rankingButton);
+        makeButtons(quitButton);
+        //set labels
+        makeLabels();
 
 
         JPanel menuPanel = new JPanel();
@@ -155,34 +161,8 @@ public class MainMenu{
         });
     }
 
-    public void makeButtons(){
+    public void makeLabels(){
         Font font = new Font("new",Font.ITALIC,20);
-
-        newGameButton.setBackground(Color.darkGray);
-        newGameButton.setFont(new Font("new",Font.ITALIC,32));
-        newGameButton.setForeground(Color.WHITE);
-        changeColor(newGameButton);
-
-        loadButton.setBackground(Color.darkGray);
-        loadButton.setFont(font);
-        loadButton.setForeground(Color.WHITE);
-        changeColor(loadButton);
-
-        rankingButton.setBackground(Color.darkGray);
-        rankingButton.setFont(font);
-        rankingButton.setForeground(Color.WHITE);
-        changeColor(rankingButton);
-
-        settingButton.setBackground(Color.darkGray);
-        settingButton.setFont(font);
-        settingButton.setForeground(Color.WHITE);
-        changeColor(settingButton);
-
-        quitButton.setBackground(Color.darkGray);
-        quitButton.setFont(font);
-        quitButton.setForeground(Color.WHITE);
-        changeColor(quitButton);
-
         //username label
         usernameLabel.setFont(font);
         usernameLabel.setBackground(new Color(51,0,0));
@@ -205,6 +185,21 @@ public class MainMenu{
                 changeUsername.setForeground(Color.WHITE);
             }
         });
+
+    }
+
+    public void makeButtons(JButton button){
+        Font font = new Font("new",Font.ITALIC,20);
+
+        newGameButton.setBackground(Color.darkGray);
+        newGameButton.setFont(new Font("new",Font.ITALIC,32));
+        newGameButton.setForeground(Color.WHITE);
+        changeColor(newGameButton);
+
+        button.setBackground(Color.darkGray);
+        button.setFont(font);
+        button.setForeground(Color.WHITE);
+        changeColor(button);
 
     }
 
