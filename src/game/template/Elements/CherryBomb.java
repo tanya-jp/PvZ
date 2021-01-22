@@ -1,46 +1,47 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class controls the time of showing card of mushroom and showing it.(only at night)
- * Sets all images of mushroom.
+ * This class controls the time of showing card of cherry bomb and showing it.
+ * Sets cherry bomb images.
  * @version 1.0
  * @author Tanya Djavaherpour
  */
-public class Mushroom implements Card{
+public class CherryBomb implements Card, Images{
+
     private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image mushroomCard;
-    private Image mushroomFull;
+    private Image cherryBombCard;
+    private Image cherryFull;
 
     /**
-     * Constructs a new mushroom when it is night.
+     * Constructs a new cherry bomb
      * @param type normal / hard
      * @param timeType night / day
      */
-    public Mushroom(String type, String timeType)
+    public CherryBomb(String type, String timeType)
     {
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 25;
+        neededSuns = 150;
         setImages();
     }
     /**
-     * Sets all images of that mushroom
+     * Sets all images of that cherryBomb
      */
     @Override
     public void setImages()
     {
-        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
-        mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
+        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -48,14 +49,14 @@ public class Mushroom implements Card{
     @Override
     public Image getCardImage()
     {
-        return mushroomCard;
+        return cherryBombCard;
     }
     /**
      * Returns the image of full flower
      */
     public Image getFullImage()
     {
-        return mushroomFull;
+        return cherryFull;
     }
     /**
      * makes state of cards based on proper time
@@ -64,9 +65,9 @@ public class Mushroom implements Card{
     public void setCard() {
         if(card)
         {
-            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 7500)
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 30000)
                 card = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 30000)
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 45000)
                 card = false;
         }
     }

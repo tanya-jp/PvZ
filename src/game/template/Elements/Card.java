@@ -1,4 +1,5 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
+
 
 import java.awt.*;
 
@@ -10,17 +11,9 @@ import java.awt.*;
  */
 public interface Card {
     /**
-     * Sets all images of that flower
-     */
-    void setImages();
-    /**
      *Returns the image of card
      */
     Image getCardImage();
-    /**
-     * Returns the image of full flower
-     */
-    Image getFullImage();
     /**
      * makes state of cards based on proper time
      */
@@ -28,7 +21,7 @@ public interface Card {
     /**
      * If card can be appeared, returns false.
      */
-     boolean getCard();
+    boolean getCard();
     /**
      * Checks if flower can be chosen, changes it state and sets the time that flower has been chosen
      * @param sunsNumber the number of available suns
