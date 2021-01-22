@@ -15,7 +15,9 @@ public class BucketHeadZombie extends Zombie implements Images{
      */
     @Override
     public void setImages(){
+
         fullZombie = new ImageIcon(".\\PVS Design Kit\\Buckethead_Zombie.png").getImage();
+//                fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\bucketheadzombie.gif").getImage();
     }
     /**
      * Returns the image of full flower
