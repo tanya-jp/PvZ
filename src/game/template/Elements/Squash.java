@@ -1,31 +1,30 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class controls the time of showing card of wall nut and showing it.
- * Sets all images of wall nut.
+ * This class controls the time of showing card of squash and showing it.
+ * Sets all images of squash.
  * @version 1.0
  * @author Tanya Djavaherpour
  */
-public class WallNut implements Card{
-
+public class Squash implements Card, Images{
     private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image wallNutCard;
-    private Image walnutFull;
+    private Image squashCard;
+    private Image squashFull;
 
     /**
-     * Constructs a new wall nut
+     * Constructs a new mushroom when it is night.
      * @param type normal / hard
      * @param timeType night / day
      */
-    public WallNut(String type, String timeType)
+    public Squash(String type, String timeType)
     {
         this.type = type;
         this.timeType = timeType;
@@ -35,13 +34,13 @@ public class WallNut implements Card{
         setImages();
     }
     /**
-     * Sets all images of that wallNut
+     * Sets all images of that squash
      */
     @Override
     public void setImages()
     {
-        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
-        walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
+        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
+        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -49,22 +48,27 @@ public class WallNut implements Card{
     @Override
     public Image getCardImage()
     {
-        return wallNutCard;
+        return squashCard;
     }
     /**
      * Returns the image of full flower
      */
     public Image getFullImage()
     {
-        return walnutFull;
+        return squashFull;
     }
     /**
      * makes state of cards based on proper time
      */
     @Override
     public void setCard() {
-        if(card && (System.currentTimeMillis() - flowerTime) >= 30000)
-            card = false;
+        if(card)
+        {
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 7500)
+                card = false;
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 30000)
+                card = false;
+        }
     }
     /**
      * If card can be appeared, returns false.

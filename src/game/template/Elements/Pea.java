@@ -1,4 +1,4 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @version 2021
  * @author Tanya Djavaherpour
  */
-public class PeaShooter extends Pea implements Card {
+public class PeaShooter extends Pea implements Card, Images {
 
     private int neededSuns;
     private String type;

@@ -1,4 +1,4 @@
-package game.template.bufferstrategy;
+package game.template.Elements;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.awt.*;
  * @version 1.0
  * @author Tanya Djavaherpour
  */
-public class SunFlower implements Card {
+public class SunFlower implements Card, Images {
 
     private final int neededSuns;
     private String type;

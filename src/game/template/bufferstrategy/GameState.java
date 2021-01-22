@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import game.template.Elements.*;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -45,7 +46,7 @@ public class GameState {
         this.type = type;
         this.timeType = timeType;
         sunY = 60;
-        sunNumber = 600;
+        sunNumber = 800;
         peashooter = new PeaShooter(type, timeType);
         sunFlower = new SunFlower(type, timeType);
         cherryBomb = new CherryBomb(type, timeType);
