@@ -159,6 +159,13 @@ public class MainMenu{
             }
         });
 
+        quitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.exit(0);
+            }
+        });
+
         mainFrame.setVisible(true);
 
 
