@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class MainMenu{
     PauseMenu pauseMenu = new PauseMenu();
+    User user = new User();
 
 
     private Background startBackground;
@@ -141,12 +142,20 @@ public class MainMenu{
             @Override
             public void mouseClicked(MouseEvent e) {
                 changeUsername.setVisible(!changeUsername.isVisible());
-                try {
-                    audioPlayer();
-                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ioException) {
-                    ioException.printStackTrace();
-                }
+//                try {
+//                    audioPlayer();
+//                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ioException) {
+//                    ioException.printStackTrace();
+//                }
 
+            }
+        });
+
+        changeUsername.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                user.createUserFrame();
+                user.renameUserFrame();
             }
         });
 
