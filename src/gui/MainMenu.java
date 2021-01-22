@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainMenu{
+    PauseMenu pauseMenu = new PauseMenu();
+
+
     private Background startBackground;
     private Background mainBackground;
 
@@ -57,7 +60,7 @@ public class MainMenu{
     }
 
 //This class creates the start GUI
-    private void createStartGUI() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    private void createStartGUI(){
         //create start frame
         startFrame.setSize(1050,650);
         startFrame.setLocationRelativeTo(null);
@@ -84,7 +87,6 @@ public class MainMenu{
         });
 
         startFrame.setVisible(true);
-        audioPlayer();
 
     }
 
@@ -95,10 +97,11 @@ public class MainMenu{
 
         JPanel menuPanel = new JPanel();
         mainFrame.setLayout(null);
-        mainFrame.setSize(1050,650);
+        mainFrame.setSize(1050,625);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setContentPane(mainBackground);
+        mainFrame.setResizable(false);
 
         mainBackground.setLayout(null);
 
@@ -132,10 +135,24 @@ public class MainMenu{
             @Override
             public void mouseClicked(MouseEvent e) {
                 changeUsername.setVisible(!changeUsername.isVisible());
+                try {
+                    audioPlayer();
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ioException) {
+                    ioException.printStackTrace();
+                }
+
             }
         });
 
         mainFrame.setVisible(true);
+
+
+        settingButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pauseMenu.start();
+            }
+        });
     }
 
     public void makeButtons(){
@@ -214,24 +231,13 @@ public class MainMenu{
 
         AudioInputStream audioInputStream;
         String filePath = ".\\PVS Design Kit\\sounds\\atebrains.wav";
-            // create AudioInputStream object
             audioInputStream =
                     AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-
-            // create clip reference
             clip = AudioSystem.getClip();
-
-            // open audioInputStream to the clip
             clip.open(audioInputStream);
 
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-            usernameLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    clip.start();
-                }
-            });
+            clip.start();
     }
 
 }
