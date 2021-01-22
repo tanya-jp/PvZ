@@ -11,29 +11,33 @@ import java.io.IOException;
 
 public class PauseMenu {
     //buttons
-    private JButton resumeButton;
-    private JButton saveButton;
-    private JButton exitButton;
-    private JButton cancelButton;
-    private JButton leaveButton;
-    //back ground pics
+    private final JButton resumeButton;
+    private final JButton saveButton;
+    private final JButton exitButton;
+    private final JButton cancelButton;
+    private final JButton leaveButton;
+    //background pics
     private Background pauseBg;
     private Background askBg;
+    private ImageIcon img;
+    //background label
+    private final JLabel pauseBgLabel;
     //frames
-    private JFrame pauseFrame;
-    private JFrame askFrame;
+    private final JFrame pauseFrame;
+    private final JFrame askFrame;
 
     //colors
-    private Color bgColor;//background color
-    private Color fgColor;//foreground color
+    private final Color bgColor;//background color
+    private final Color fgColor;//foreground color
 
 
-    private Font font;
+    private final Font font;
 
     {
         try {
             pauseBg = new Background(".\\Extras\\pause_menu.jpeg");
             askBg = new Background(".\\Extras\\ask_user1.jpeg");
+            img = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,6 +58,8 @@ public class PauseMenu {
         bgColor = new Color(102,102,102);
         fgColor = new Color(0,102,0);
 
+        pauseBgLabel = new JLabel();
+
         
     }
 
@@ -62,6 +68,15 @@ public class PauseMenu {
     }
 
     public void createPauseMenu(){
+        //extra label and panel
+        JPanel pauseBgPanel = new JPanel();
+        JLabel msg = new JLabel("Your Game Is Paused!",SwingConstants.CENTER);
+        msg.setFont(new Font("new",Font.PLAIN,24));
+        msg.setBackground(new Color(51,51,51));
+        msg.setForeground(new Color(255,255,153));
+        msg.setOpaque(true);
+        pauseBgPanel.setLayout(new BorderLayout());
+        //main frame for pausing
         pauseFrame.setLayout(null);
         pauseFrame.setLocation(400,220);
         pauseFrame.setSize(505,370);
@@ -79,6 +94,15 @@ public class PauseMenu {
         saveButton.setBounds(255,258,170,32);
         makeButton(saveButton);
 
+        //add image to label
+        pauseBgLabel.setIcon(img);
+        pauseBgLabel.setBackground(new Color(51,51,51));
+        pauseBgPanel.setBounds(20,80,460,170);
+        pauseBgLabel.setOpaque(true);
+        pauseBgPanel.add(pauseBgLabel,BorderLayout.WEST);
+        pauseBgPanel.add(msg,BorderLayout.CENTER);
+
+        //exit to main menu button
         exitButton.setBounds(150,292,180,32);
         makeButton(exitButton);
         exitButton.addMouseListener(new MouseAdapter() {
@@ -88,6 +112,7 @@ public class PauseMenu {
             }
         });
 
+        pauseBg.add(pauseBgPanel);
         pauseBg.add(resumeButton);
         pauseBg.add(saveButton);
         pauseBg.add(exitButton);
