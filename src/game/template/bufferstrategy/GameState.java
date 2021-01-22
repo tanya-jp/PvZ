@@ -14,6 +14,7 @@ public class GameState {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
+    private static long squashTime;
     private final MouseHandler mouseHandler;
     private boolean sunState;
     public int sunX, sunY,sunNumber, cardW, cardH;
@@ -35,6 +36,7 @@ public class GameState {
     private NormalZombie normalZombie;
     private ConeHeadZombie coneHead;
     private BucketHeadZombie bucketHead;
+    private HashMap<Integer, Long> deletedSquash;
 
     /**
      * Constructs game state and sets first state of game lements
@@ -63,6 +65,7 @@ public class GameState {
         normalZombie = new NormalZombie();
         bucketHead = new BucketHeadZombie();
         coneHead = new ConeHeadZombie();
+        deletedSquash = new HashMap<>();
         sunState = false;
         lock = false;
         shovel = false;
@@ -112,8 +115,29 @@ public class GameState {
         freezePeaShooter.setBullets();
         //find zombies location
         zombie.findCells(info);
-        zombie.setZombies(1, 5000);
-        zombie.move();
+        zombie.setZombies(1, 10000);
+        zombie.move(type);
+        zombie.getAttackBySquash(info);
+    }
+    public void setDeletedSquash(long time, int loc)
+    {
+        deletedSquash.put(loc, time);
+    }
+    public void removeSquash(int loc)
+    {
+        deletedSquash.remove(loc);
+//        zombie.removeSquash(loc);
+        info.replace(loc, null);
+    }
+
+    public HashMap<Integer, Long> getDeletedSquash(){return deletedSquash;}
+//    public static void setSquashTime(long time){squashTime = time;}
+    public void removeSquash()
+    {
+        for (Integer squashes: zombie.getSquashes())
+        {
+            info.replace(squashes, null);
+        }
     }
 
     /**
@@ -141,11 +165,15 @@ public class GameState {
 
         }
         freezePeaShooter.setCard();
+        squash.setCard();
+        if(timeType.equals("night"))
+            mushroom.setCard();
         //Unlock --> new flower can be added to the playground
         if(!sunFlower.getCard() && !peashooter.getCard() && !wallNut.getCard() &&
                 !cherryBomb.getCard() && !freezePeaShooter.getCard() && !squash.getCard())
             if((timeType.equals(" night") && !mushroom.getCard()) || timeType.equals(" day"))
                 lock = false;
+
     }
 
     /**
@@ -266,27 +294,9 @@ public class GameState {
     }
     public Zombie getZombie(){return zombie;}
 
-    /**
-     * Finds the row and the column of the chosen cell.
-     * @param x of clicked location
-     * @param y of clicked location
-     * @return chosen location in the form of yx -> row*10 + column
-     */
-    private int findLoc(int x, int y)
+    public static int findColumn(int x)
     {
-        int c=0, r=0;
-        //find row of chosen cell
-        if( y > 138 && y <= 246)
-            r = 1;
-        else if( y > 246 && y <= 370)
-            r = 2;
-        else if( y > 370 && y <= 500)
-            r = 3;
-        else if( y > 500 && y <= 618)
-            r = 4;
-        else if( y > 618 && y <= 742)
-            r = 5;
-        //find column on chosen cell
+        int c=0;
         if( x > 38 && x <= 144)
             c = 1;
         else if(x > 144 && x <= 244)
@@ -305,6 +315,30 @@ public class GameState {
             c = 8;
         else if(x > 748 && x <= 972)
             c = 9;
+        return c;
+    }
+    /**
+     * Finds the row and the column of the chosen cell.
+     * @param x of clicked location
+     * @param y of clicked location
+     * @return chosen location in the form of yx -> row*10 + column
+     */
+    public int findLoc(int x, int y)
+    {
+        int c=0, r=0;
+        //find row of chosen cell
+        if( y > 138 && y <= 246)
+            r = 1;
+        else if( y > 246 && y <= 370)
+            r = 2;
+        else if( y > 370 && y <= 500)
+            r = 3;
+        else if( y > 500 && y <= 618)
+            r = 4;
+        else if( y > 618 && y <= 742)
+            r = 5;
+        //find column on chosen cell
+        c = findColumn(x);
         return r*10 + c;
     }
 

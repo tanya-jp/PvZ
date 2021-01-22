@@ -18,6 +18,7 @@ public class Squash implements Card, Images{
     private boolean lock;
     private Image squashCard;
     private Image squashFull;
+    private Image attackSquash;
 
     /**
      * Constructs a new mushroom when it is night.
@@ -33,6 +34,7 @@ public class Squash implements Card, Images{
         neededSuns = 50;
         setImages();
     }
+    public Image getAttackSquash(){return attackSquash;}
     /**
      * Sets all images of that squash
      */
@@ -41,6 +43,7 @@ public class Squash implements Card, Images{
     {
         squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
         squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
+        attackSquash = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Squash_Attack.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -64,9 +67,9 @@ public class Squash implements Card, Images{
     public void setCard() {
         if(card)
         {
-            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 7500)
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 5000)
                 card = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 30000)
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 8000)
                 card = false;
         }
     }

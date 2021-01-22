@@ -1,7 +1,10 @@
 package game.template.Elements;
 
+import game.template.bufferstrategy.GameState;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Zombie {
@@ -17,6 +20,8 @@ public class Zombie {
     private HashMap<Integer, ArrayList<Integer>> normalInfo;
     private HashMap<Integer, ArrayList<Integer>> bucketInfo;
     private HashMap<Integer, ArrayList<Integer>> coneInfo;
+    private int cleared;
+    ArrayList<Integer> squashes;
     public Zombie()
     {
         normal = new ArrayList<>();
@@ -26,10 +31,12 @@ public class Zombie {
         normalInfo = new HashMap<>();
         bucketInfo = new HashMap<>();
         coneInfo = new HashMap<>();
+        squashes = new ArrayList<>();
         normalNum = 0;
         bucketNum = 0;
         coneNum = 0;
         zombieNum = 0;
+        cleared = 0;
     }
 //    public HashMap<Integer, String> getInformation(){return information;}
     public void setNormal(int loc)
@@ -47,7 +54,7 @@ public class Zombie {
     {
 //        bucketInfo.put(bucketNum, null);
 //        if (bucketInfo.get(bucketNum) == null)
-            bucketInfo.put(bucketNum, new ArrayList<Integer>());
+        bucketInfo.put(bucketNum, new ArrayList<Integer>());
         bucketInfo.get(bucketNum).add(loc);
         bucketInfo.get(bucketNum).add(1005);
         bucketInfo.get(bucketNum).add(1300);
@@ -65,29 +72,34 @@ public class Zombie {
         zombieNum++;
     }
     public HashMap<Integer, ArrayList<Integer>> getConeInfo(){return coneInfo;}
-    public void changeLocation(HashMap<Integer, ArrayList<Integer>> hashmap)
+    public void changeLocation(HashMap<Integer, ArrayList<Integer>> hashmap, String type, String level)
     {
         int i;
         for (Map.Entry<Integer, ArrayList<Integer>> info: hashmap.entrySet())
         {
             i = 0;
-            for(Integer num: info.getValue())
+            for(double num: info.getValue())
             {
                 if(i == 1)
                 {
-                    num = num-1;
-                    info.getValue().set(i, num);
+                    if(type.equals("normal"))
+                        num = num-0.9;
+                    else if(level.equals("normal"))
+                        num = num-1;
+                    else if(level.equals("hard"))
+                        num = num-1.1;
+                    info.getValue().set(i, (int) num);
                 }
                 i++;
             }
 
         }
     }
-    public void move()
+    public void move(String level)
     {
-        changeLocation(normalInfo);
-        changeLocation(bucketInfo);
-        changeLocation(coneInfo);
+        changeLocation(normalInfo, "normal", level);
+        changeLocation(bucketInfo, "other", level);
+        changeLocation(coneInfo, "other", level);
     }
     public void setZombies(int num, int t)
     {
@@ -203,6 +215,77 @@ public class Zombie {
 //            System.out.println("shooter "+peaShooters);
 //            System.out.println("squash "+squash);
 //            System.out.println("others : " +others);
+        }
+    }
+    public void clearList()
+    {
+        for (int j = 0; j< squashes.size(); j++)
+        {
+            squashes.remove(j);
+        }
+    }
+    public void getAttackBySquash(HashMap<Integer, String> info)
+    {
+        squashes = new ArrayList<>();
+        if(!squashes.isEmpty())
+            squashes.clear();
+//        squashes.clear();
+        squashes = new ArrayList<>();
+        findSquash(bucketInfo, info);
+        findSquash(coneInfo, info);
+        findSquash(normalInfo, info);
+//        for (Integer s: squashes)
+//            System.out.println(s);
+    }
+    public void removeSquash(int loc)
+    {
+//        for (Integer s: squashes)
+//            System.out.println(s);
+        for (Integer s: squashes)
+        {
+            if(s == loc)
+                squashes.remove(s);
+                return;
+        }
+    }
+    public ArrayList<Integer> getSquashes(){return squashes;}
+    public void findSquash(HashMap<Integer, ArrayList<Integer>> hashMap,
+                                         HashMap<Integer, String> info)
+    {
+        int i;
+        int y = 0;
+        int x = 0;
+        int c;
+        int loc;
+        for (Map.Entry<Integer, ArrayList<Integer>> set: hashMap.entrySet())
+        {
+            i = 0;
+            for(Integer num: set.getValue())
+            {
+                if(i == 0)
+                    y = num;
+                else if(i == 1)
+                    x = num;
+                c = GameState.findColumn(x);
+//                System.out.println("y "+y);
+//                System.out.println("c "+c);
+                if(i == 1)
+                {
+                    loc = (int) (y*10 + c-0.5);
+//                    System.out.println(loc);
+                    if(info.get(loc) != null)
+                    {
+                        if(info.get(loc).equals("squash"))
+                        {
+                            squashes.add(loc);
+                            hashMap.remove(set.getKey());
+//                            GameState.setSquashTime(System.currentTimeMillis());
+                        }
+                    }
+                }
+                i++;
+            }
+
         }
     }
 }

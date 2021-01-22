@@ -242,52 +242,80 @@ public class GameFrame extends JFrame {
     /**
      *Show flowers on the playground
      */
-    private void setFlowers(Graphics2D g2d, GameState state)
-    {
-        for (int i = 1; i <= 9; i++)
-        {
-            for(int j = 1; j <= 5; j++)
-            {
-                int loc = j*10 + i;
+    private void setFlowers(Graphics2D g2d, GameState state) {
+        for (int i = 1; i <= 9; i++) {
+            for (int j = 1; j <= 5; j++) {
+                int loc = j * 10 + i;
                 int locX = 0, locY = 0;
-                if(state.getInfo().get(loc) != null)
-                {
+                int squash = 0;
+                if (state.getInfo().get(loc) != null) {
                     int x = 66;
-                    locX = x + (i-1)*102;
+                    locX = x + (i - 1) * 102;
                     int y = 154;
-                    locY = y + (j-1)*118;
+                    locY = y + (j - 1) * 118;
 
-                    if(state.getInfo().get(loc).equals("peaShooter"))
-                    {
+                    if (state.getInfo().get(loc).equals("peaShooter")) {
                         g2d.drawImage(state.getPea().getFullImage(), locX, locY, null);
-                        for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
-                            if(set.getKey() == loc)
+                        for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
+                            if (set.getKey() == loc)
                                 for (Integer value : set.getValue())
-                                    g2d.drawImage(state.getPea().getPea(), locX+value+51, locY+10, null);
-                    }
-                    else if(state.getInfo().get(loc).equals("sunFlower"))
-                    {
+                                    g2d.drawImage(state.getPea().getPea(), locX + value + 51, locY + 10, null);
+                    } else if (state.getInfo().get(loc).equals("sunFlower")) {
                         g2d.drawImage(state.getSunFlower().getFullImage(), locX, locY, null);
-                        if(state.getSunFlower().getSunFlowerState().containsKey(loc) &&
-                        state.getSunFlower().getSunFlowerState().get(loc))
-                            g2d.drawImage(sun, locX-25, locY+15, null);
-                    }
-                    else if(state.getInfo().get(loc).equals("cherryBomb"))
-                        g2d.drawImage(state.getCherry().getFullImage(), locX, locY+30, null);
-                    else if(state.getInfo().get(loc).equals("wallNut"))
+                        if (state.getSunFlower().getSunFlowerState().containsKey(loc) &&
+                                state.getSunFlower().getSunFlowerState().get(loc))
+                            g2d.drawImage(sun, locX - 25, locY + 15, null);
+                    } else if (state.getInfo().get(loc).equals("cherryBomb"))
+                        g2d.drawImage(state.getCherry().getFullImage(), locX, locY + 30, null);
+                    else if (state.getInfo().get(loc).equals("wallNut"))
                         g2d.drawImage(state.getWallNut().getFullImage(), locX, locY, null);
-                    else if(state.getInfo().get(loc).equals("freezePeaShooter"))
-                    {
+                    else if (state.getInfo().get(loc).equals("freezePeaShooter")) {
                         g2d.drawImage(state.getFreezePea().getFullImage(), locX, locY, null);
-                        for(HashMap.Entry<Integer, ArrayList<Integer>> set : state.getFreezePea().getBullets().entrySet())
-                            if(set.getKey() == loc)
+                        for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getFreezePea().getBullets().entrySet())
+                            if (set.getKey() == loc)
                                 for (Integer value : set.getValue())
-                                    g2d.drawImage(state.getFreezePea().getPea(), locX+value+51, locY+10, null);
+                                    g2d.drawImage(state.getFreezePea().getPea(), locX + value + 51, locY + 10, null);
+                    } else if (state.getInfo().get(loc).equals("mushroom"))
+                        g2d.drawImage(state.getMushroom().getFullImage(), locX - 20, locY, 100, 100, null);
+                    else if (state.getInfo().get(loc).equals("squash")) {
+                        for (Integer squashes: state.getZombie().getSquashes())
+                        {
+                            if(squashes == j*10 + i)
+                            {
+                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
+                                state.setDeletedSquash(System.currentTimeMillis(), loc);
+//                                state.setDeletedSquash(System.currentTimeMillis(), loc);
+                                squash++;
+                            }
+//                            else{
+//                                g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
+//                                squash++;
+//                            }
+                        }
+
+                        for (Map.Entry<Integer, Long> s: state.getDeletedSquash().entrySet())
+                        {
+                            if(s.getKey() == loc && System.currentTimeMillis()-s.getValue() <= 2000)
+                            {
+                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
+                                squash++;
+                            }
+                            else if(System.currentTimeMillis()-s.getValue() > 2000)
+                            {
+                                state.removeSquash(loc);
+//                                state.removeSquash();
+                            }
+                        }
+//
+                        if(squash == 0)
+                        {
+                            g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 95, 95, null);
+                        }
+                        squash = 0;
+//                    else if(state.getInfo().get(loc).equals("attackSquash"))
+//                        g2d.drawImage(state.getSquash().getAttackSquash(), locX, locY-30, 150, 150, null);
+
                     }
-                    else if(state.getInfo().get(loc).equals("mushroom"))
-                        g2d.drawImage(state.getMushroom().getFullImage(), locX-20, locY, 100, 100, null);
-                    else if(state.getInfo().get(loc).equals("squash"))
-                        g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
                 }
             }
         }
