@@ -1,7 +1,12 @@
 package gui;
 
+import javafx.event.ActionEvent;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class PauseMenu {
@@ -11,8 +16,12 @@ public class PauseMenu {
     private JButton exitButton;
     private JButton cancelButton;
     private JButton leaveButton;
+    //back ground pics
     private Background pauseBg;
+    private Background askBg;
+    //frames
     private JFrame pauseFrame;
+    private JFrame askFrame;
 
     //colors
     private Color bgColor;//background color
@@ -24,6 +33,7 @@ public class PauseMenu {
     {
         try {
             pauseBg = new Background(".\\Extras\\pause_menu.jpeg");
+            askBg = new Background(".\\Extras\\ask_user1.jpeg");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,8 +45,9 @@ public class PauseMenu {
         exitButton = new JButton("Go To Main Menu");//will also save the game
         cancelButton = new JButton("Cancel");
         leaveButton = new JButton("Leave");
-
+        //frames
         pauseFrame = new JFrame("Pause The Game");
+        askFrame = new JFrame("Leave?");
 
         font = new Font("new",Font.PLAIN,18);
 
@@ -70,6 +81,12 @@ public class PauseMenu {
 
         exitButton.setBounds(150,292,180,32);
         makeButton(exitButton);
+        exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                askUser();
+            }
+        });
 
         pauseBg.add(resumeButton);
         pauseBg.add(saveButton);
@@ -88,8 +105,29 @@ public class PauseMenu {
         button.setFont(font);
     }
 
-
+    //This method asks users if they are sure they want to leave
     public void askUser(){
+        askFrame.setLayout(null);
+        askFrame.setLocation(450,250);
+        askFrame.setSize(400,300);
+        askFrame.setResizable(false);
+        askFrame.setContentPane(askBg);
+
+        askBg.setLayout(null);
+
+        //leave button
+        leaveButton.setBounds(32,222,152,42);
+        makeButton(leaveButton);
+
+        //cancel button
+        cancelButton.setBounds(204,222,152,42);
+        makeButton(cancelButton);
+
+        askBg.add(leaveButton);
+        askBg.add(cancelButton);
+
+
+        askFrame.setVisible(true);
 
     }
 }
