@@ -6,8 +6,8 @@ import java.awt.*;
 /**
  * This class controls the time of showing card of wall nut and showing it.
  * Sets all images of wall nut.
- * @version 1.0
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class WallNut implements Card, Images{
 

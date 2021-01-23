@@ -2,10 +2,12 @@ package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-
+/**
+ * This class sets normal zombie images and stores its state and properties.
+ * @version 1.0 2021
+ * @authors Tanya Djavaherpour and  Elaheh Akbari
+ */
 public class NormalZombie  implements Images, Zombies{
     private Image fullZombie;
     private Image burntZombie;
@@ -20,6 +22,10 @@ public class NormalZombie  implements Images, Zombies{
     //1-9
     private int row;
     private float x;
+
+    /**
+     * Constructs a new normal zombie
+     */
     public NormalZombie()
     {
         super();
