@@ -30,7 +30,7 @@ public class PauseMenu {
 
 
     private final Font font;
-
+//create all images and handling exceptions
     {
         try {
             pauseBg = new Background(".\\Extras\\pause_menu.jpeg");
@@ -149,6 +149,21 @@ public class PauseMenu {
 
         askBg.add(leaveButton);
         askBg.add(cancelButton);
+
+        leaveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                askFrame.setVisible(false);
+                pauseFrame.setVisible(false);
+            }
+        });
+
+        cancelButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                askFrame.setVisible(false);
+            }
+        });
 
 
         askFrame.setVisible(true);

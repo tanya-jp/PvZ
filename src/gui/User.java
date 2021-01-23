@@ -8,19 +8,19 @@ public class User {
     private final JButton createButton;
     private final JButton renameButton;
 
-    private JTextField newUserField;
-    private JTextField renameUserField;
+    private final JTextField newUserField;
+    private final JTextField renameUserField;
 
     private Background userBg;
     private Background renameBg;
 
-    private JFrame userFrame;
-    private JFrame renameFrame;
+    private final JFrame userFrame;
+    private final JFrame renameFrame;
 
-    private Color bgColor;
-    private Color fgColor;
+    private final Color bgColor;
+    private final Color fgColor;
 
-    private Font font;
+    private final Font font;
 
     {
         try {
