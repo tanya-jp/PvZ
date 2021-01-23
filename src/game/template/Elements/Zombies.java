@@ -1,7 +1,10 @@
 package game.template.Elements;
-
 import java.awt.*;
-
+/**
+ * This interface fixes everything which is related to zombies.
+ * @version 1.0 2021
+ * @authors Tanya Djavaherpour and Elaheh Akbari
+ */
 public interface Zombies {
     /**
      * Sets the row of this zombie

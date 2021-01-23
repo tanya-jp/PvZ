@@ -7,8 +7,8 @@ import java.util.HashMap;
 /**
  * This class controls the time of showing card of pea shooter, showing pea shooter and shooting peas.
  * Sets all images of peashooter.
- * @version 2021
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class PeaShooter extends Pea implements Card, Images {
 

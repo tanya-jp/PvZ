@@ -2,7 +2,11 @@ package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * This class sets bucket head zombie images and stores its state and properties.
+ * @version 1.0 2021
+ * @authors Tanya Djavaherpour and  Elaheh Akbari
+ */
 public class BucketHeadZombie implements Images, Zombies{
     private Image fullZombie;
     private Image burntZombie;
@@ -17,6 +21,10 @@ public class BucketHeadZombie implements Images, Zombies{
     //1-9
     private int row;
     private float x;
+
+    /**
+     * Constructs a new bucket head zombie
+     */
     public BucketHeadZombie()
     {
         super();
@@ -80,8 +88,6 @@ public class BucketHeadZombie implements Images, Zombies{
      */
     @Override
     public void setImages(){
-
-//        fullZombie = new ImageIcon(".\\PVS Design Kit\\Buckethead_Zombie.png").getImage();
         fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\bucketheadzombie.gif").getImage();
         burntZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\burntZombie.gif").getImage();
         dyingZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal_dying.gif").getImage();

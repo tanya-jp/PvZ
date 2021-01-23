@@ -6,8 +6,8 @@ import java.awt.*;
 /**
  * This class controls the time of showing card of squash and showing it.
  * Sets all images of squash.
- * @version 1.0
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class Squash implements Card, Images{
     private final int neededSuns;

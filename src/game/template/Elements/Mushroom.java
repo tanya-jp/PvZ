@@ -6,8 +6,8 @@ import java.awt.*;
 /**
  * This class controls the time of showing card of mushroom and showing it.(only at night)
  * Sets all images of mushroom.
- * @version 1.0
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class Mushroom implements Card, Images{
     private final int neededSuns;

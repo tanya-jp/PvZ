@@ -9,12 +9,13 @@ import game.template.Elements.*;
 /**
  * This class holds the state of game and all of its elements.
  * This class also handles user inputs, which affect the game state.
+ * @version 1.0 2021
+ * @authors Tanya Djavaherpour and Elaheh Akbari
  */
 public class GameState {
 
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
-    private static long squashTime;
     private final MouseHandler mouseHandler;
     private boolean sunState;
     public int sunX, sunY,sunNumber, cardW, cardH;
@@ -116,30 +117,36 @@ public class GameState {
         //shoots peas
         peashooter.setBullets();
         freezePeaShooter.setBullets();
+        //set zombies
+        setZombies();
+    }
+
+    /**
+     * This method calls all methods which are related to zombies and sets zombies state.
+     */
+    public void setZombies()
+    {
         //find zombies location
         zombie.findCells(info);
         zombie.setZombies(1, 10000);
         zombie.move(type);
-//        zombie.getAttackBySquash(info);
         checkZombies();
     }
-    public boolean squashAttack(int zombieLoc)
-    {
-        if(info.get(zombieLoc-1) != null && info.get(zombieLoc-1).equals("squash"))
-        {
-            info.replace(zombieLoc-1, "attackSquash");
-            return true;
-        }
-        else
-            return false;
-    }
+
+    /**
+     * Iterates all zombie lists and checks their action based on the cells they are in and the flowers.
+     * Zombies stop till they or flowers are alive,
+     * Zombies will die if they receive to squash or cherryBomb
+     */
     public void checkZombies()
     {
         int zombieLoc;
         int loc;
+        //Checks normal zombies
         for (Map.Entry<Integer, NormalZombie> normal: zombie.getNormalInfo().entrySet())
         {
             zombieLoc = normal.getValue().getRow()*10 + findColumn((int)normal.getValue().getX());
+            //Checks if zombie has received to squash
             loc = (int) (zombieLoc-0.25);
             if(info.get(normal.getValue().getRow()*10+9)!=null &&
                     info.get(normal.getValue().getRow()*10+9).contains("quash"))
@@ -154,10 +161,12 @@ public class GameState {
                 normal.getValue().setSquashAttacked(true);
                 normal.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
+            //Checks if cherryBomb exploded
             if(normal.getValue().isBurnt() && (System.currentTimeMillis()-normal.getValue().getBurntTime())>5000)
             {
                 normal.getValue().setX((float) (-200));
             }
+            //Checks if zombie has received to flower and controls it
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
                 if(information.getKey() == zombieLoc && information.getValue()!=null)
@@ -184,10 +193,12 @@ public class GameState {
                 }
             }
         }
+        //Checks coneHead zombies
         for (Map.Entry<Integer, ConeHeadZombie> cone: zombie.getConeInfo().entrySet())
         {
             zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
             loc = (int) (zombieLoc-0.25);
+            //Checks if zombie has received to squash
             if(info.get(cone.getValue().getRow()*10+9)!=null &&
                     info.get(cone.getValue().getRow()*10+9).contains("quash"))
             {
@@ -201,10 +212,12 @@ public class GameState {
                 cone.getValue().setSquashAttacked(true);
                 cone.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
+            //Checks if cherryBomb exploded
             if(cone.getValue().isBurnt() && (System.currentTimeMillis()-cone.getValue().getBurntTime())>5000)
             {
                 cone.getValue().setX((float) (-200));
             }
+            //Checks if zombie has received to flower and controls it
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
                 zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
@@ -237,10 +250,12 @@ public class GameState {
                 }
             }
         }
+        //Checks bucketHead zombies
         for (Map.Entry<Integer, BucketHeadZombie> bucket: zombie.getBucketInfo().entrySet())
         {
             zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
             loc = (int) (zombieLoc-0.25);
+            //Checks if zombie has received to squash
             if(info.get(bucket.getValue().getRow()*10+9)!=null &&
                     info.get(bucket.getValue().getRow()*10+9).contains("quash"))
             {
@@ -254,10 +269,12 @@ public class GameState {
                 bucket.getValue().setSquashAttacked(true);
                 bucket.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
+            //Checks if cherryBomb exploded
             if(bucket.getValue().isBurnt() && (System.currentTimeMillis()-bucket.getValue().getBurntTime())>5000)
             {
                 bucket.getValue().setX((float) (-200));
             }
+            //Checks if zombie has received to flower and controls it
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
                 zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
@@ -291,6 +308,14 @@ public class GameState {
             }
         }
     }
+
+    /**
+     * Changes flower based on its life state when zombie received to it and stops
+     * @param zombieLoc location of zombie and flower
+     * @param life as flower life state
+     * @param decrement as decrement of flower life state based on zombie effect
+     * @return true if flower is still alive and false if it is not alive anymore and has been removed.
+     */
     public boolean changeFlower(int zombieLoc, int life, int decrement)
     {
         int num = 20;
@@ -318,32 +343,20 @@ public class GameState {
             return false;
         }
     }
-    public void setDeletedSquash(long time, int loc)
-    {
-        deletedSquash.put(loc, time);
-    }
+
+    /**
+     * Removes squash after jumping on zombie
+     * @param x as x coordinate
+     * @param y as y coordinate
+     */
     public void removeSquash(int x, int y)
     {
         int loc = findLoc(x,y);
-//        System.out.println(loc);
-//        System.out.println(info.get(loc));
-        System.out.println(info.get(loc-1));
         if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
             info.replace(loc-1, null);
         else if(info.get(loc)!=null && info.get(loc).contains("quash"))
             info.replace(loc, null);
-//        info.replace(loc+1, null);
     }
-
-    public HashMap<Integer, Long> getDeletedSquash(){return deletedSquash;}
-//    public static void setSquashTime(long time){squashTime = time;}
-//    public void removeSquash()
-//    {
-//        for (Integer squashes: zombie.getSquashes())
-//        {
-//            info.replace(squashes, null);
-//        }
-//    }
 
     /**
      * makes state of cards based on proper time
@@ -364,6 +377,7 @@ public class GameState {
                         {
                             int loc = set.getKey();
                             info.replace(loc, null);
+                            lifeInfo.replace(loc, null);
                         }
                 }
             }
@@ -497,8 +511,16 @@ public class GameState {
     {
         return info;
     }
+    /**
+     * Returns all zombies that are playing
+     */
     public Zombie getZombie(){return zombie;}
 
+    /**
+     * find columns number of a location
+     * @param x as x coordinate
+     * @return column number
+     */
     public static int findColumn(int x)
     {
         int c=0;

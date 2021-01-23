@@ -1,12 +1,15 @@
 package game.template.Elements;
 
-import game.template.bufferstrategy.GameState;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * This class controls zombies entrance and their movement,
+ * makes list of zombies which are in the game.
+ * @version 1.0 2021
+ * @authors Tanya Djavaherpour, Elaheh akbari
+ */
 public class Zombie {
     protected ArrayList<Integer> normal;
     protected ArrayList<Integer> bucketHead;
@@ -21,7 +24,9 @@ public class Zombie {
     private HashMap<Integer, BucketHeadZombie> bucketInfo;
     private HashMap<Integer, ConeHeadZombie> coneInfo;
     private int cleared;
-    ArrayList<Integer> squashes;
+    /**
+     * Creates new zombies lists
+     */
     public Zombie()
     {
         normal = new ArrayList<>();
@@ -31,13 +36,16 @@ public class Zombie {
         normalInfo = new HashMap<>();
         bucketInfo = new HashMap<>();
         coneInfo = new HashMap<>();
-        squashes = new ArrayList<>();
         normalNum = 0;
         bucketNum = 0;
         coneNum = 0;
         zombieNum = 0;
         cleared = 0;
     }
+    /**
+     * Adds a new normal zombie to its list and sets its properties such as row and x coordinate
+     * @param loc as row number
+     */
     public void setNormal(int loc)
     {
             normalInfo.put(normalNum, new NormalZombie());
@@ -46,7 +54,15 @@ public class Zombie {
 //        normalInfo.get(normalNum).add(200);
         zombieNum++;
     }
+    /**
+     * Returns normal zombies information
+     * @return normalInfo --> key: zombie number, value: information of this zombie
+     */
     public HashMap<Integer, NormalZombie> getNormalInfo(){return normalInfo;}
+    /**
+     * Adds a new bucket head zombie to its list and sets its properties such as row and x coordinate
+     * @param loc as row number
+     */
     public void setBucket(int loc)
     {
         bucketInfo.put(bucketNum, new BucketHeadZombie());
@@ -55,7 +71,15 @@ public class Zombie {
 //        bucketInfo.get(bucketNum).add(1300);
         zombieNum++;
     }
+    /**
+     * Returns bucket head zombies information
+     * @return bucketInfo --> key: zombie number, value: information of this zombie
+     */
     public HashMap<Integer, BucketHeadZombie> getBucketInfo(){return bucketInfo;}
+    /**
+     * Adds a new cone head zombie to its list and sets its properties such as row and x coordinate
+     * @param loc as row number
+     */
     public void setCone(int loc)
     {
             coneInfo.put(coneNum, new ConeHeadZombie());
@@ -64,23 +88,33 @@ public class Zombie {
 //        coneInfo.get(coneNum).add(560);
         zombieNum++;
     }
+
+    /**
+     * Returns cone head zombies information
+     * @return coneInfo --> key: zombie number, value: information of this zombie
+     */
     public HashMap<Integer, ConeHeadZombie> getConeInfo(){return coneInfo;}
+    /**
+     * Changes zombies location if they can move(they are not stopped by a flower)
+     * and controls their speed based on game level
+     * @param level normal / hard
+     */
     public void move(String level)
     {
+        //moves normal zombies
         for (Map.Entry<Integer, NormalZombie> info: normalInfo.entrySet())
         {
-//            System.out.println(System.currentTimeMillis()-info.getValue().getBurntTime());
             if(!info.getValue().isStopped())
             {
                 if(info.getValue().isBurnt() && (System.currentTimeMillis()-info.getValue().getBurntTime())>6000)
                 {
                     info.getValue().setX((float) (info.getValue().getX() - 1010));
-//                    System.out.println(info.getValue().getX());
                 }
                 else
                     info.getValue().setX((float) (info.getValue().getX() - 0.9));
             }
         }
+        //moves bucket head zombie
         for (Map.Entry<Integer, BucketHeadZombie> info: bucketInfo.entrySet())
         {
             if(!info.getValue().isStopped())
@@ -91,6 +125,7 @@ public class Zombie {
                     info.getValue().setX((float) (info.getValue().getX() - 1.1));
             }
         }
+        //moves cone head zombies
         for (Map.Entry<Integer, ConeHeadZombie> info: coneInfo.entrySet())
         {
             if(!info.getValue().isStopped())
@@ -102,6 +137,12 @@ public class Zombie {
             }
         }
     }
+
+    /**
+     * Sets zombies line by line, based on information that is saved in information by findCells method.
+     * @param num as number of zombies thar should enter
+     * @param t as the time of between zombies arrival
+     */
     public void setZombies(int num, int t)
     {
         int i = 0;
@@ -151,6 +192,14 @@ public class Zombie {
             time = System.currentTimeMillis();
         }
     }
+
+    /**
+     *  Sets zombies line by line.
+     * If row is empty or has squash normal zombie will enter,
+     * if peashooters are more than other flowers bucket head zombie will enter,
+     * otherwise if other flowers are more than peashooters cone head zombie will enter.
+     * @param info as information of flowers in the playground
+     */
     public void findCells(HashMap<Integer, String> info)
     {
         for (int j = 1; j <= 5; j++)
@@ -203,90 +252,4 @@ public class Zombie {
             }
         }
     }
-//    public void clearList()
-//    {
-//        for (int j = 0; j< squashes.size(); j++)
-//        {
-//            squashes.remove(j);
-//        }
-//    }
-    public void getAttackBySquash(HashMap<Integer, String> info)
-    {
-        if(!squashes.isEmpty())
-            squashes.clear();
-        int y = 0;
-        int x = 0;
-        int c;
-        int loc;
-        int num;
-        Iterator<Map.Entry<Integer, NormalZombie>> itr = normalInfo.entrySet().iterator();
-        while(itr.hasNext())
-        {
-            Map.Entry<Integer, NormalZombie> entry = itr.next();
-            NormalZombie zombie = entry.getValue();
-            num = entry.getKey();
-            y = zombie.getRow();
-            x = (int) zombie.getX();
-            c = GameState.findColumn(x);
-            loc = (int) (y*10 + c-1);
-            if(info.get(loc) != null)
-            {
-                if(info.get(loc).equals("squash"))
-                {
-                    squashes.add(loc);
-                    normalInfo.remove(num);
-                }
-            }
-        }
-        Iterator<Map.Entry<Integer, BucketHeadZombie>> itr2 = bucketInfo.entrySet().iterator();
-        while(itr2.hasNext())
-        {
-            Map.Entry<Integer, BucketHeadZombie> entry = itr2.next();
-            BucketHeadZombie zombie = entry.getValue();
-            num = entry.getKey();
-            y = zombie.getRow();
-            x = (int) zombie.getX();
-            c = GameState.findColumn(x);
-            loc = (int) (y*10 + c-1);
-            if(info.get(loc) != null)
-            {
-                if(info.get(loc).equals("squash"))
-                {
-                    squashes.add(loc);
-                    bucketInfo.remove(num);
-                }
-            }
-        }
-        Iterator<Map.Entry<Integer, ConeHeadZombie>> itr3 = coneInfo.entrySet().iterator();
-        while(itr3.hasNext())
-        {
-            Map.Entry<Integer, ConeHeadZombie> entry = itr3.next();
-            ConeHeadZombie zombie = entry.getValue();
-            num = entry.getKey();
-            y = zombie.getRow();
-            x = (int) zombie.getX();
-            c = GameState.findColumn(x);
-            loc = (int) (y*10 + c-1);
-            if(info.get(loc) != null)
-            {
-                if(info.get(loc).equals("squash"))
-                {
-                    squashes.add(loc);
-                    coneInfo.remove(num);
-                }
-            }
-        }
-    }
-//    public void removeSquash(int loc)
-//    {
-//        Iterator<Integer> itr = squashes.iterator();
-//        while(itr.hasNext())
-//        {
-//           Integer entry = itr.next();
-//           if(entry == loc)
-//               squashes.remove(entry);
-//        }
-//    }
-    public ArrayList<Integer> getSquashes(){return squashes;}
-
 }

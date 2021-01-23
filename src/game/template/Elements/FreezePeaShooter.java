@@ -9,7 +9,7 @@ import java.util.HashMap;
  * and shooting peas.
  * Sets all freeze pea shooter images
  * @version 2021
- * @author Tanya Djavaherpour
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class FreezePeaShooter extends Pea implements Card, Images{
     private final int neededSuns;

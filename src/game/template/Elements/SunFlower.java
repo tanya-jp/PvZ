@@ -8,8 +8,8 @@ import java.awt.*;
  * This class controls the time of showing card of sunFlower and showing it.
  * Also manages producing sun by sunFlower.
  * Sets sunFlower images.
- * @version 1.0
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class SunFlower implements Card, Images {
 

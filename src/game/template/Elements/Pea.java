@@ -8,8 +8,8 @@ import java.util.HashMap;
  * This  class fixes the location of peas that peashooter and freeze pea shooter shoots,
  * and controls the time of shooting peas.
  * Sets and gets images of pea.
- * @version 2021
- * @author Tanya Djavaherpour
+ * @version 1.0 2021
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public abstract class Pea{
     private long bulletTime;

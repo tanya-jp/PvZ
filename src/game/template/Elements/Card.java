@@ -7,7 +7,7 @@ import java.awt.*;
  * This interface sets cards and makes them available on the cards box if it is possible,
  * also choose cards if it is possible.
  * @version 1.0 2021
- * @author Tanya Djavaherpour
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public interface Card {
     /**
