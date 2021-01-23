@@ -120,21 +120,46 @@ public class GameState {
         zombie.findCells(info);
         zombie.setZombies(1, 10000);
         zombie.move(type);
-        zombie.getAttackBySquash(info);
+//        zombie.getAttackBySquash(info);
         checkZombies();
+    }
+    public boolean squashAttack(int zombieLoc)
+    {
+        if(info.get(zombieLoc-1) != null && info.get(zombieLoc-1).equals("squash"))
+        {
+            info.replace(zombieLoc-1, "attackSquash");
+            return true;
+        }
+        else
+            return false;
     }
     public void checkZombies()
     {
+        int zombieLoc;
+        int loc;
         for (Map.Entry<Integer, NormalZombie> normal: zombie.getNormalInfo().entrySet())
         {
+            zombieLoc = normal.getValue().getRow()*10 + findColumn((int)normal.getValue().getX());
+            loc = (int) (zombieLoc-0.25);
+            if(info.get(normal.getValue().getRow()*10+9)!=null &&
+                    info.get(normal.getValue().getRow()*10+9).contains("quash"))
+            {
+                info.replace(normal.getValue().getRow()*10+9, "attackSquash");
+                normal.getValue().setSquashAttacked(true);
+                normal.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !normal.getValue().isSquashAttacked())
+            {
+                info.replace(loc, "attackSquash");
+                normal.getValue().setSquashAttacked(true);
+                normal.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
             if(normal.getValue().isBurnt() && (System.currentTimeMillis()-normal.getValue().getBurntTime())>5000)
             {
                 normal.getValue().setX((float) (-200));
             }
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
-                int zombieLoc;
-                zombieLoc = normal.getValue().getRow()*10 + findColumn((int)normal.getValue().getX());
                 if(information.getKey() == zombieLoc && information.getValue()!=null)
                 {
                     if(!normal.getValue().isStopped())
@@ -154,7 +179,6 @@ public class GameState {
                             normal.getValue().setStopTime(System.currentTimeMillis());
                         else
                             normal.getValue().setStopped(false);
-                        System.out.println(life);
 
                     }
                 }
@@ -162,9 +186,27 @@ public class GameState {
         }
         for (Map.Entry<Integer, ConeHeadZombie> cone: zombie.getConeInfo().entrySet())
         {
+            zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
+            loc = (int) (zombieLoc-0.25);
+            if(info.get(cone.getValue().getRow()*10+9)!=null &&
+                    info.get(cone.getValue().getRow()*10+9).contains("quash"))
+            {
+                info.replace(cone.getValue().getRow()*10+9, "attackSquash");
+                cone.getValue().setSquashAttacked(true);
+                cone.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !cone.getValue().isSquashAttacked())
+            {
+                info.replace(loc, "attackSquash");
+                cone.getValue().setSquashAttacked(true);
+                cone.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
+            if(cone.getValue().isBurnt() && (System.currentTimeMillis()-cone.getValue().getBurntTime())>5000)
+            {
+                cone.getValue().setX((float) (-200));
+            }
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
-                int zombieLoc;
                 zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
                 if(information.getKey() == zombieLoc && information.getValue()!=null)
                 {
@@ -172,6 +214,11 @@ public class GameState {
                     {
                         cone.getValue().setStopTime(System.currentTimeMillis());
                         cone.getValue().setStopped(true);
+                    }
+                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800)
+                    {
+                        cone.getValue().setBurnt(true);
+                        cone.getValue().setBurntTime(System.currentTimeMillis());
                     }
                     else if(cone.getValue().isStopped() &&
                             (System.currentTimeMillis() - cone.getValue().getStopTime()) >= 1000 ){
@@ -185,7 +232,6 @@ public class GameState {
                             cone.getValue().setStopTime(System.currentTimeMillis());
                         else
                             cone.getValue().setStopped(false);
-                        System.out.println(life);
 
                     }
                 }
@@ -193,9 +239,27 @@ public class GameState {
         }
         for (Map.Entry<Integer, BucketHeadZombie> bucket: zombie.getBucketInfo().entrySet())
         {
+            zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
+            loc = (int) (zombieLoc-0.25);
+            if(info.get(bucket.getValue().getRow()*10+9)!=null &&
+                    info.get(bucket.getValue().getRow()*10+9).contains("quash"))
+            {
+                info.replace(bucket.getValue().getRow()*10+9, "attackSquash");
+                bucket.getValue().setSquashAttacked(true);
+                bucket.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !bucket.getValue().isSquashAttacked())
+            {
+                info.replace(loc, "attackSquash");
+                bucket.getValue().setSquashAttacked(true);
+                bucket.getValue().setSquashAttackTime(System.currentTimeMillis());
+            }
+            if(bucket.getValue().isBurnt() && (System.currentTimeMillis()-bucket.getValue().getBurntTime())>5000)
+            {
+                bucket.getValue().setX((float) (-200));
+            }
             for(Map.Entry<Integer, String> information: info.entrySet())
             {
-                int zombieLoc;
                 zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
                 if(information.getKey() == zombieLoc && information.getValue()!=null)
                 {
@@ -203,6 +267,11 @@ public class GameState {
                     {
                         bucket.getValue().setStopTime(System.currentTimeMillis());
                         bucket.getValue().setStopped(true);
+                    }
+                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800)
+                    {
+                        bucket.getValue().setBurnt(true);
+                        bucket.getValue().setBurntTime(System.currentTimeMillis());
                     }
                     else if(bucket.getValue().isStopped() &&
                             (System.currentTimeMillis() - bucket.getValue().getStopTime()) >= 1000 ){
@@ -216,7 +285,6 @@ public class GameState {
                             bucket.getValue().setStopTime(System.currentTimeMillis());
                         else
                             bucket.getValue().setStopped(false);
-                        System.out.println(life);
 
                     }
                 }
@@ -254,22 +322,28 @@ public class GameState {
     {
         deletedSquash.put(loc, time);
     }
-    public void removeSquash(int loc)
+    public void removeSquash(int x, int y)
     {
-        deletedSquash.remove(loc);
-//        zombie.removeSquash(loc);
-        info.replace(loc, null);
+        int loc = findLoc(x,y);
+//        System.out.println(loc);
+//        System.out.println(info.get(loc));
+        System.out.println(info.get(loc-1));
+        if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
+            info.replace(loc-1, null);
+        else if(info.get(loc)!=null && info.get(loc).contains("quash"))
+            info.replace(loc, null);
+//        info.replace(loc+1, null);
     }
 
     public HashMap<Integer, Long> getDeletedSquash(){return deletedSquash;}
 //    public static void setSquashTime(long time){squashTime = time;}
-    public void removeSquash()
-    {
-        for (Integer squashes: zombie.getSquashes())
-        {
-            info.replace(squashes, null);
-        }
-    }
+//    public void removeSquash()
+//    {
+//        for (Integer squashes: zombie.getSquashes())
+//        {
+//            info.replace(squashes, null);
+//        }
+//    }
 
     /**
      * makes state of cards based on proper time

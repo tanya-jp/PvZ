@@ -106,10 +106,10 @@ public class GameFrame extends JFrame {
         putCards(g2d, state);
         //set lawn mowers
         putLawnMower(g2d, state);
-        //set flowers
-        setFlowers(g2d, state);
         //set zombies
         setZombies(g2d, state);
+        //set flowers
+        setFlowers(g2d, state);
         //set sun
         setSun(g2d, state);
 
@@ -118,6 +118,10 @@ public class GameFrame extends JFrame {
         // Draw all game elements according
         //  to the game 'state' using 'g2d' ...
         //
+    }
+    private void setDyingZombie()
+    {
+
     }
     private void setZombies(Graphics2D g2d, GameState state)
     {
@@ -134,6 +138,16 @@ public class GameFrame extends JFrame {
             int locY = 154 + (y-1)*118;
             if(info.getValue().isBurnt())
                 g2d.drawImage(normalZombie.getBurntImage(), (int) x2, locY, sizeX, sizeY, null);
+            else if (info.getValue().isSquashAttacked()&& System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 1650)
+            {
+                g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
+                {
+                    state.removeSquash((int)x2, locY);
+                    info.getValue().setX(-200);
+                    info.getValue().setSquashAttacked(false);
+                }
+            }
             else
                 g2d.drawImage(normalZombie.getFullImage(), (int) x2, locY, sizeX, sizeY, null);
         }
@@ -143,7 +157,20 @@ public class GameFrame extends JFrame {
             y = info.getValue().getRow();
             x2 = info.getValue().getX();
             int locY = 154 + (y-1)*118;
-            g2d.drawImage(coneHeadZombie.getFullImage(), (int) x2, locY, null);
+            if(info.getValue().isBurnt())
+                g2d.drawImage(coneHeadZombie.getBurntImage(), (int) x2, locY, sizeX, sizeY, null);
+            else if (info.getValue().isSquashAttacked()&& System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 1650)
+            {
+                g2d.drawImage(coneHeadZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
+                {
+                    state.removeSquash((int)x2, locY);
+                    info.getValue().setX(-200);
+                    info.getValue().setSquashAttacked(false);
+                }
+            }
+            else
+                g2d.drawImage(coneHeadZombie.getFullImage(), (int) x2, locY, null);
         }
         for (Map.Entry<Integer, BucketHeadZombie> info: state.getZombie().getBucketInfo().entrySet())
         {
@@ -151,7 +178,20 @@ public class GameFrame extends JFrame {
             y = info.getValue().getRow();
             x2 = info.getValue().getX();
             int locY = 154 + (y-1)*118;
-            g2d.drawImage(bucketHeadZombie.getFullImage(), (int) x2, locY, sizeX+10, sizeY+10, null);
+            if(info.getValue().isBurnt())
+                g2d.drawImage(bucketHeadZombie.getBurntImage(), (int) x2, locY, sizeX, sizeY, null);
+            else if (info.getValue().isSquashAttacked()&& System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 1650)
+            {
+                g2d.drawImage(coneHeadZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
+                {
+                    state.removeSquash((int)x2, locY);
+                    info.getValue().setX(-200);
+                    info.getValue().setSquashAttacked(false);
+                }
+            }
+            else
+                g2d.drawImage(bucketHeadZombie.getFullImage(), (int) x2, locY, sizeX+10, sizeY+10, null);
         }
     }
 
@@ -266,45 +306,49 @@ public class GameFrame extends JFrame {
                                     g2d.drawImage(state.getFreezePea().getPea(), locX + value + 51, locY + 10, null);
                     } else if (state.getInfo().get(loc).equals("mushroom"))
                         g2d.drawImage(state.getMushroom().getFullImage(), locX - 20, locY, 100, 100, null);
-                    else if (state.getInfo().get(loc).equals("squash")) {
-                        for (Integer squashes: state.getZombie().getSquashes())
-                        {
-                            if(squashes == j*10 + i)
-                            {
-                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
-                                state.setDeletedSquash(System.currentTimeMillis(), loc);
+                    else if (state.getInfo().get(loc).equals("squash"))
+                        g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
+                    else if (state.getInfo().get(loc).equals("attackSquash"))
+                        g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
+//                    {
+//                        for (Integer squashes: state.getZombie().getSquashes())
+//                        {
+//                            if(squashes == j*10 + i)
+//                            {
+//                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
 //                                state.setDeletedSquash(System.currentTimeMillis(), loc);
-                                squash++;
-                            }
-//                            else{
-//                                g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
+////                                state.setDeletedSquash(System.currentTimeMillis(), loc);
 //                                squash++;
 //                            }
-                        }
-
-                        for (Map.Entry<Integer, Long> s: state.getDeletedSquash().entrySet())
-                        {
-                            if(s.getKey() == loc && System.currentTimeMillis()-s.getValue() <= 2000)
-                            {
-                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
-                                squash++;
-                            }
-                            else if(System.currentTimeMillis()-s.getValue() > 2000)
-                            {
-                                state.removeSquash(loc);
-//                                state.removeSquash();
-                            }
-                        }
+////                            else{
+////                                g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
+////                                squash++;
+////                            }
+//                        }
 //
-                        if(squash == 0)
-                        {
-                            g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 95, 95, null);
-                        }
-                        squash = 0;
-//                    else if(state.getInfo().get(loc).equals("attackSquash"))
-//                        g2d.drawImage(state.getSquash().getAttackSquash(), locX, locY-30, 150, 150, null);
-
-                    }
+//                        for (Map.Entry<Integer, Long> s: state.getDeletedSquash().entrySet())
+//                        {
+//                            if(s.getKey() == loc && System.currentTimeMillis()-s.getValue() <= 2000)
+//                            {
+//                                g2d.drawImage(state.getSquash().getAttackSquash(), locX-10, locY-90, 185, 185, null);
+//                                squash++;
+//                            }
+//                            else if(System.currentTimeMillis()-s.getValue() > 2000)
+//                            {
+//                                state.removeSquash(loc);
+////                                state.removeSquash();
+//                            }
+//                        }
+////
+//                        if(squash == 0)
+//                        {
+//                            g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 95, 95, null);
+//                        }
+//                        squash = 0;
+////                    else if(state.getInfo().get(loc).equals("attackSquash"))
+////                        g2d.drawImage(state.getSquash().getAttackSquash(), locX, locY-30, 150, 150, null);
+//
+//                    }
                 }
             }
         }
