@@ -19,6 +19,8 @@ public class WallNut implements Card, Images{
     private boolean lock;
     private Image wallNutCard;
     private Image walnutFull;
+    private Image wallNutHalf;
+    private Image wallNutDead;
 
     /**
      * Constructs a new wall nut
@@ -42,6 +44,8 @@ public class WallNut implements Card, Images{
     {
         wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
         walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
+        wallNutHalf = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_half_life.gif").getImage();
+        wallNutDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_dead.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -54,9 +58,24 @@ public class WallNut implements Card, Images{
     /**
      * Returns the image of full flower
      */
+    @Override
     public Image getFullImage()
     {
         return walnutFull;
+    }
+    /**
+     * Returns the image of half flower
+     */
+    public Image getHalfImage()
+    {
+        return wallNutHalf;
+    }
+    /**
+     * Returns the image of dead flower
+     */
+    public Image getDeadImage()
+    {
+        return wallNutDead;
     }
     /**
      * makes state of cards based on proper time
