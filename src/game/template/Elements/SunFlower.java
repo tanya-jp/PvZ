@@ -1,5 +1,6 @@
 package game.template.Elements;
 
+import javax.management.remote.rmi.RMIConnectionImpl;
 import javax.swing.*;
 import java.util.HashMap;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class SunFlower implements Card, Images {
     private HashMap<Integer, Long> sunFlowerSunTime;
     private Image sunFlowerCard;
     private Image sunFlowerFull;
+    private Image sunFlowerDead;
 
     /**
      * Constructs a new sunflower
@@ -133,6 +135,7 @@ public class SunFlower implements Card, Images {
     {
         sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
         sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
+        sunFlowerDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower_dying.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -144,10 +147,17 @@ public class SunFlower implements Card, Images {
     }
     /**
      * Returns the image of full flower
-     */
+     */@Override
     public Image getFullImage()
     {
         return sunFlowerFull;
+    }
+    /**
+     * Returns the image of dead flower
+     */
+    public Image getDeadImage()
+    {
+        return sunFlowerDead;
     }
     /**
      * makes state of cards based on proper time

@@ -20,6 +20,7 @@ public class PeaShooter extends Pea implements Card, Images {
     private boolean lock;
     private Image peaShooterCard;
     private Image peaShooterFull;
+    private Image peaShooterDead;
     private Image pea;
     /**
      * Constructs a new peaShooter
@@ -55,8 +56,10 @@ public class PeaShooter extends Pea implements Card, Images {
     @Override
     public void setImages()
     {
+
         peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
         peaShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter.gif").getImage();
+        peaShooterDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter_dying.gif").getImage();
         setPeaImage();
     }
     /**
@@ -78,6 +81,13 @@ public class PeaShooter extends Pea implements Card, Images {
      * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
      * @param peaLoc location of new peashooter in the form of yx
      */
+    /**
+     * Returns the image of dead flower
+     */
+    public Image getDeadImage()
+    {
+        return peaShooterDead;
+    }
     @Override
     public void addPea(int peaLoc) {
         super.addPea(peaLoc);

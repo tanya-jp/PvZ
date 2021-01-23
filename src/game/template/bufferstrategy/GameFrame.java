@@ -78,8 +78,6 @@ public class GameFrame extends JFrame {
      * Game rendering with triple-buffering using BufferStrategy.
      */
     public void render(GameState state) {
-//        if(timeType.equals("night"))
-//            state = new Night(type);
         // Get a new graphics context to render the current frame
         Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
         try {
@@ -100,8 +98,6 @@ public class GameFrame extends JFrame {
      * Rendering all game elements based on the game state.
      */
     private void doRendering(Graphics2D g2d, GameState state) {
-//        if(timeType.equals("night"))
-//            state = new Night(type);
         GameCanvas canvas = new GameCanvas(timeType);
         canvas.paintComponent(g2d);
         //set shovel
@@ -130,47 +126,32 @@ public class GameFrame extends JFrame {
         int i = 0;
         int sizeX = normalZombie.getFullImage().getWidth(null) - 25;
         int sizeY = normalZombie.getFullImage().getHeight(null) - 35;
-        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getNormalInfo().entrySet())
+        for (Map.Entry<Integer, NormalZombie> info: state.getZombie().getNormalInfo().entrySet())
         {
-            i = 0;
-            for(Integer num: info.getValue())
-            {
-                if(i == 0)
-                    y = num;
-                else if(i == 1)
-                    x = num;
-                i++;
-            }
+            float x2;
+            y = info.getValue().getRow();
+            x2 = info.getValue().getX();
             int locY = 154 + (y-1)*118;
-            g2d.drawImage(normalZombie.getFullImage(), x, locY, sizeX, sizeY, null);
+            if(info.getValue().isBurnt())
+                g2d.drawImage(normalZombie.getBurntImage(), (int) x2, locY, sizeX, sizeY, null);
+            else
+                g2d.drawImage(normalZombie.getFullImage(), (int) x2, locY, sizeX, sizeY, null);
         }
-        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getConeInfo().entrySet())
+        for (Map.Entry<Integer, ConeHeadZombie> info: state.getZombie().getConeInfo().entrySet())
         {
-            i = 0;
-            for(Integer num: info.getValue())
-            {
-                if(i == 0)
-                    y = num;
-                else if(i == 1)
-                    x = num;
-                i++;
-            }
+            float x2;
+            y = info.getValue().getRow();
+            x2 = info.getValue().getX();
             int locY = 154 + (y-1)*118;
-            g2d.drawImage(coneHeadZombie.getFullImage(), x, locY, null);
+            g2d.drawImage(coneHeadZombie.getFullImage(), (int) x2, locY, null);
         }
-        for (Map.Entry<Integer, ArrayList<Integer>> info: state.getZombie().getBucketInfo().entrySet())
+        for (Map.Entry<Integer, BucketHeadZombie> info: state.getZombie().getBucketInfo().entrySet())
         {
-            i = 0;
-            for(Integer num: info.getValue())
-            {
-                if(i == 0)
-                    y = num;
-                else if(i == 1)
-                    x = num;
-                i++;
-            }
+            float x2;
+            y = info.getValue().getRow();
+            x2 = info.getValue().getX();
             int locY = 154 + (y-1)*118;
-            g2d.drawImage(bucketHeadZombie.getFullImage(), x, locY, sizeX+10, sizeY+10, null);
+            g2d.drawImage(bucketHeadZombie.getFullImage(), (int) x2, locY, sizeX+10, sizeY+10, null);
         }
     }
 
@@ -260,15 +241,23 @@ public class GameFrame extends JFrame {
                             if (set.getKey() == loc)
                                 for (Integer value : set.getValue())
                                     g2d.drawImage(state.getPea().getPea(), locX + value + 51, locY + 10, null);
-                    } else if (state.getInfo().get(loc).equals("sunFlower")) {
+                    } else if (state.getInfo().get(loc).equals("deadPeaShooter"))
+                        g2d.drawImage(state.getPea().getDeadImage(), locX, locY, null);
+                    else if (state.getInfo().get(loc).equals("sunFlower")) {
                         g2d.drawImage(state.getSunFlower().getFullImage(), locX, locY, null);
                         if (state.getSunFlower().getSunFlowerState().containsKey(loc) &&
                                 state.getSunFlower().getSunFlowerState().get(loc))
                             g2d.drawImage(sun, locX - 25, locY + 15, null);
-                    } else if (state.getInfo().get(loc).equals("cherryBomb"))
+                    }else if (state.getInfo().get(loc).equals("deadSunFlower"))
+                        g2d.drawImage(state.getSunFlower().getDeadImage(), locX, locY, null);
+                    else if (state.getInfo().get(loc).equals("cherryBomb"))
                         g2d.drawImage(state.getCherry().getFullImage(), locX, locY + 30, null);
                     else if (state.getInfo().get(loc).equals("wallNut"))
                         g2d.drawImage(state.getWallNut().getFullImage(), locX, locY, null);
+                    else if (state.getInfo().get(loc).equals("halfWallNut"))
+                        g2d.drawImage(state.getWallNut().getHalfImage(), locX, locY, null);
+                    else if (state.getInfo().get(loc).equals("deadWallNut"))
+                        g2d.drawImage(state.getWallNut().getDeadImage(), locX, locY, null);
                     else if (state.getInfo().get(loc).equals("freezePeaShooter")) {
                         g2d.drawImage(state.getFreezePea().getFullImage(), locX, locY, null);
                         for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getFreezePea().getBullets().entrySet())
