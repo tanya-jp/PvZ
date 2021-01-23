@@ -12,6 +12,7 @@ import java.io.IOException;
 public class MainMenu{
     PauseMenu pauseMenu = new PauseMenu();
     User user = new User();
+    Scoreboard scoreboard = new Scoreboard();
 
 
     private Background startBackground;
@@ -154,8 +155,8 @@ public class MainMenu{
         changeUsername.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                user.createUserFrame();
-                user.renameUserFrame();
+                user.createUserFrame();
+//                user.renameUserFrame();
             }
         });
 
@@ -173,6 +174,13 @@ public class MainMenu{
             @Override
             public void mouseClicked(MouseEvent e) {
                 pauseMenu.start();
+            }
+        });
+
+        rankingButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                scoreboard.createBoard();
             }
         });
     }
