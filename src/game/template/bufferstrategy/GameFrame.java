@@ -148,6 +148,16 @@ public class GameFrame extends JFrame {
                     info.getValue().setSquashAttacked(false);
                 }
             }
+            else if(info.getValue().getLife()<50)
+            {
+                g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(info.getValue().getLife()<0)
+                {
+                    info.getValue().setX(-200);
+                    int loc = state.findLoc((int) x2, locY);
+                    state.removeStoppedPea(loc);
+                }
+            }
             else
                 g2d.drawImage(normalZombie.getFullImage(), (int) x2, locY, sizeX, sizeY, null);
         }
@@ -169,6 +179,18 @@ public class GameFrame extends JFrame {
                     info.getValue().setSquashAttacked(false);
                 }
             }
+            else if(info.getValue().getLife()<200 && info.getValue().getLife()>=50)
+                g2d.drawImage(normalZombie.getFullImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+            else if(info.getValue().getLife()<50)
+            {
+                g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(info.getValue().getLife()<0)
+                {
+                    info.getValue().setX(-200);
+                    int loc = state.findLoc((int) x2, locY);
+                    state.removeStoppedPea(loc);
+                }
+            }
             else
                 g2d.drawImage(coneHeadZombie.getFullImage(), (int) x2, locY, null);
         }
@@ -188,6 +210,18 @@ public class GameFrame extends JFrame {
                     state.removeSquash((int)x2, locY);
                     info.getValue().setX(-200);
                     info.getValue().setSquashAttacked(false);
+                }
+            }
+            else if(info.getValue().getLife()<200 && info.getValue().getLife()>=50)
+                g2d.drawImage(normalZombie.getFullImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+            else if(info.getValue().getLife()<50)
+            {
+                g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
+                if(info.getValue().getLife()<0)
+                {
+                    info.getValue().setX(-200);
+                    int loc = state.findLoc((int) x2, locY);
+                    state.removeStoppedPea(loc);
                 }
             }
             else
@@ -277,10 +311,12 @@ public class GameFrame extends JFrame {
 
                     if (state.getInfo().get(loc).equals("peaShooter")) {
                         g2d.drawImage(state.getPea().getFullImage(), locX, locY, null);
-                        for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
-                            if (set.getKey() == loc)
-                                for (Integer value : set.getValue())
-                                    g2d.drawImage(state.getPea().getPea(), locX + value + 51, locY + 10, null);
+                            for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
+                                if (set.getKey() == loc)
+                                    for (Integer value : set.getValue())
+                                        if(state.getStoppedPeas().get(loc) == null ||
+                                            state.getStoppedPeas().get(loc) > locX+value)
+                                        g2d.drawImage(state.getPea().getPea(), locX + value + 51, locY + 10, null);
                     } else if (state.getInfo().get(loc).equals("deadPeaShooter"))
                         g2d.drawImage(state.getPea().getDeadImage(), locX, locY, null);
                     else if (state.getInfo().get(loc).equals("sunFlower")) {

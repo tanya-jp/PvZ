@@ -62,11 +62,11 @@ public abstract class Pea{
             int i = 0;
             for (Integer value : set.getValue())
             {
-                value = value+10;
+                value = value+5;
                 set.getValue().set(i, value);
                 i++;
             }
-            if(System.currentTimeMillis() - bulletTime > 500) {
+            if(System.currentTimeMillis() - bulletTime > 2000) {
                 addPea(set.getKey());
                 flag ++;
             }

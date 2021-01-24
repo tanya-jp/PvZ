@@ -18,11 +18,11 @@ public class GameState {
     public static final int GAME_WIDTH = 1010;
     private final MouseHandler mouseHandler;
     private boolean sunState;
-    public int sunX, sunY,sunNumber, cardW, cardH;
+    public int sunX, sunY, sunNumber, cardW, cardH;
     private final Image sun;
     private boolean lock, shovel;
-    private HashMap<Integer, String> info ;
-    private HashMap<Integer, Integer> lifeInfo ;
+    private HashMap<Integer, String> info;
+    private HashMap<Integer, Integer> lifeInfo;
     Random rand = new Random();
     private long sunTime, cherryBombState, sunDropping, startTime;
     private String type;
@@ -39,10 +39,12 @@ public class GameState {
     private ConeHeadZombie coneHead;
     private BucketHeadZombie bucketHead;
     private HashMap<Integer, Long> deletedSquash;
+    private HashMap<Integer, Integer> stoppedPeas;
 
     /**
      * Constructs game state and sets first state of game lements
-     * @param type normal/hard
+     *
+     * @param type     normal/hard
      * @param timeType day/night
      */
     public GameState(String type, String timeType) {
@@ -62,23 +64,23 @@ public class GameState {
         wallNut = new WallNut(type, timeType);
         freezePeaShooter = new FreezePeaShooter(type, timeType);
         squash = new Squash(type, timeType);
-        if(timeType.equals("night"))
+        if (timeType.equals("night"))
             mushroom = new Mushroom(type, timeType);
         zombie = new Zombie();
         normalZombie = new NormalZombie();
         bucketHead = new BucketHeadZombie();
         coneHead = new ConeHeadZombie();
         deletedSquash = new HashMap<>();
+        stoppedPeas = new HashMap<>();
         sunState = false;
         lock = false;
         shovel = false;
-        for (int i = 1; i <= 9; i++)
-        {
-            for(int j = 1; j <= 5; j++)
-            {
-                int loc = j*10 + i;
+        for (int i = 1; i <= 9; i++) {
+            for (int j = 1; j <= 5; j++) {
+                int loc = j * 10 + i;
                 info.put(loc, null);
                 lifeInfo.put(loc, null);
+                stoppedPeas.put(loc, null);
             }
         }
         sunTime = System.currentTimeMillis() + 50000;
@@ -101,15 +103,12 @@ public class GameState {
         //set cards
         setCardsState();
         //checks time of dropping
-        if(timeType.equals("day"))
-        {
-            if(sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
-                    (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000)))
-            {
+        if (timeType.equals("day")) {
+            if (sunState && ((type.equals("normal") && (System.currentTimeMillis() - sunTime) >= 25000) ||
+                    (type.equals("hard") && (System.currentTimeMillis() - sunTime) >= 30000))) {
                 sunState = false;
                 changeSunState();
-            }
-            else if(!sunState)
+            } else if (!sunState)
                 changeSunState();
         }
         //checks sunflower's sun time
@@ -118,20 +117,176 @@ public class GameState {
         peashooter.setBullets();
         freezePeaShooter.setBullets();
         //set zombies
-        setZombies();
+        updateZombies();
     }
 
     /**
      * This method calls all methods which are related to zombies and sets zombies state.
      */
-    public void setZombies()
-    {
+    public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
         zombie.setZombies(1, 10000);
         zombie.move(type);
         checkZombies();
+        killZombies();
     }
+
+    public void killZombies() {
+        int row = 0;
+        int shooterX = 0;
+        int zombieX = 0;
+        int i = 0;
+        int loc;
+        for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()) {
+            for (Map.Entry<Integer, String> information : info.entrySet()) {
+                if (information.getValue() != null &&
+                        (information.getValue().contains("pea"))) {
+                    freezePeaShooter.setBullets();
+                    loc = information.getKey();
+//                    System.out.println(loc);
+                    shooterX = information.getKey() % 10;
+                    shooterX = 66 + (shooterX - 1) * 102;
+                    for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet()) {
+                        row = set.getKey() / 10;
+                        if (normal.getValue().getRow() == row) {
+                            i = 0;
+                            for (Integer x : set.getValue()) {
+                                if (normal.getValue().getX() < (x + shooterX + 3) &&
+                                        normal.getValue().getX() > (x + shooterX - 3) &&
+                                        (stoppedPeas.get(loc) == null ||
+                                                stoppedPeas.get(loc) > shooterX + x)) {
+//                                    System.out.println(loc);
+                                    normal.getValue().setLife(30);
+//                                    set.getValue().set(i, 1500);
+                                    stoppedPeas.replace(loc, (int) normal.getValue().getX());
+//                                    System.out.println(normal.getValue().getLife());
+                                    int zombieLoc = row * 10 + findColumn((int) normal.getValue().getX());
+                                    if (normal.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                                            info.get(zombieLoc).contains("dying"))
+                                        info.replace(zombieLoc, null);
+//                                    freezePeaShooter.setBullets();
+                                }
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (Map.Entry<Integer, BucketHeadZombie> bucket : zombie.getBucketInfo().entrySet()) {
+            for (Map.Entry<Integer, String> information : info.entrySet()) {
+                if (information.getValue() != null &&
+                        (information.getValue().contains("pea"))) {
+                    freezePeaShooter.setBullets();
+                    loc = information.getKey();
+                    shooterX = information.getKey() % 10;
+                    shooterX = 66 + (shooterX - 1) * 102;
+                    for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet()) {
+                        row = set.getKey() / 10;
+                        if (bucket.getValue().getRow() == row) {
+                            i = 0;
+                            for (Integer x : set.getValue()) {
+                                if (bucket.getValue().getX() < (x + shooterX + 3) &&
+                                        bucket.getValue().getX() > (x + shooterX - 3) &&
+                                        (stoppedPeas.get(loc) == null ||
+                                                stoppedPeas.get(loc) > shooterX + x)) {
+//                                    System.out.println(loc);
+                                    bucket.getValue().setLife(30);
+//                                set.getValue().set(i, 1500);
+                                    stoppedPeas.replace(loc, (int) bucket.getValue().getX());
+                                    System.out.println(bucket.getValue().getLife());
+//                                    freezePeaShooter.setBullets();
+                                    int zombieLoc = row * 10 + findColumn((int) bucket.getValue().getX());
+                                    if (bucket.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                                            info.get(zombieLoc).contains("dying"))
+                                        info.replace(zombieLoc, null);
+                                }
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (Map.Entry<Integer, ConeHeadZombie> cone : zombie.getConeInfo().entrySet()) {
+            for (Map.Entry<Integer, String> information : info.entrySet()) {
+                if (information.getValue() != null &&
+                        (information.getValue().contains("pea"))) {
+                    freezePeaShooter.setBullets();
+                    loc = information.getKey();
+                    shooterX = information.getKey() % 10;
+                    shooterX = 66 + (shooterX - 1) * 102;
+                    for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet()) {
+                        row = set.getKey() / 10;
+                        if (cone.getValue().getRow() == row) {
+                            i = 0;
+                            for (Integer x : set.getValue()) {
+                                if (cone.getValue().getX() < (x + shooterX + 3) &&
+                                        cone.getValue().getX() > (x + shooterX - 3) &&
+                                        (stoppedPeas.get(loc) == null ||
+                                                stoppedPeas.get(loc) > shooterX + x)) {
+//                                    System.out.println(loc);
+                                    cone.getValue().setLife(30);
+//                                set.getValue().set(i, 1500);
+                                    stoppedPeas.replace(loc, (int) cone.getValue().getX());
+                                    System.out.println(cone.getValue().getLife());
+//                                    freezePeaShooter.setBullets();
+                                    int zombieLoc = row * 10 + findColumn((int) cone.getValue().getX());
+                                    if (cone.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                                            info.get(zombieLoc).contains("dying"))
+                                        info.replace(zombieLoc, null);
+                                }
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+}
+
+
+//        for(Map.Entry<Integer, String> information: info.entrySet())
+//        {
+//            if(information.getValue()!= null &&
+//                    (information.getValue().contains("pea")))
+//            {
+////                peashooter.setBullets();
+//                loc = information.getKey();
+//                shooterX = information.getKey()%10;
+//                shooterX = 66 + (shooterX - 1) * 102;
+////                System.out.println(shooterX);
+//                for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet())
+//                {
+//                    row = set.getKey()/ 10;
+//                    for (Map.Entry<Integer, NormalZombie> normal: zombie.getNormalInfo().entrySet())
+//                    {
+////                        System.out.println("Zombie"+normal.getValue().getX());
+//                        if(normal.getValue().getRow() == row)
+//                        {
+////                            i = 0;
+//                            for (Integer x : set.getValue())
+//                            {
+//                                if (normal.getValue().getX() < (x+shooterX + 3) &&
+//                                        normal.getValue().getX() > (x+shooterX - 3))
+//                                {
+//                                    System.out.println(loc);
+////                                    if(stoppedPeas.get(loc) != null)
+//                                    normal.getValue().setLife(30);
+////                                    set.getValue().set(i, 1500);
+//                                    stoppedPeas.replace(loc, (int) normal.getValue().getX());
+//                                    peashooter.setBullets();
+//                                }
+//                                i++;
+//                            }
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Iterates all zombie lists and checks their action based on the cells they are in and the flowers.
@@ -516,6 +671,14 @@ public class GameState {
      */
     public Zombie getZombie(){return zombie;}
 
+    public HashMap<Integer, Integer> getStoppedPeas() {
+        return stoppedPeas;
+    }
+    public void removeStoppedPea(int loc)
+    {
+        stoppedPeas.replace(loc, null);
+    }
+
     /**
      * find columns number of a location
      * @param x as x coordinate
@@ -696,6 +859,7 @@ public class GameState {
     {
         int x = e.getX();
         int y = e.getY();
+//        System.out.println(x);
         //find the selected location for putting flowers
         if((peashooter.getCard() || sunFlower.getCard() || cherryBomb.getCard()
                 || wallNut.getCard() || freezePeaShooter.getCard() || squash.getCard() ||
