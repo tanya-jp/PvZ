@@ -8,9 +8,11 @@ import java.util.ArrayList;
 public class Scoreboard {
     private Background rankingBg;
     private JFrame rankFrame;
-    private JPanel usersPanel;
+    private JPanel normalPanel;
+    private JPanel hardPanel;
 
-    private ArrayList<JLabel> title;
+    private ArrayList<JLabel> normalTitle;
+    private ArrayList<JLabel> hardTitle;
     private ArrayList<JLabel> user1;
     private ArrayList<JLabel> user2;
     private ArrayList<JLabel> user3;
@@ -29,9 +31,12 @@ public class Scoreboard {
     }
     public Scoreboard(){
         rankFrame = new JFrame();
-        usersPanel = new JPanel();
-        title = new ArrayList<>();
+        normalPanel = new JPanel();
+        hardPanel = new JPanel();
+        normalTitle = new ArrayList<>();
+        hardTitle = new ArrayList<>();
         modePane = new JTabbedPane();
+
     }
 
     public void createBoard(){
@@ -42,22 +47,45 @@ public class Scoreboard {
         rankFrame.setResizable(false);
         rankFrame.setContentPane(rankingBg);
 
-        modePane.addTab("normal",usersPanel);
-//        modePane.addTab("hard",usersPanel);
+        rankingBg.setLayout(null);
 
-        createArray(title,"eli","day","1","2"
-        ,"1000");
+        if(modePane.getTabCount() != 2) {
+            modePane.addTab("normal", normalPanel);
+            modePane.addTab("hard", hardPanel);
+        }
+
+//        modePane.setLayout(null);
+
+        modePane.setLocation(30,150);
+        modePane.setSize(300,50);
+
+
+        createArray(normalTitle,"name","type","wins","looses"
+        ,"score");
+
+        createArray(hardTitle,"name","type","wins","looses"
+                ,"score");
 
 
         //create panel for all users
-        usersPanel.setLayout(new GridLayout(1,5,5,5));
-        usersPanel.setLocation(100,50);
-        usersPanel.setSize(300,300);
-        for (JLabel label:title) {
-            usersPanel.add(label);
+        normalPanel.setLayout(new GridLayout(1,5,5,5));
+//        normalPanel.setLocation(30,150);
+//        normalPanel.setSize(300,300);
+
+        if(normalPanel.getComponentCount() == 0) {
+            for (JLabel label : normalTitle) {
+                normalPanel.add(label);
+            }
+        }
+        if(hardPanel.getComponentCount() == 0) {
+            for (JLabel label : hardTitle) {
+                hardPanel.add(label);
+            }
         }
 
-        rankingBg.add(usersPanel);
+        hardPanel.setLayout(new GridLayout(1,5,5,5));
+
+        rankingBg.add(modePane);
         rankFrame.setVisible(true);
     }
 
