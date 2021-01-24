@@ -90,5 +90,13 @@ public interface Zombies {
      * @return squashAttackTime as time of starting attack.
      */
     long getSquashAttackTime();
+    /**
+     * After first frozen pea, frozen sets true than means zombie speed should decrease.
+     */
+    void setFrozen(boolean frozen);
+    /**
+     * If zombie has been attacked by a frozen pea returns true, otherwise returns false.
+     */
+    boolean isFrozen();
 
 }

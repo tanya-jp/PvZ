@@ -19,6 +19,7 @@ public class NormalZombie  implements Images, Zombies{
     private boolean stopped;
     private boolean burnt;
     private boolean squashAttacked;
+    private boolean frozen;
     //1-9
     private int row;
     private float x;
@@ -34,6 +35,7 @@ public class NormalZombie  implements Images, Zombies{
         stopped= false;
         burnt = false;
         squashAttacked = false;
+        frozen = false;
     }
 
     /**
@@ -197,4 +199,14 @@ public class NormalZombie  implements Images, Zombies{
      */
     @Override
     public long getSquashAttackTime(){ return squashAttackTime;}
+    /**
+     * After first frozen pea, frozen sets true than means zombie speed should decrease.
+     */
+    @Override
+    public void setFrozen(boolean frozen){this.frozen = frozen;}
+    /**
+     * If zombie has been attacked by a frozen pea returns true, otherwise returns false.
+     */
+    @Override
+    public boolean isFrozen(){return frozen;}
 }
