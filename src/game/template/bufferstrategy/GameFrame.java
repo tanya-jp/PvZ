@@ -102,12 +102,12 @@ public class GameFrame extends JFrame {
         setShovel(g2d, state);
         //set cards
         putCards(g2d, state);
-        //set lawn mowers
-        putLawnMower(g2d, state);
         //set zombies
         setZombies(g2d, state);
         //set flowers
         setFlowers(g2d, state);
+        //set lawn mowers
+        putLawnMower(g2d, state);
         //set sun
         setSun(g2d, state);
 
@@ -276,12 +276,6 @@ public class GameFrame extends JFrame {
             int x = lawnMowers.getX();
             g2d.drawImage(lawnMowers.getImage(), x, 150 + 120 * (row-1), null);
         }
-//        g2d.drawImage(lawnMower,-35,150,null);
-//        g2d.drawImage(lawnMower,-35,150 + 120,null);
-//        g2d.drawImage(lawnMower,-35,150 + 120*2,null);
-//        g2d.drawImage(lawnMower,-35,150 + 120*3,null);
-//        g2d.drawImage(lawnMower,-35,150 + 120*4,null);
-//        g2d.drawImage(lawnMower,-35,150 + 120*5,null);
     }
 
     /**

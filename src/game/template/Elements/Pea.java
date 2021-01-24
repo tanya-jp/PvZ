@@ -74,5 +74,9 @@ public abstract class Pea{
         if (flag>0)
             bulletTime = System.currentTimeMillis();
     }
-
+    public void removeBullet(int loc)
+    {
+        if(bullets.containsKey(loc))
+            bullets.remove(loc);
+    }
 }

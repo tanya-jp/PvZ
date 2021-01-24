@@ -2,6 +2,8 @@ package game.template.Elements;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class makes lawn maker and fixes its state and image, changes its x coordinate when lawn maker should move.
