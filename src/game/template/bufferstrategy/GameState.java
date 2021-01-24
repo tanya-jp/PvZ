@@ -21,6 +21,7 @@ public class GameState {
     public int sunX, sunY, sunNumber, cardW, cardH;
     private final Image sun;
     private boolean lock, shovel;
+    private boolean gameOver;
     private HashMap<Integer, String> info;
     private HashMap<Integer, Integer> lifeInfo;
     Random rand = new Random();
@@ -34,12 +35,13 @@ public class GameState {
     private FreezePeaShooter freezePeaShooter;
     private Squash squash;
     private Mushroom mushroom;
-    private Zombie zombie;
+    private Zombies zombie;
     private NormalZombie normalZombie;
     private ConeHeadZombie coneHead;
     private BucketHeadZombie bucketHead;
     private HashMap<Integer, Long> deletedSquash;
     private HashMap<Integer, Integer> stoppedPeas;
+    private ArrayList<LawnMower> lawnMowers;
 
     /**
      * Constructs game state and sets first state of game lements
@@ -66,7 +68,7 @@ public class GameState {
         squash = new Squash(type, timeType);
         if (timeType.equals("night"))
             mushroom = new Mushroom(type, timeType);
-        zombie = new Zombie();
+        zombie = new Zombies();
         normalZombie = new NormalZombie();
         bucketHead = new BucketHeadZombie();
         coneHead = new ConeHeadZombie();
@@ -75,6 +77,7 @@ public class GameState {
         sunState = false;
         lock = false;
         shovel = false;
+        gameOver = false;
         for (int i = 1; i <= 9; i++) {
             for (int j = 1; j <= 5; j++) {
                 int loc = j * 10 + i;
@@ -89,6 +92,7 @@ public class GameState {
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
         mouseHandler = new MouseHandler();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+        setLawnMowers();
     }
 
     /**
@@ -118,8 +122,55 @@ public class GameState {
         freezePeaShooter.setBullets();
         //set zombies
         updateZombies();
+        //update lawn makers state
+        checkLawnMakers();
+    }
+    /**
+     * Sets lawn maker state at first
+     */
+    public void setLawnMowers()
+    {
+        lawnMowers = new ArrayList<>();
+        for (int i = 1; i <= 5; i++)
+            lawnMowers.add(new LawnMower(i));
     }
 
+    /**
+     * Moves lawn makers when a zombie arrives and if lawn maker is not available the player will lose.
+     * @param zombieX as x coordinate of zombie
+     * @param row as row of zombie
+     */
+    public void moveLawnMovers(int zombieX, int row)
+    {
+        if(zombieX <= 40)
+        {
+            for (LawnMower lawnMower: lawnMowers)
+            {
+                if(row == lawnMower.getRow())
+                {
+                    if(lawnMower.isAvailable())
+                        lawnMower.setAvailable(false);
+                    else
+                        gameOver = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if a zombie is approaching to a lawn maker, moves it.
+     */
+    public void checkLawnMakers()
+    {
+        for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet())
+            moveLawnMovers((int) normal.getValue().getX(), normal.getValue().getRow());
+        for (Map.Entry<Integer, ConeHeadZombie> cone : zombie.getConeInfo().entrySet())
+            moveLawnMovers((int) cone.getValue().getX(), cone.getValue().getRow());
+        for (Map.Entry<Integer, BucketHeadZombie> bucket : zombie.getBucketInfo().entrySet())
+            moveLawnMovers((int) bucket.getValue().getX(), bucket.getValue().getRow());
+        for (LawnMower lawnMower: lawnMowers)
+            lawnMower.move();
+    }
     /**
      * This method calls all methods which are related to zombies and sets zombies state.
      */
@@ -644,7 +695,7 @@ public class GameState {
     /**
      * Returns all zombies that are playing
      */
-    public Zombie getZombie(){return zombie;}
+    public Zombies getZombie(){return zombie;}
 
     public HashMap<Integer, Integer> getStoppedPeas() {
         return stoppedPeas;
@@ -652,6 +703,10 @@ public class GameState {
     public void removeStoppedPea(int loc)
     {
         stoppedPeas.replace(loc, null);
+    }
+
+    public ArrayList<LawnMower> getLawnMowers() {
+        return lawnMowers;
     }
 
     /**

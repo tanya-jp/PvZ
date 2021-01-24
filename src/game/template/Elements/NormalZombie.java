@@ -8,7 +8,7 @@ import java.awt.*;
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class NormalZombie  implements Images, Zombies{
+public class NormalZombie  implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;

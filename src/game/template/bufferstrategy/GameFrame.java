@@ -27,7 +27,6 @@ public class GameFrame extends JFrame {
     public static final int GAME_WIDTH = 1005;
     private Image sun;
     private Image shovel;
-    private Image lawnMower;
     private String type;
     private String timeType;
     private NormalZombie normalZombie;
@@ -59,7 +58,6 @@ public class GameFrame extends JFrame {
 //        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
-        lawnMower = new ImageIcon(".\\PVS Design Kit\\images\\Lawn_Mower.png").getImage();
     }
 
     /**
@@ -272,12 +270,18 @@ public class GameFrame extends JFrame {
      */
     private void putLawnMower(Graphics2D g2d, GameState state)
     {
-        g2d.drawImage(lawnMower,-35,150,null);
-        g2d.drawImage(lawnMower,-35,150 + 120,null);
-        g2d.drawImage(lawnMower,-35,150 + 120*2,null);
-        g2d.drawImage(lawnMower,-35,150 + 120*3,null);
-        g2d.drawImage(lawnMower,-35,150 + 120*4,null);
-        g2d.drawImage(lawnMower,-35,150 + 120*5,null);
+        for (LawnMower lawnMowers: state.getLawnMowers())
+        {
+            int row = lawnMowers.getRow();
+            int x = lawnMowers.getX();
+            g2d.drawImage(lawnMowers.getImage(), x, 150 + 120 * (row-1), null);
+        }
+//        g2d.drawImage(lawnMower,-35,150,null);
+//        g2d.drawImage(lawnMower,-35,150 + 120,null);
+//        g2d.drawImage(lawnMower,-35,150 + 120*2,null);
+//        g2d.drawImage(lawnMower,-35,150 + 120*3,null);
+//        g2d.drawImage(lawnMower,-35,150 + 120*4,null);
+//        g2d.drawImage(lawnMower,-35,150 + 120*5,null);
     }
 
     /**

@@ -7,7 +7,7 @@ import java.awt.*;
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class ConeHeadZombie implements Images, Zombies{
+public class ConeHeadZombie implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;

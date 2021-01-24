@@ -7,7 +7,7 @@ import java.awt.*;
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class BucketHeadZombie implements Images, Zombies{
+public class BucketHeadZombie implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;
