@@ -101,17 +101,19 @@ public class Zombie {
      */
     public void move(String level)
     {
+        float dec = 0;
         //moves normal zombies
         for (Map.Entry<Integer, NormalZombie> info: normalInfo.entrySet())
         {
             if(!info.getValue().isStopped())
             {
                 if(info.getValue().isBurnt() && (System.currentTimeMillis()-info.getValue().getBurntTime())>6000)
-                {
-                    info.getValue().setX((float) (info.getValue().getX() - 1010));
-                }
+                    dec = 1010;
                 else
-                    info.getValue().setX((float) (info.getValue().getX() - 0.9));
+                    dec = (float) 0.9;
+                if(info.getValue().isFrozen())
+                    dec = dec / 2;
+                info.getValue().setX((float) (info.getValue().getX() - dec));
             }
         }
         //moves bucket head zombie
@@ -119,10 +121,10 @@ public class Zombie {
         {
             if(!info.getValue().isStopped())
             {
-                if(level.equals("normal"))
-                    info.getValue().setX((float) (info.getValue().getX() - 1));
-                else if(level.equals("hard"))
-                    info.getValue().setX((float) (info.getValue().getX() - 1.1));
+                dec = setDec(level);
+                if(info.getValue().isFrozen())
+                    dec = dec/2;
+                info.getValue().setX((float) (info.getValue().getX() - dec));
             }
         }
         //moves cone head zombies
@@ -130,12 +132,27 @@ public class Zombie {
         {
             if(!info.getValue().isStopped())
             {
-                if(level.equals("normal"))
-                    info.getValue().setX((float) (info.getValue().getX() - 1));
-                else if(level.equals("hard"))
-                    info.getValue().setX((float) (info.getValue().getX() - 1.1));
+                dec = setDec(level);
+                if(info.getValue().isFrozen())
+                    dec = dec/2;
+                info.getValue().setX((float) (info.getValue().getX() - dec));
             }
         }
+    }
+
+    /**
+     * Sets decrement of zombie's x coordinate based on game level
+     * @param level normal / hard
+     * @return amount of decrement
+     */
+    private float setDec(String level)
+    {
+        float dec = 0;
+        if(level.equals("normal"))
+            dec = 1;
+        else if(level.equals("hard"))
+            dec = (float) 1.1;
+        return dec;
     }
 
     /**
