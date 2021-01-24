@@ -33,7 +33,7 @@ public interface Zombies {
      */
     boolean isStopped();
     /**
-     *  After receiving to flower, sets zombie stop time and after flower life decrement, stop time updates.
+     *  After receiving to flower, sets zombie stop time and after flower life decrement, updates stop time .
      */
     void setStopTime(long stopTime);
     /**
