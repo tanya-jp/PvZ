@@ -124,6 +124,97 @@ public class GameState {
         updateZombies();
         //update lawn makers state
         checkLawnMakers();
+        removeFlowers();
+    }
+    public void removeFlowers()
+    {
+        for (int i = 1; i <= 9; i++)
+            for (int j = 1; j <= 5; j++)
+            {
+                int loc = j*10 + i;
+                int lawnMakerColumn = findColumn(lawnMowers.get(j-1).getX());
+                if(j == lawnMowers.get(j-1).getRow() && i == lawnMakerColumn)
+                {
+                    if(info.get(loc) != null)
+                    {
+//                        if(info.get(loc). equals("peaShooter"))
+//                            info.replace(loc,"deadPeaShooter");
+                        if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
+                        {
+                            info.replace(loc, null);
+                            peashooter.removeBullet(loc);
+                        }
+//                        else if(info.get(loc).equals("sunFlower"))
+//                            info.replace(loc, "deadSunFlower");
+                        else if(info.get(loc).equals("deadSunFlower") || info.get(loc).equals("sunFlower"))
+                            info.replace(loc, null);
+//                        else if(info.get(loc).equals("wallNut") || info.get(loc).equals("halfWallNut"))
+//                            info.replace(loc, "deadWallNut");
+                        else if(info.get(loc).equals("deadWallNut") || info.get(loc).equals("wallNut")
+                                || info.get(loc).equals("halfWallNut"))
+                            info.replace(loc, null);
+                        else if(info.get(loc).equals("freezePeaShooter"))
+                        {
+                            info.replace(loc, null);
+                            freezePeaShooter.removeBullet(loc);
+                        }
+                        else
+                            info.replace(loc, null);
+                    }
+                }
+            }
+    }
+    public void removeZombies()
+    {
+        int zombieCol;
+        int zombieRow;
+        int lawnMakerCol;
+        int dec;
+//        for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()){
+//            zombieRow = normal.getValue().getRow();
+//            lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
+//            if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<GAME_WIDTH)
+//            {
+//                if(lawnMakerCol == zombieCol)
+//                    normal.getValue().setLife(40);
+//                else if(lawnMakerCol == zombieCol+1)
+//                    normal.getValue().setLife(0);
+//            }
+//        }
+        for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()){
+            zombieRow = normal.getValue().getRow();
+            lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
+            dec = setZombiesLife(zombieRow, (int) normal.getValue().getX(), lawnMakerCol);
+            if(dec>=0)
+                normal.getValue().setLife(dec);
+        }
+        for (Map.Entry<Integer, ConeHeadZombie> cone : zombie.getConeInfo().entrySet()){
+            zombieRow = cone.getValue().getRow();
+            lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
+            dec = setZombiesLife(zombieRow, (int) cone.getValue().getX(), lawnMakerCol);
+            if(dec>=0)
+                cone.getValue().setLife(dec+360);
+        }
+        for (Map.Entry<Integer, BucketHeadZombie> bucket : zombie.getBucketInfo().entrySet()){
+            zombieRow = bucket.getValue().getRow();
+            lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
+            dec = setZombiesLife(zombieRow, (int) bucket.getValue().getX(), lawnMakerCol);
+            if(dec>=0)
+                bucket.getValue().setLife(dec+1100);
+        }
+    }
+    public int setZombiesLife(int zombieRow, int zombieX, int lawnMakerCol)
+    {
+        int zombieCol;
+        zombieCol = findColumn(zombieX);
+        if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<GAME_WIDTH)
+        {
+            if(lawnMakerCol == zombieCol)
+                return 40;
+            else if(lawnMakerCol == zombieCol+1)
+                return 0;
+        }
+        return -1;
     }
     /**
      * Sets lawn maker state at first
@@ -142,7 +233,7 @@ public class GameState {
      */
     public void moveLawnMovers(int zombieX, int row)
     {
-        if(zombieX <= 40)
+        if(zombieX <= 40 && zombieX > 0)
         {
             for (LawnMower lawnMower: lawnMowers)
             {
@@ -177,10 +268,11 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        zombie.setZombies(1, 10000);
+        zombie.setZombies(3, 10000);
         zombie.move(type);
         checkZombies();
         killZombies();
+        removeZombies();
     }
 
     public void normalKiller(HashMap.Entry<Integer, ArrayList<Integer>> set , Map.Entry<Integer, NormalZombie> normal,
@@ -519,6 +611,10 @@ public class GameState {
         }
         else
         {
+            if(info.get(zombieLoc).equals("deadPeaShooter") || info.get(zombieLoc).equals("peaShooter"))
+                peashooter.removeBullet(zombieLoc);
+            else if(info.get(zombieLoc).equals("freezePeaShooter"))
+                freezePeaShooter.removeBullet(zombieLoc);
             lifeInfo.replace(zombieLoc, null);
             info.replace(zombieLoc, null);
             return false;
@@ -707,6 +803,10 @@ public class GameState {
 
     public ArrayList<LawnMower> getLawnMowers() {
         return lawnMowers;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 
     /**
@@ -965,9 +1065,11 @@ public class GameState {
             if(info.get(loc) != null)
             {
                 if(info.get(loc).equals("sunFlower"))
-                {
                     sunFlower.removeSunFlower(loc);
-                }
+                else if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
+                    peashooter.removeBullet(loc);
+                else if(info.get(loc).equals("freezePeaShooter"))
+                    freezePeaShooter.removeBullet(loc);
                 info.replace(loc, null);
                 shovel = false;
             }
