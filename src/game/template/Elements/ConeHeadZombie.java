@@ -19,6 +19,7 @@ public class ConeHeadZombie implements Images, Zombie {
     private boolean burnt;
     private boolean squashAttacked;
     private boolean frozen;
+    private boolean killed;
     //1-9
     private int row;
     private float x;
@@ -35,6 +36,7 @@ public class ConeHeadZombie implements Images, Zombie {
         squashAttacked = false;
         burnt = false;
         frozen = false;
+        killed = false;
     }
     /**
      * Sets the row of this zombie
@@ -207,4 +209,14 @@ public class ConeHeadZombie implements Images, Zombie {
      */
     @Override
     public boolean isFrozen(){return frozen;}
+    /**
+     * If zombie is killed, sets true
+     */
+    @Override
+    public  void setKilled(boolean killed){this.killed = killed;}
+    /**
+     * If zombie is alive returns false otherwise if it is killed returns true.
+     */
+    @Override
+    public boolean isKilled(){return killed;}
 }

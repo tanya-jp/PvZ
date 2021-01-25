@@ -49,7 +49,9 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        boolean gameOver = false;
+        boolean gameOver = state.isGameOver();
+        System.out.println(gameOver);
+//        boolean gameOver = false;
         while (!gameOver) {
             try {
                 long start = System.currentTimeMillis();

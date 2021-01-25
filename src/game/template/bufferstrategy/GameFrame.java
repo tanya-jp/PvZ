@@ -27,6 +27,7 @@ public class GameFrame extends JFrame {
     public static final int GAME_WIDTH = 1005;
     private Image sun;
     private Image shovel;
+    private Image gameOver;
     private String type;
     private String timeType;
     private NormalZombie normalZombie;
@@ -58,6 +59,7 @@ public class GameFrame extends JFrame {
 //        sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
+        gameOver = new ImageIcon(".\\PVS Design Kit\\images\\gameOver.jpg").getImage();
     }
 
     /**
@@ -97,19 +99,24 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         GameCanvas canvas = new GameCanvas(timeType);
-        canvas.paintComponent(g2d);
-        //set shovel
-        setShovel(g2d, state);
-        //set cards
-        putCards(g2d, state);
-        //set zombies
-        setZombies(g2d, state);
-        //set flowers
-        setFlowers(g2d, state);
-        //set lawn mowers
-        putLawnMower(g2d, state);
-        //set sun
-        setSun(g2d, state);
+        if(!state.isGameOver())
+        {
+            canvas.paintComponent(g2d);
+            //set shovel
+            setShovel(g2d, state);
+            //set cards
+            putCards(g2d, state);
+            //set zombies
+            setZombies(g2d, state);
+            //set flowers
+            setFlowers(g2d, state);
+            //set lawn mowers
+            putLawnMower(g2d, state);
+            //set sun
+            setSun(g2d, state);
+        }
+        else
+            g2d.drawImage(gameOver, 2,30, GAME_WIDTH, GAME_HEIGHT, null);
 
 //        canvas.render(state);
         //
