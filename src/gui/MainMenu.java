@@ -13,6 +13,7 @@ public class MainMenu{
     PauseMenu pauseMenu = new PauseMenu();
     User user = new User();
     Scoreboard scoreboard = new Scoreboard();
+    Settings settings = new Settings();
 
 
     private Background startBackground;
@@ -173,7 +174,7 @@ public class MainMenu{
         settingButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pauseMenu.start();
+                settings.createSettings();
             }
         });
 
