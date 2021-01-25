@@ -98,5 +98,13 @@ public interface Zombie {
      * If zombie has been attacked by a frozen pea returns true, otherwise returns false.
      */
     boolean isFrozen();
+    /**
+     * If zombie is killed, sets true
+     */
+    void setKilled(boolean killed);
+    /**
+     * If zombie is alive returns false otherwise if it is killed returns true.
+     */
+    boolean isKilled();
 
 }

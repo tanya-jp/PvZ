@@ -170,17 +170,6 @@ public class GameState {
         int zombieRow;
         int lawnMakerCol;
         int dec;
-//        for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()){
-//            zombieRow = normal.getValue().getRow();
-//            lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
-//            if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<GAME_WIDTH)
-//            {
-//                if(lawnMakerCol == zombieCol)
-//                    normal.getValue().setLife(40);
-//                else if(lawnMakerCol == zombieCol+1)
-//                    normal.getValue().setLife(0);
-//            }
-//        }
         for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()){
             zombieRow = normal.getValue().getRow();
             lawnMakerCol = findColumn(lawnMowers.get(zombieRow-1).getX());
@@ -207,11 +196,12 @@ public class GameState {
     {
         int zombieCol;
         zombieCol = findColumn(zombieX);
-        if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<GAME_WIDTH)
+//        System.out.println(zombieCol);
+        if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<=GAME_WIDTH)
         {
-            if(lawnMakerCol == zombieCol)
+            if(lawnMakerCol == zombieCol || zombieCol == 0)
                 return 40;
-            else if(lawnMakerCol == zombieCol+1)
+            else if(lawnMakerCol == zombieCol+1 || zombieCol == 1)
                 return 0;
         }
         return -1;
@@ -231,7 +221,7 @@ public class GameState {
      * @param zombieX as x coordinate of zombie
      * @param row as row of zombie
      */
-    public void moveLawnMovers(int zombieX, int row)
+    public boolean moveLawnMovers(int zombieX, int row)
     {
         if(zombieX <= 40 && zombieX > 0)
         {
@@ -240,13 +230,18 @@ public class GameState {
                 if(row == lawnMower.getRow())
                 {
                     if(lawnMower.isAvailable())
+                    {
                         lawnMower.setAvailable(false);
+                        return true;
+                    }
                     else
                         gameOver = true;
                 }
             }
         }
+        return false;
     }
+
 
     /**
      * Checks if a zombie is approaching to a lawn maker, moves it.
@@ -254,13 +249,17 @@ public class GameState {
     public void checkLawnMakers()
     {
         for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet())
-            moveLawnMovers((int) normal.getValue().getX(), normal.getValue().getRow());
+            if(!normal.getValue().isKilled())
+                normal.getValue().setKilled(moveLawnMovers((int) normal.getValue().getX(), normal.getValue().getRow()));
         for (Map.Entry<Integer, ConeHeadZombie> cone : zombie.getConeInfo().entrySet())
-            moveLawnMovers((int) cone.getValue().getX(), cone.getValue().getRow());
+            if(!cone.getValue().isKilled())
+                cone.getValue().setKilled(moveLawnMovers((int) cone.getValue().getX(), cone.getValue().getRow()));
         for (Map.Entry<Integer, BucketHeadZombie> bucket : zombie.getBucketInfo().entrySet())
-            moveLawnMovers((int) bucket.getValue().getX(), bucket.getValue().getRow());
+            if(!bucket.getValue().isKilled())
+                bucket.getValue().setKilled(moveLawnMovers((int) bucket.getValue().getX(), bucket.getValue().getRow()));
         for (LawnMower lawnMower: lawnMowers)
             lawnMower.move();
+
     }
     /**
      * This method calls all methods which are related to zombies and sets zombies state.
@@ -268,7 +267,7 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        zombie.setZombies(3, 10000);
+        zombie.setZombies(1, 10000);
         zombie.move(type);
         checkZombies();
         killZombies();
@@ -299,7 +298,7 @@ public class GameState {
                         normal.getValue().setFrozen(true);
 //                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) normal.getValue().getX());
-                    System.out.println(normal.getValue().getLife());
+//                    System.out.println(normal.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) normal.getValue().getX());
                     if (normal.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
@@ -336,7 +335,7 @@ public class GameState {
                         cone.getValue().setFrozen(true);
 //                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) cone.getValue().getX());
-                    System.out.println(cone.getValue().getLife());
+//                    System.out.println(cone.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) cone.getValue().getX());
                     if (cone.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
@@ -373,7 +372,7 @@ public class GameState {
                         bucket.getValue().setFrozen(true);
 //                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) bucket.getValue().getX());
-                    System.out.println(bucket.getValue().getLife());
+//                    System.out.println(bucket.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) bucket.getValue().getX());
                     if (bucket.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
@@ -465,6 +464,8 @@ public class GameState {
                     }
                 }
             }
+            if(info.get(zombieLoc) == null && !normal.getValue().isBurnt())
+                normal.getValue().setStopped(false);
         }
         //Checks coneHead zombies
         for (Map.Entry<Integer, ConeHeadZombie> cone: zombie.getConeInfo().entrySet())
@@ -522,6 +523,8 @@ public class GameState {
                     }
                 }
             }
+            if(info.get(zombieLoc) == null && !cone.getValue().isBurnt())
+                cone.getValue().setStopped(false);
         }
         //Checks bucketHead zombies
         for (Map.Entry<Integer, BucketHeadZombie> bucket: zombie.getBucketInfo().entrySet())
@@ -579,6 +582,8 @@ public class GameState {
                     }
                 }
             }
+            if(info.get(zombieLoc) == null && !bucket.getValue().isBurnt())
+                bucket.getValue().setStopped(false);
         }
     }
 
@@ -807,6 +812,10 @@ public class GameState {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     /**
