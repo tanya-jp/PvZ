@@ -15,6 +15,8 @@ public class MainMenu{
     Scoreboard scoreboard = new Scoreboard();
     Settings settings = new Settings();
 
+    int clicks = 0;
+
 
     private Background startBackground;
     private Background mainBackground;
@@ -174,7 +176,12 @@ public class MainMenu{
         settingButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                settings.createSettings();
+                if(clicks == 0)
+                    settings.createSettings();
+                else
+                    settings.getSettingsFrame().setVisible(true);
+
+                clicks++;
             }
         });
 

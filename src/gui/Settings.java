@@ -35,6 +35,10 @@ public class Settings {
     private Image squash;
     private Image mushroom;
 
+    public JFrame getSettingsFrame() {
+        return settingsFrame;
+    }
+
 
     private final JPanel settingsPanel;
 
@@ -73,17 +77,22 @@ public class Settings {
 
     }
 
+//    public void start(){
+//        modeButton.setBackground(bgColor);
+//
+//    }
+
     public void createSettings(){
         //set settings frame features
         settingsFrame.setLayout(null);
-        settingsFrame.setLocation(450,250);
+        settingsFrame.setLocation(450,260);
         settingsFrame.setSize(350,290);
         settingsFrame.setResizable(false);
         settingsFrame.setContentPane(settingsBg);
 
         settingsBg.setLayout(null);
 
-        settingsPanel.setSize(300,150);
+        settingsPanel.setSize(295,150);
         settingsPanel.setBackground(new Color(102,0,153));
         settingsPanel.setLocation(30,65);
         settingsPanel.setLayout(null);
@@ -96,10 +105,12 @@ public class Settings {
                 if(modeButton.getBackground().equals(bgColor)){
                     modeButton.setBackground(Color.DARK_GRAY);
                     modeButton.setText("Hard");
+                    System.out.println("changed to hard");
                 }
                 else {
                     modeButton.setBackground(bgColor);
                     modeButton.setText("Normal");
+                    System.out.println("changed to normal");
                 }
             }
         });
@@ -113,10 +124,12 @@ public class Settings {
                 if(typeButton.getBackground().equals(Color.YELLOW)){
                     typeButton.setBackground(Color.CYAN);
                     typeButton.setText("Night");
+//                    System.out.println("to night");
                 }
                 else {
                     typeButton.setBackground(Color.YELLOW);
                     typeButton.setText("Day");
+//                    System.out.println("to day");
                 }
             }
         });
@@ -132,11 +145,13 @@ public class Settings {
                     soundButton.setBackground(Color.darkGray);
                     soundButton.setIcon(offIcon);
                     soundButton.setText("Off");
+//                    System.out.println("to off");
                 }
                 else {
                     soundButton.setBackground(bgColor);
                     soundButton.setIcon(onIcon);
                     soundButton.setText("On");
+//                    System.out.println("to on");
                 }
             }
         });
@@ -163,9 +178,18 @@ public class Settings {
         okButton.setBounds(40,90,200,40);
 //        okButton.setBackground(Color.GREEN);
         okButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+////                soundButton.setText(soundButton.getText());
+//                settingsFrame.setVisible(false);
+//                //also we need to save all
+//                //the changes that were made
+//                //in this action listener
+//            }
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                okButton.setBackground(Color.BLUE);
+                okButton.setBackground(Color.DARK_GRAY);
             }
 
             @Override
@@ -194,20 +218,20 @@ public class Settings {
 
         plantsBg.setLayout(null);
 
-        JPanel plantsPanel = new JPanel(new GridLayout(2,3,10,10));
+        JPanel plantsPanel = new JPanel(null);
         plantsPanel.setBackground(new Color(102,0,153));
-        plantsPanel.setBounds(50,50,450,300);
+        plantsPanel.setBounds(30,50,450,290);
         JLabel cherryLabel = new JLabel(cherry);
-        cherryLabel.setSize(50,60);
-        cherryLabel.setBackground(Color.YELLOW);
+        cherryLabel.setBounds(10,10,80,90);
+        cherryLabel.setBackground(Color.GRAY);
         cherryLabel.setOpaque(true);
 
         plantsPanel.add(cherryLabel);
-        plantsPanel.add(new JLabel());
-        plantsPanel.add(new JLabel());
-        plantsPanel.add(new JLabel());
-        plantsPanel.add(new JLabel());
-        plantsPanel.add(new JLabel());
+//        plantsPanel.add(new JLabel());
+//        plantsPanel.add(new JLabel());
+//        plantsPanel.add(new JLabel());
+//        plantsPanel.add(new JLabel());
+//        plantsPanel.add(new JLabel());
 
         plantsBg.add(plantsPanel);
 
