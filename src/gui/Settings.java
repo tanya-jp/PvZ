@@ -5,34 +5,45 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.time.Year;
 
 public class Settings {
 
     //buttons
-    private JButton modeButton;
-    private JButton typeButton;
-    private JButton soundButton;
-    private JButton choosePlantsButton;
-    private JButton okButton;
+    private final JButton modeButton;
+    private final JButton typeButton;
+    private final JButton soundButton;
+    private final JButton choosePlantsButton;
+    private final JButton okButton;
 
     private ImageIcon onIcon;
     private ImageIcon offIcon;
+    private Background plantsBg;
 
-    private Color bgColor = new Color(255,255,153);
+    private final Color bgColor = new Color(255,255,153);
 
     private Background settingsBg;
 
-    private JFrame settingsFrame;
+    private final JFrame settingsFrame;
+    private JFrame plantsFrame;
 
-    private JPanel settingsPanel;
+    //cards
+    private ImageIcon cherry;
+    private Image freezePee;
+    private Image peeShooter;
+    private Image sunflower;
+    private Image wallNut;
+    private Image squash;
+    private Image mushroom;
+
+
+    private final JPanel settingsPanel;
 
     {
         try {
-            settingsBg = new Background(".\\Extras\\settings_bg.jpeg");
+            settingsBg = new Background(".\\Extras\\setting_bg.jpeg");
             onIcon = new ImageIcon(".\\Extras\\on_icon.png");
             offIcon = new ImageIcon(".\\Extras\\off_icon.png");
-         //   mainBackground = new Background(".\\Extras\\main_bg.jpeg");
+            plantsBg = new Background(".\\Extras\\choosePlants_bg.jpeg");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,6 +60,16 @@ public class Settings {
         //create frames and panels
         settingsFrame = new JFrame("Settings");
         settingsPanel = new JPanel();
+        plantsFrame = new JFrame();
+
+        //create images
+        cherry = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png");
+        freezePee = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
+        peeShooter = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
+        sunflower = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
+        wallNut = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
+    //    squash = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+    //    mushroom = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
 
     }
 
@@ -56,18 +77,18 @@ public class Settings {
         //set settings frame features
         settingsFrame.setLayout(null);
         settingsFrame.setLocation(450,250);
-        settingsFrame.setSize(500,400);
+        settingsFrame.setSize(350,290);
         settingsFrame.setResizable(false);
         settingsFrame.setContentPane(settingsBg);
 
         settingsBg.setLayout(null);
 
-        settingsPanel.setSize(453,285);
+        settingsPanel.setSize(300,150);
         settingsPanel.setBackground(new Color(102,0,153));
-        settingsPanel.setLocation(20,68);
+        settingsPanel.setLocation(30,65);
         settingsPanel.setLayout(null);
 
-        modeButton.setBounds(10,10,100,40);
+        modeButton.setBounds(40,10,100,40);
         modeButton.setBackground(bgColor);
         modeButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,7 +105,7 @@ public class Settings {
         });
 
         //button to set type of the game
-        typeButton.setBounds(110,10,100,40);
+        typeButton.setBounds(140,10,100,40);
         typeButton.setBackground(Color.YELLOW);
         typeButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -101,7 +122,7 @@ public class Settings {
         });
 
         //sound button features
-        soundButton.setBounds(10,50,100,40);
+        soundButton.setBounds(40,50,100,40);
         soundButton.setBackground(bgColor);
         soundButton.setIcon(onIcon);
         soundButton.addMouseListener(new MouseAdapter() {
@@ -120,8 +141,38 @@ public class Settings {
             }
         });
 
-        choosePlantsButton.setBounds(110,50,100,40);
-        okButton.setBounds(10,90,200,40);
+        choosePlantsButton.setBounds(140,50,100,40);
+        choosePlantsButton.setBackground(new Color(0,255,51));
+        choosePlantsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                choosePlants();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                choosePlantsButton.setBackground(Color.GREEN);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                choosePlantsButton.setBackground(new Color(0,255,51));
+            }
+        });
+
+        okButton.setBounds(40,90,200,40);
+//        okButton.setBackground(Color.GREEN);
+        okButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                okButton.setBackground(Color.BLUE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                okButton.setBackground(Color.lightGray);
+            }
+        });
 
         settingsPanel.add(modeButton);
         settingsPanel.add(typeButton);
@@ -132,5 +183,35 @@ public class Settings {
         settingsBg.add(settingsPanel);
 
         settingsFrame.setVisible(true);
+    }
+
+    private void choosePlants(){
+        plantsFrame.setLayout(null);
+        plantsFrame.setLocation(450,250);
+        plantsFrame.setSize(700,400);
+        plantsFrame.setResizable(false);
+        plantsFrame.setContentPane(plantsBg);
+
+        plantsBg.setLayout(null);
+
+        JPanel plantsPanel = new JPanel(new GridLayout(2,3,10,10));
+        plantsPanel.setBackground(new Color(102,0,153));
+        plantsPanel.setBounds(50,50,450,300);
+        JLabel cherryLabel = new JLabel(cherry);
+        cherryLabel.setSize(50,60);
+        cherryLabel.setBackground(Color.YELLOW);
+        cherryLabel.setOpaque(true);
+
+        plantsPanel.add(cherryLabel);
+        plantsPanel.add(new JLabel());
+        plantsPanel.add(new JLabel());
+        plantsPanel.add(new JLabel());
+        plantsPanel.add(new JLabel());
+        plantsPanel.add(new JLabel());
+
+        plantsBg.add(plantsPanel);
+
+        plantsFrame.setVisible(true);
+
     }
 }
