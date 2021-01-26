@@ -31,6 +31,14 @@ public class User {
         }
     }
 
+    public JButton getCreateButton() {
+        return createButton;
+    }
+
+    public JFrame getUserFrame() {
+        return userFrame;
+    }
+
     public User(){
         //create buttons
         createButton = new JButton("OK");

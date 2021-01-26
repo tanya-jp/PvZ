@@ -9,18 +9,27 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This class handles start page and main menu page GUI
+ * first the player is asked to enter a username and then the player
+ * is directed to the main page, main menu is also managed here.
+ * @author Elaheh Akbari
+ */
 public class MainMenu{
+    //other classes that are needed
     PauseMenu pauseMenu = new PauseMenu();
     User user = new User();
     Scoreboard scoreboard = new Scoreboard();
     Settings settings = new Settings();
 
-    int clicks = 0;
+    //to count the times of clicking settings button
+    private int clicks = 0;
 
-
+    //back grounds for each page
     private Background startBackground;
     private Background mainBackground;
 
+    //create back grounds and handle possible exceptions
     {
         try {
             startBackground = new Background(".\\PVS Design Kit\\images\\first_screen.jpg");
@@ -46,8 +55,10 @@ public class MainMenu{
     private final JFrame startFrame;
     private final JFrame mainFrame;
 
-
-    public MainMenu() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    /**
+     * constructor to create the fields
+     */
+    public MainMenu(){
         //create buttons
         newGameButton = new JButton("Adventure");
         loadButton = new JButton("Load Game");
@@ -64,7 +75,10 @@ public class MainMenu{
         createStartGUI();
     }
 
-//This class creates the start GUI
+    /**
+     * This class creates the starting page UI
+     *
+     */
     private void createStartGUI(){
         //create start frame
         startFrame.setSize(1050,650);
@@ -82,11 +96,22 @@ public class MainMenu{
         startBackground.add(startLabel,BorderLayout.SOUTH);
         startBackground.revalidate();
 
+        //start label action listener
         startLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                user.createUserFrame();
+            }
+        });
+
+        //user create button action listener
+        //ask for user first and then run the main menu
+        user.getCreateButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 createMainMenu();
                 startFrame.setVisible(false);
+                user.getUserFrame().setVisible(false);
                 mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
@@ -95,6 +120,9 @@ public class MainMenu{
 
     }
 
+    /**
+     * this method creates the main page
+     */
     private void createMainMenu(){
         //set button shapes
         makeButtons(newGameButton);
@@ -146,11 +174,6 @@ public class MainMenu{
             @Override
             public void mouseClicked(MouseEvent e) {
                 changeUsername.setVisible(!changeUsername.isVisible());
-//                try {
-//                    audioPlayer();
-//                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ioException) {
-//                    ioException.printStackTrace();
-//                }
 
             }
         });
