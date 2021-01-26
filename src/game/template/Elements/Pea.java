@@ -66,7 +66,7 @@ public abstract class Pea{
                 set.getValue().set(i, value);
                 i++;
             }
-            if(System.currentTimeMillis() - bulletTime > 2000) {
+            if(System.currentTimeMillis() - bulletTime > 1000) {
                 addPea(set.getKey());
                 flag ++;
             }
