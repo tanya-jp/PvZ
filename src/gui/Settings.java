@@ -35,6 +35,14 @@ public class Settings {
     private Image squash;
     private Image mushroom;
 
+    public JButton getTypeButton() {
+        return typeButton;
+    }
+
+    public JButton getModeButton() {
+        return modeButton;
+    }
+
     public JFrame getSettingsFrame() {
         return settingsFrame;
     }
@@ -72,8 +80,8 @@ public class Settings {
         peeShooter = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
         sunflower = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
         wallNut = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
-    //    squash = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
-    //    mushroom = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        //    squash = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        //    mushroom = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
 
     }
 
@@ -178,14 +186,14 @@ public class Settings {
         okButton.setBounds(40,90,200,40);
 //        okButton.setBackground(Color.GREEN);
         okButton.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-////                soundButton.setText(soundButton.getText());
-//                settingsFrame.setVisible(false);
-//                //also we need to save all
-//                //the changes that were made
-//                //in this action listener
-//            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                soundButton.setText(soundButton.getText());
+                settingsFrame.setVisible(false);
+                //also we need to save all
+                //the changes that were made
+                //in this action listener
+            }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -237,5 +245,9 @@ public class Settings {
 
         plantsFrame.setVisible(true);
 
+    }
+
+    public JButton getOkButton() {
+        return okButton;
     }
 }
