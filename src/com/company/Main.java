@@ -1,6 +1,7 @@
 package com.company;
 
 import gui.MainMenu;
+import manager.StartManager;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -21,6 +22,6 @@ public class Main {
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
-        MainMenu mainMenu = new MainMenu();
+        StartManager startManager = new StartManager();
     }
 }

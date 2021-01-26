@@ -281,13 +281,24 @@ public class MainMenu{
 
         AudioInputStream audioInputStream;
         String filePath = ".\\PVS Design Kit\\sounds\\atebrains.wav";
-            audioInputStream =
-                    AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
+        audioInputStream =
+                AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+        clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
 
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        clip.start();
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public JButton getNewGameButton() {
+        return newGameButton;
+    }
+    public void disable()
+    {
+        mainFrame.setVisible(false);
+    }
 }

@@ -22,6 +22,7 @@ public class GameState {
     private final Image sun;
     private boolean lock, shovel;
     private boolean gameOver;
+    private boolean menu;
     private HashMap<Integer, String> info;
     private HashMap<Integer, Integer> lifeInfo;
     Random rand = new Random();
@@ -78,6 +79,7 @@ public class GameState {
         lock = false;
         shovel = false;
         gameOver = false;
+        menu = false;
         for (int i = 1; i <= 9; i++) {
             for (int j = 1; j <= 5; j++) {
                 int loc = j * 10 + i;
@@ -854,6 +856,9 @@ public class GameState {
         return gameOver;
     }
 
+    public boolean getMenu(){return menu;}
+    public void setMenu(boolean set){menu = set;}
+
     /**
      * find columns number of a location
      * @param x as x coordinate
@@ -1127,11 +1132,15 @@ public class GameState {
         @Override
         public void mouseClicked(MouseEvent e) {
             chooseItem(e);
+            int x = e.getX();
+            int y = e.getY();
+            if(x > 864 && x < 990 && y > 32 && y < 60)
+                menu = true;
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-           saveSun(e);
+            saveSun(e);
         }
 
         @Override

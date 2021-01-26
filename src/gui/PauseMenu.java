@@ -28,9 +28,13 @@ public class PauseMenu {
     private final Color bgColor;//background color
     private final Color fgColor;//foreground color
 
+    private boolean resumeClicked;
+    private boolean exitClicked;
+    private boolean leaveClicked;
+
 
     private final Font font;
-//create all images and handling exceptions
+    //create all images and handling exceptions
     {
         try {
             pauseBg = new Background(".\\Extras\\pause_menu.jpeg");
@@ -58,8 +62,9 @@ public class PauseMenu {
         fgColor = new Color(0,102,0);
 
         pauseBgLabel = new JLabel();
-
-        
+        resumeClicked = false;
+        exitClicked = false;
+        leaveClicked = false;
     }
 
     public void start(){
@@ -87,10 +92,17 @@ public class PauseMenu {
         //resume button
         resumeButton.setBounds(75,258,160,32);
         makeButton(resumeButton);
+        resumeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                resumeClicked = true;
+                pauseFrame.setVisible(false);
+            }
+        });
 
 
         //save game buttons
-        saveButton.setBounds(255,258,170,32);
+        saveButton.setBounds(255, 258, 170, 32);
         makeButton(saveButton);
 
         //add image to label
@@ -107,7 +119,8 @@ public class PauseMenu {
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                askUser();
+                exitClicked = true;
+//                askUser();
             }
         });
 
@@ -155,12 +168,14 @@ public class PauseMenu {
             public void mouseClicked(MouseEvent e) {
                 askFrame.setVisible(false);
                 pauseFrame.setVisible(false);
+                leaveClicked = true;
             }
         });
 
         cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                exitClicked = false;
                 askFrame.setVisible(false);
             }
         });
@@ -168,5 +183,27 @@ public class PauseMenu {
 
         askFrame.setVisible(true);
 
+    }
+
+    public boolean isExitClicked() {
+        return exitClicked;
+    }
+    public void falseResumeButton(){resumeClicked = false;}
+    public void falseExitButton(){exitClicked = false;}
+
+    public boolean isLeaveClicked() {
+        return leaveClicked;
+    }
+
+    public boolean isResumeClicked() {
+        return resumeClicked;
+    }
+
+    public JFrame getPauseFrame() {
+        return pauseFrame;
+    }
+
+    public JFrame getAskFrame() {
+        return askFrame;
     }
 }
