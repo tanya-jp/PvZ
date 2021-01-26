@@ -22,14 +22,6 @@ public class StartManager {
     {
         leave = false;
         update();
-//        while (leave)
-        {
-//            mainMenu = new MainMenu();
-//            type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
-//            mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
-//            select();
-//            startNewGame();
-        }
     }
     public static void update()
     {

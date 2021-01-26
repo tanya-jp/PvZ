@@ -27,6 +27,7 @@ public class GameFrame extends JFrame {
     public static final int GAME_WIDTH = 1005;
     private Image sun;
     private Image shovel;
+    private Image finalWave;
     private Image gameOver;
     private String type;
     private String timeType;
@@ -65,6 +66,7 @@ public class GameFrame extends JFrame {
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
         gameOver = new ImageIcon(".\\PVS Design Kit\\images\\gameOver.jpg").getImage();
+        finalWave = new ImageIcon(".\\PVS Design Kit\\images\\huge_wave_of_zombies_text.png.jpg").getImage();
     }
 
     /**
@@ -110,6 +112,9 @@ public class GameFrame extends JFrame {
             g2d.setFont(g2d.getFont().deriveFont(18.0f));
             g2d.setColor(Color.GREEN);
             g2d.drawString("MENU", 890, 50);
+            if(System.currentTimeMillis() - state.getStartTime()> 150000+180000+150000 &&
+                    System.currentTimeMillis() - state.getStartTime()< 150000+180000+150000+500)
+                g2d.drawImage(finalWave, (GAME_WIDTH)/2, GAME_HEIGHT/2, null);
             //set shovel
             setShovel(g2d, state);
             //set cards
@@ -165,7 +170,7 @@ public class GameFrame extends JFrame {
                     info.getValue().setSquashAttacked(false);
                 }
             }
-            else if(info.getValue().getLife()<50)
+            else if(info.getValue().getLife()<60)
             {
                 g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(info.getValue().getLife()<0)
@@ -198,7 +203,7 @@ public class GameFrame extends JFrame {
             }
             else if(info.getValue().getLife()<200 && info.getValue().getLife()>=50)
                 g2d.drawImage(normalZombie.getFullImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
-            else if(info.getValue().getLife()<50)
+            else if(info.getValue().getLife()<60)
             {
                 g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(info.getValue().getLife()<0)
@@ -231,7 +236,7 @@ public class GameFrame extends JFrame {
             }
             else if(info.getValue().getLife()<200 && info.getValue().getLife()>=50)
                 g2d.drawImage(normalZombie.getFullImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
-            else if(info.getValue().getLife()<50)
+            else if(info.getValue().getLife()<60)
             {
                 g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(info.getValue().getLife()<0)
