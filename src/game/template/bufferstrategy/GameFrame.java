@@ -33,6 +33,7 @@ public class GameFrame extends JFrame {
     private NormalZombie normalZombie;
     private BucketHeadZombie bucketHeadZombie;
     private ConeHeadZombie coneHeadZombie;
+    private JLabel menu;
 
     private BufferStrategy bufferStrategy;
 
@@ -45,6 +46,10 @@ public class GameFrame extends JFrame {
         normalZombie = new NormalZombie();
         bucketHeadZombie = new BucketHeadZombie();
         coneHeadZombie = new ConeHeadZombie();
+        menu = new JLabel("MENU");
+        menu.setBounds(870, 35, 120, 20);
+        menu.setBackground(Color.GREEN);
+        menu.setOpaque(true);
 //        background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
         //
         // Initialize the JFrame ...
@@ -99,9 +104,12 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         GameCanvas canvas = new GameCanvas(timeType);
-        if(!state.isGameOver())
+//        if(!state.isGameOver())
         {
             canvas.paintComponent(g2d);
+            g2d.setFont(g2d.getFont().deriveFont(18.0f));
+            g2d.setColor(Color.GREEN);
+            g2d.drawString("MENU", 890, 50);
             //set shovel
             setShovel(g2d, state);
             //set cards
@@ -115,8 +123,8 @@ public class GameFrame extends JFrame {
             //set sun
             setSun(g2d, state);
         }
-        else
-            g2d.drawImage(gameOver, 2,30, GAME_WIDTH, GAME_HEIGHT, null);
+//        else
+//            g2d.drawImage(gameOver, 2,30, GAME_WIDTH, GAME_HEIGHT, null);
 
 //        canvas.render(state);
         //
@@ -127,6 +135,10 @@ public class GameFrame extends JFrame {
     private void setDyingZombie()
     {
 
+    }
+    public boolean getMenu(GameState state)
+    {
+        return state.getMenu();
     }
     private void setZombies(Graphics2D g2d, GameState state)
     {
@@ -296,6 +308,7 @@ public class GameFrame extends JFrame {
             if(delay > 0 && !state.getSun())
                 g2d.drawImage(sun, state.sunX, state.sunY, null);
         g2d.setFont(g2d.getFont().deriveFont(18.0f));
+        g2d.setColor(Color.BLACK);
         g2d.drawString(String.valueOf(state.sunNumber), 55, 125);
     }
 
@@ -316,10 +329,10 @@ public class GameFrame extends JFrame {
 
                     if (state.getInfo().get(loc).equals("peaShooter")) {
                         g2d.drawImage(state.getPea().getFullImage(), locX, locY, null);
-                            for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
-                                if (set.getKey() == loc)
-                                    for (Integer value : set.getValue())
-                                        if(state.getStoppedPeas().get(loc) == null ||
+                        for (HashMap.Entry<Integer, ArrayList<Integer>> set : state.getPea().getBullets().entrySet())
+                            if (set.getKey() == loc)
+                                for (Integer value : set.getValue())
+                                    if(state.getStoppedPeas().get(loc) == null ||
                                             state.getStoppedPeas().get(loc) > locX+value)
                                         g2d.drawImage(state.getPea().getPea(), locX + value + 51, locY + 10, null);
                     } else if (state.getInfo().get(loc).equals("deadPeaShooter"))

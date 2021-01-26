@@ -1,6 +1,9 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import gui.PauseMenu;
+import manager.StartManager;
+
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
@@ -27,11 +30,15 @@ public class GameLoop implements Runnable {
     private GameState state;
     private String type;
     private String timeType;
+    private PauseMenu pauseMenu;
+    private boolean leave;
 
     public GameLoop(GameFrame frame, String type, String timeType) {
+        leave = false;
         this.type = type;
         this.timeType = timeType;
         canvas = frame;
+//        pauseMenu = new PauseMenu();
     }
 
     /**
@@ -48,21 +55,55 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         boolean gameOver = state.isGameOver();
-        System.out.println(gameOver);
-//        boolean gameOver = false;
-        while (!gameOver) {
-            try {
-                long start = System.currentTimeMillis();
-                //
-                state.update();
-                canvas.render(state);
-                //
-                long delay = (1000 / FPS) - (System.currentTimeMillis() - start);
-                if (delay > 0)
-                    Thread.sleep(delay);
-            } catch (InterruptedException ex) {
+        pauseMenu = new PauseMenu();
+        while (!gameOver && !leave) {
+            pauseMenu = new PauseMenu();
+            while (state.getMenu() && !pauseMenu.isExitClicked())
+            {
+                pauseMenu.start();
+                while (!pauseMenu.isResumeClicked() && !pauseMenu.isExitClicked())
+                    pauseMenu.getPauseFrame().setVisible(true);
+                if(pauseMenu.isResumeClicked())
+                {
+                    state.setMenu(false);
+                    pauseMenu.falseResumeButton();
+                }
+                while (pauseMenu.isExitClicked() && !leave)
+                {
+                    pauseMenu.askUser();
+                    state.setMenu(true);
+                    if(pauseMenu.isLeaveClicked())
+                    {
+                        leave = true;
+                        pauseMenu.getAskFrame().setVisible(false);
+                        pauseMenu.getPauseFrame().setVisible(false);
+                    }
+                }
+                if(!pauseMenu.isExitClicked())
+                {
+                    pauseMenu.getAskFrame().setVisible(false);
+                }
+            }
+            if(!state.getMenu())
+            {
+                try {
+                    long start = System.currentTimeMillis();
+                    //
+                    state.update();
+                    canvas.render(state);
+                    //
+                    long delay = (1000 / FPS) - (System.currentTimeMillis() - start);
+                    if (delay > 0)
+                        Thread.sleep(delay);
+                } catch (InterruptedException ex) {
+                }
+                gameOver = state.isGameOver();
             }
         }
+        StartManager.update();
     }
 
+    public boolean isLeave() {
+        return leave;
+    }
 }
