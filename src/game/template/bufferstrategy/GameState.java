@@ -124,8 +124,13 @@ public class GameState {
         updateZombies();
         //update lawn makers state
         checkLawnMakers();
+        //checks if lawn maker clears a flower
         removeFlowers();
     }
+
+    /**
+     * When lawn maker moves, this method clears flowers and every thing that is related to that flower.
+     */
     public void removeFlowers()
     {
         for (int i = 1; i <= 9; i++)
@@ -137,19 +142,13 @@ public class GameState {
                 {
                     if(info.get(loc) != null)
                     {
-//                        if(info.get(loc). equals("peaShooter"))
-//                            info.replace(loc,"deadPeaShooter");
                         if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
                         {
                             info.replace(loc, null);
                             peashooter.removeBullet(loc);
                         }
-//                        else if(info.get(loc).equals("sunFlower"))
-//                            info.replace(loc, "deadSunFlower");
                         else if(info.get(loc).equals("deadSunFlower") || info.get(loc).equals("sunFlower"))
                             info.replace(loc, null);
-//                        else if(info.get(loc).equals("wallNut") || info.get(loc).equals("halfWallNut"))
-//                            info.replace(loc, "deadWallNut");
                         else if(info.get(loc).equals("deadWallNut") || info.get(loc).equals("wallNut")
                                 || info.get(loc).equals("halfWallNut"))
                             info.replace(loc, null);
@@ -161,12 +160,26 @@ public class GameState {
                         else
                             info.replace(loc, null);
                     }
+                    //replace flowers with their dying version
+                    if(info.get(loc+1) != null)
+                    {
+                        if(info.get(loc+1).equals("peaShooter"))
+                            info.replace(loc+1, "deadPeaShooter");
+                        else if(info.get(loc+1).equals("sunFlower"))
+                            info.replace(loc+1, "deadSunFlower");
+                        else if(info.get(loc+1).equals("wallNut")
+                                || info.get(loc+1).equals("halfWallNut"))
+                            info.replace(loc+1, "deadWallNut");
+                    }
                 }
             }
     }
+
+    /**
+     * When lawn maker arrives, kills zombies.
+     */
     public void removeZombies()
     {
-        int zombieCol;
         int zombieRow;
         int lawnMakerCol;
         int dec;
@@ -192,11 +205,18 @@ public class GameState {
                 bucket.getValue().setLife(dec+1100);
         }
     }
+
+    /**
+     * When lawn maker arrives, changes zombies life state to show them the way they are.
+     * @param zombieRow as row of zombie
+     * @param zombieX as x coordinate of zombie
+     * @param lawnMakerCol as column of the cell that lawn maker is in that
+     * @return decrement of zombie's life state
+     */
     public int setZombiesLife(int zombieRow, int zombieX, int lawnMakerCol)
     {
         int zombieCol;
         zombieCol = findColumn(zombieX);
-//        System.out.println(zombieCol);
         if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<=GAME_WIDTH)
         {
             if(lawnMakerCol == zombieCol || zombieCol == 0)
@@ -708,9 +728,15 @@ public class GameState {
         }
     }
 
+    /**
+     * Returns mouse handler
+     */
     public MouseListener getMouseListener() {
         return mouseHandler;
     }
+    /**
+     * Returns mouse handler
+     */
     public MouseMotionListener getMouseMotionListener() {
         return mouseHandler;
     }
@@ -798,22 +824,32 @@ public class GameState {
      */
     public Zombies getZombie(){return zombie;}
 
+    /**
+     * Returns the information of peas which are stopped by zombies
+     * @return HashMap<Integer, Integer> --> key: location of pea shooter,
+     * value: x coordinate tha this peashooter's peas are stopped
+     */
     public HashMap<Integer, Integer> getStoppedPeas() {
         return stoppedPeas;
     }
+
+    /**
+     * After dying a zombie, removes the location of peashooter that its peas were stopped by zombie
+     * @param loc as location of pea shooter/ freeze pea shooter.
+     */
     public void removeStoppedPea(int loc)
     {
         stoppedPeas.replace(loc, null);
     }
-
+    /**
+     * Returns the arrayList of 5 lawn makers in the game
+     */
     public ArrayList<LawnMower> getLawnMowers() {
         return lawnMowers;
     }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
+    /**
+     * Returns true if player lose and false if they should continue playing
+     */
     public boolean isGameOver() {
         return gameOver;
     }
@@ -998,7 +1034,6 @@ public class GameState {
     {
         int x = e.getX();
         int y = e.getY();
-//        System.out.println(x);
         //find the selected location for putting flowers
         if((peashooter.getCard() || sunFlower.getCard() || cherryBomb.getCard()
                 || wallNut.getCard() || freezePeaShooter.getCard() || squash.getCard() ||
