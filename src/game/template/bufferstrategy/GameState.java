@@ -123,6 +123,7 @@ public class GameState {
         peashooter.setBullets();
         freezePeaShooter.setBullets();
         //set zombies
+
         updateZombies();
         //update lawn makers state
         checkLawnMakers();
@@ -148,6 +149,7 @@ public class GameState {
                         {
                             info.replace(loc, null);
                             peashooter.removeBullet(loc);
+                            stoppedPeas.replace(loc, null);
                         }
                         else if(info.get(loc).equals("deadSunFlower") || info.get(loc).equals("sunFlower"))
                             info.replace(loc, null);
@@ -158,6 +160,7 @@ public class GameState {
                         {
                             info.replace(loc, null);
                             freezePeaShooter.removeBullet(loc);
+                            stoppedPeas.replace(loc, null);
                         }
                         else
                             info.replace(loc, null);
@@ -289,7 +292,15 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        zombie.setZombies(1, 10000);
+        if(System.currentTimeMillis() - startTime > 50000 &&
+                System.currentTimeMillis() - startTime < 150000)
+            zombie.setZombies(1, 30000);
+        else if(System.currentTimeMillis() - startTime >= 150000 &&
+                System.currentTimeMillis() - startTime < 150000+180000)
+            zombie.setZombies(2, 30000);
+        else if(System.currentTimeMillis() - startTime >= 150000+180000 &&
+                System.currentTimeMillis() - startTime < 150000+180000+150000)
+            zombie.setZombies(2, 25000);
         zombie.move(type);
         checkZombies();
         killZombies();
@@ -314,18 +325,18 @@ public class GameState {
                         normal.getValue().getX() > (x + shooterX - 3.5) &&
                         (stoppedPeas.get(loc) == null ||
                                 stoppedPeas.get(loc) > shooterX + x)) {
-//                                    System.out.println(loc);
                     normal.getValue().setLife(dec);
                     if(dec == 35)
                         normal.getValue().setFrozen(true);
-//                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) normal.getValue().getX());
-//                    System.out.println(normal.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) normal.getValue().getX());
-                    if (normal.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                    if(normal.getValue().getLife() < 40)
+                        stoppedPeas.replace(loc, null);
+                    if (normal.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
+//                        System.out.println(info.get(zombieLoc).contains("dying"));
+//                        normal.getValue().setLife(60);
                         info.replace(zombieLoc, null);
-//                                    freezePeaShooter.setBullets();
                 }
                 i++;
             }
@@ -351,18 +362,16 @@ public class GameState {
                         cone.getValue().getX() > (x + shooterX - 3.5) &&
                         (stoppedPeas.get(loc) == null ||
                                 stoppedPeas.get(loc) > shooterX + x)) {
-//                                    System.out.println(loc);
                     cone.getValue().setLife(dec);
                     if(dec == 35)
                         cone.getValue().setFrozen(true);
-//                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) cone.getValue().getX());
-//                    System.out.println(cone.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) cone.getValue().getX());
-                    if (cone.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                    if(cone.getValue().getLife() < 40)
+                        stoppedPeas.replace(loc, null);
+                    if (cone.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
                         info.replace(zombieLoc, null);
-//                                    freezePeaShooter.setBullets();
                 }
                 i++;
             }
@@ -388,18 +397,16 @@ public class GameState {
                         bucket.getValue().getX() > (x + shooterX - 3.5) &&
                         (stoppedPeas.get(loc) == null ||
                                 stoppedPeas.get(loc) > shooterX + x)) {
-//                                    System.out.println(loc);
                     bucket.getValue().setLife(dec);
                     if(dec == 35)
                         bucket.getValue().setFrozen(true);
-//                                    set.getValue().set(i, 1500);
                     stoppedPeas.replace(loc, (int) bucket.getValue().getX());
-//                    System.out.println(bucket.getValue().getLife());
                     int zombieLoc = row * 10 + findColumn((int) bucket.getValue().getX());
-                    if (bucket.getValue().getLife() < 50 && info.get(zombieLoc) != null &&
+                    if(bucket.getValue().getLife() < 40)
+                        stoppedPeas.replace(loc, null);
+                    if (bucket.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
                         info.replace(zombieLoc, null);
-//                                    freezePeaShooter.setBullets();
                 }
                 i++;
             }
@@ -841,7 +848,14 @@ public class GameState {
      */
     public void removeStoppedPea(int loc)
     {
-        stoppedPeas.replace(loc, null);
+//        System.out.println("NULLLLLL");
+//        System.out.println("BEFORE"+stoppedPeas.get(loc));
+//        stoppedPeas.replace(loc, null);
+//        System.out.println(stoppedPeas.get(loc));
+        if(info.get(loc)!= null && info.get(loc).equals("peaShooter"))
+            peashooter.addPea(loc);
+        else if(info.get(loc)!= null && info.get(loc).equals("freezePeaShooter"))
+            freezePeaShooter.addPea(loc);
     }
     /**
      * Returns the arrayList of 5 lawn makers in the game
@@ -855,6 +869,7 @@ public class GameState {
     public boolean isGameOver() {
         return gameOver;
     }
+    public long getStartTime(){return startTime;}
 
     public boolean getMenu(){return menu;}
     public void setMenu(boolean set){menu = set;}
@@ -1116,9 +1131,17 @@ public class GameState {
                 if(info.get(loc).equals("sunFlower"))
                     sunFlower.removeSunFlower(loc);
                 else if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
+                {
+                    info.replace(loc, null);
                     peashooter.removeBullet(loc);
+                    removeStoppedPea(loc);
+                }
                 else if(info.get(loc).equals("freezePeaShooter"))
+                {
+                    info.replace(loc, null);
                     freezePeaShooter.removeBullet(loc);
+                    removeStoppedPea(loc);
+                }
                 info.replace(loc, null);
                 shovel = false;
             }
