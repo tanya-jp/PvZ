@@ -32,6 +32,9 @@ public class PauseMenu {
     private boolean exitClicked;
     private boolean leaveClicked;
 
+    //TODO
+    private boolean saveClicked;
+
 
     private final Font font;
     //create all images and handling exceptions
@@ -65,6 +68,8 @@ public class PauseMenu {
         resumeClicked = false;
         exitClicked = false;
         leaveClicked = false;
+        //TODO
+        saveClicked = false;
     }
 
     public void start(){

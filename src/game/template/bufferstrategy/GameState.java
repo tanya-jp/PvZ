@@ -833,6 +833,18 @@ public class GameState {
      */
     public Zombies getZombie(){return zombie;}
 
+    public String getType() {
+        return type;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public HashMap<Integer, Integer> getLifeInfo() {
+        return lifeInfo;
+    }
+
     /**
      * Returns the information of peas which are stopped by zombies
      * @return HashMap<Integer, Integer> --> key: location of pea shooter,

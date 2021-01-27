@@ -1,6 +1,7 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import game.template.meory.Save;
 import gui.PauseMenu;
 import manager.StartManager;
 
@@ -57,6 +58,14 @@ public class GameLoop implements Runnable {
         boolean gameOver = state.isGameOver();
         pauseMenu = new PauseMenu();
         while (!gameOver && !leave) {
+//            System.out.println(System.currentTimeMillis() - state.getStartTime());
+            if(System.currentTimeMillis() - state.getStartTime() >= 30000 &&
+                    System.currentTimeMillis() - state.getStartTime() < 30500 )
+            {
+                System.out.println("$$$$");
+                Save save;
+                save = new Save(state);
+            }
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked())
             {
