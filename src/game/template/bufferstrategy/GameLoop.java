@@ -32,6 +32,7 @@ public class GameLoop implements Runnable {
     private String type;
     private String timeType;
     private PauseMenu pauseMenu;
+//    private GameAudio audio;
     private boolean leave;
 
     public GameLoop(GameFrame frame, String type, String timeType) {
@@ -48,6 +49,7 @@ public class GameLoop implements Runnable {
     public void init() {
         // Perform all initializations ...
         state = new GameState(type, timeType);
+//        audio = new GameAudio();
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
@@ -56,7 +58,10 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         boolean gameOver = state.isGameOver();
+        boolean startAudio = false;
+        boolean zombiesComing = false;
         pauseMenu = new PauseMenu();
+//        audio.playZombiesComing(state);
         while (!gameOver && !leave) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked())
@@ -93,6 +98,23 @@ public class GameLoop implements Runnable {
             }
             if(!state.getMenu())
             {
+//                if(!startAudio)
+//                {
+//                    audio.playStarter(state);
+//                    startAudio = true;
+//                }
+//                if(System.currentTimeMillis() - state.getStartTime() > 40090 &&
+//                        System.currentTimeMillis() - state.getStartTime() < 40090 + 5000 && !zombiesComing)
+//                {
+//                    audio.playZombiesComing(state);
+//                    zombiesComing = true;
+//                }
+//                else if(System.currentTimeMillis() - state.getStartTime() > 40090 + 5000 && zombiesComing)
+//                {
+//                    audio.playZombiesComing(state);
+//                }
+//                audio.playZombiesComing(state);
+
                 try {
                     long start = System.currentTimeMillis();
                     //
@@ -107,7 +129,10 @@ public class GameLoop implements Runnable {
                 gameOver = state.isGameOver();
             }
         }
+        StartManager.leave();
         StartManager.update();
+        leave = false;
+//        System.out.println("leave" + leave);
     }
 
     public boolean isLeave() {

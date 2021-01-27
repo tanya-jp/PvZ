@@ -19,6 +19,10 @@ public interface Card {
      */
     void setCard();
     /**
+     * Sets card state
+     */
+    void setCardState(boolean card);
+    /**
      * If card can be appeared, returns false.
      */
     boolean getCard();

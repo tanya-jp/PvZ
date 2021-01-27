@@ -41,25 +41,25 @@ public class MainMenu{
 
 
     //menu buttons
-    private final JButton newGameButton;
-    private final JButton loadButton;
-    private final JButton rankingButton;
-    private final JButton settingButton;
-    private final JButton quitButton;
+    private JButton newGameButton;
+    private JButton loadButton;
+    private JButton rankingButton;
+    private JButton settingButton;
+    private JButton quitButton;
     //extra button and label
-    private final JLabel changeUsername;
+    private JLabel changeUsername;
     //label to show username of the player
-    private final JLabel usernameLabel;
+    private JLabel usernameLabel;
 
     //start and main frame
-    private final JFrame startFrame;
-    private final JFrame mainFrame;
+    private JFrame startFrame;
+    private  JFrame mainFrame;
 
     /**
      * constructor to create the fields
      */
     public MainMenu(){
-        //create buttons
+//        //create buttons
         newGameButton = new JButton("Adventure");
         loadButton = new JButton("Load Game");
         rankingButton = new JButton("Leaderboards");
@@ -72,14 +72,14 @@ public class MainMenu{
         startFrame = new JFrame("Start");//start frame
         mainFrame = new JFrame("Plants Vs Zombies");//main frame
 
-        createStartGUI();
+//        createStartGUI();
     }
 
     /**
      * This class creates the starting page UI
      *
      */
-    private void createStartGUI(){
+    public void createStartGUI(){
         //create start frame
         startFrame.setSize(1050,650);
         startFrame.setLocationRelativeTo(null);
@@ -123,7 +123,7 @@ public class MainMenu{
     /**
      * this method creates the main page
      */
-    private void createMainMenu(){
+    public void createMainMenu(){
         //set button shapes
         makeButtons(newGameButton);
         makeButtons(settingButton);
@@ -173,7 +173,7 @@ public class MainMenu{
         usernameLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changeUsername.setVisible(!changeUsername.isVisible());
+                changeUsername.setVisible(true);
 
             }
         });
@@ -181,8 +181,8 @@ public class MainMenu{
         changeUsername.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                user.createUserFrame();
-//                user.renameUserFrame();
+//                user.createUserFrame();
+                user.renameUserFrame();
             }
         });
 

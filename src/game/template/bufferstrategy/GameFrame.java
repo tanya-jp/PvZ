@@ -3,13 +3,17 @@ package game.template.bufferstrategy;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 import game.template.Elements.*;
 import game.template.doublebuffering.GameCanvas;
+import player.AudioPlayer;
 
 /**
  * The window on which the rendering is performed.
@@ -137,10 +141,6 @@ public class GameFrame extends JFrame {
         //  to the game 'state' using 'g2d' ...
         //
     }
-    private void setDyingZombie()
-    {
-
-    }
     public boolean getMenu(GameState state)
     {
         return state.getMenu();
@@ -165,7 +165,7 @@ public class GameFrame extends JFrame {
                 g2d.drawImage(normalZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
                 {
-                    state.removeSquash((int)x2, locY);
+                    state.getSquash().removeSquash((int)x2, locY, state.getInfo());
                     info.getValue().setX(-200);
                     info.getValue().setSquashAttacked(false);
                 }
@@ -196,7 +196,7 @@ public class GameFrame extends JFrame {
                 g2d.drawImage(coneHeadZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
                 {
-                    state.removeSquash((int)x2, locY);
+                    state.getSquash().removeSquash((int)x2, locY, state.getInfo());
                     info.getValue().setX(-200);
                     info.getValue().setSquashAttacked(false);
                 }
@@ -229,7 +229,7 @@ public class GameFrame extends JFrame {
                 g2d.drawImage(coneHeadZombie.getDyingImage(), (int) x2 - 2, locY, sizeX, sizeY, null);
                 if(System.currentTimeMillis() - info.getValue().getSquashAttackTime() > 2200)
                 {
-                    state.removeSquash((int)x2, locY);
+                    state.getSquash().removeSquash((int)x2, locY, state.getInfo());
                     info.getValue().setX(-200);
                     info.getValue().setSquashAttacked(false);
                 }

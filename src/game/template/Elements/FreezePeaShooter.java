@@ -99,6 +99,11 @@ public class FreezePeaShooter extends Pea implements Card, Images{
         super.setBullets();
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override

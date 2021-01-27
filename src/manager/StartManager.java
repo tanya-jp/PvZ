@@ -3,6 +3,7 @@ package manager;
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameLoop;
 import game.template.bufferstrategy.ThreadPool;
+import gui.Background;
 import gui.MainMenu;
 import gui.PauseMenu;
 
@@ -16,21 +17,37 @@ public class StartManager {
     private static String type;
     private static String mode;
     private PauseMenu pauseMenu;
-    private static boolean leave;
+//    private static boolean leave;
+    private  static GameFrame frame;
+//    private static GameLoop game;
+    private static int flag;
 
     public StartManager()
     {
-        leave = false;
+        mainMenu = new MainMenu();
+//        mainMenu.setStartBackground();
+        mainMenu.createStartGUI();
         update();
     }
     public static void update()
     {
-        leave = false;
-        mainMenu = new MainMenu();
+//        leave = false;
+        System.out.println(flag);
+        if(flag>0)
+        {
+//            frame.setVisible(false);
+            mainMenu.createMainMenu();
+        }
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
         mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
         select();
-        startNewGame();
+        if(flag == 0)
+            startNewGame();
+    }
+    public static void leave()
+    {
+        frame.setVisible(false);
+        System.out.println("leave");
     }
     public static void select()
     {
@@ -46,7 +63,6 @@ public class StartManager {
     }
     public static void startNewGame()
     {
-        System.out.println("***");
         mainMenu.getNewGameButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -67,7 +83,8 @@ public class StartManager {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GameFrame frame = new GameFrame("Plants Vs. Zombies !", mode, type);
+                flag++;
+                frame = new GameFrame("Plants Vs. Zombies !", mode, type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
@@ -77,11 +94,7 @@ public class StartManager {
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
-                System.out.println(game.isLeave());
-                leave = game.isLeave();
             }
         });
-//        if(leave)
-//            update();
     }
 }

@@ -123,59 +123,48 @@ public class GameState {
         peashooter.setBullets();
         freezePeaShooter.setBullets();
         //set zombies
-
         updateZombies();
         //update lawn makers state
         checkLawnMakers();
         //checks if lawn maker clears a flower
         removeFlowers();
     }
-
     /**
      * When lawn maker moves, this method clears flowers and every thing that is related to that flower.
      */
     public void removeFlowers()
     {
         for (int i = 1; i <= 9; i++)
-            for (int j = 1; j <= 5; j++)
-            {
+            for (int j = 1; j <= 5; j++){
                 int loc = j*10 + i;
                 int lawnMakerColumn = findColumn(lawnMowers.get(j-1).getX());
-                if(j == lawnMowers.get(j-1).getRow() && i == lawnMakerColumn)
-                {
-                    if(info.get(loc) != null)
-                    {
-                        if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
-                        {
+                if(j == lawnMowers.get(j-1).getRow() && i == lawnMakerColumn){
+                    if(info.get(loc) != null){
+                        if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter")){
                             info.replace(loc, null);
                             peashooter.removeBullet(loc);
-                            stoppedPeas.replace(loc, null);
-                        }
+                            stoppedPeas.replace(loc, null);}
                         else if(info.get(loc).equals("deadSunFlower") || info.get(loc).equals("sunFlower"))
                             info.replace(loc, null);
                         else if(info.get(loc).equals("deadWallNut") || info.get(loc).equals("wallNut")
                                 || info.get(loc).equals("halfWallNut"))
                             info.replace(loc, null);
-                        else if(info.get(loc).equals("freezePeaShooter"))
-                        {
+                        else if(info.get(loc).equals("freezePeaShooter")){
                             info.replace(loc, null);
                             freezePeaShooter.removeBullet(loc);
-                            stoppedPeas.replace(loc, null);
-                        }
+                            stoppedPeas.replace(loc, null);}
                         else
                             info.replace(loc, null);
                     }
                     //replace flowers with their dying version
-                    if(info.get(loc+1) != null)
-                    {
+                    if(info.get(loc+1) != null){
                         if(info.get(loc+1).equals("peaShooter"))
                             info.replace(loc+1, "deadPeaShooter");
                         else if(info.get(loc+1).equals("sunFlower"))
                             info.replace(loc+1, "deadSunFlower");
                         else if(info.get(loc+1).equals("wallNut")
                                 || info.get(loc+1).equals("halfWallNut"))
-                            info.replace(loc+1, "deadWallNut");
-                    }
+                            info.replace(loc+1, "deadWallNut"); }
                 }
             }
     }
@@ -222,8 +211,7 @@ public class GameState {
     {
         int zombieCol;
         zombieCol = findColumn(zombieX);
-        if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<=GAME_WIDTH)
-        {
+        if(lawnMowers.get(zombieRow-1).getX()>-30 && lawnMowers.get(zombieRow-1).getX()<=GAME_WIDTH) {
             if(lawnMakerCol == zombieCol || zombieCol == 0)
                 return 40;
             else if(lawnMakerCol == zombieCol+1 || zombieCol == 1)
@@ -249,21 +237,15 @@ public class GameState {
     public boolean moveLawnMovers(int zombieX, int row)
     {
         if(zombieX <= 40 && zombieX > 0)
-        {
             for (LawnMower lawnMower: lawnMowers)
-            {
-                if(row == lawnMower.getRow())
-                {
-                    if(lawnMower.isAvailable())
-                    {
+                if(row == lawnMower.getRow()){
+                    if(lawnMower.isAvailable()){
                         lawnMower.setAvailable(false);
                         return true;
                     }
                     else
                         gameOver = true;
                 }
-            }
-        }
         return false;
     }
 
@@ -292,9 +274,9 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        if(System.currentTimeMillis() - startTime > 50000 &&
+        if(System.currentTimeMillis() - startTime > 1000 &&
                 System.currentTimeMillis() - startTime < 150000)
-            zombie.setZombies(1, 30000);
+            zombie.setZombies(2, 5000);
         else if(System.currentTimeMillis() - startTime >= 150000 &&
                 System.currentTimeMillis() - startTime < 150000+180000)
             zombie.setZombies(2, 30000);
@@ -306,20 +288,24 @@ public class GameState {
         killZombies();
         removeZombies();
     }
-
+    /**
+     * Decrease life state of zombie after peashooters attacking.
+     * @param set as list of peas
+     * @param normal as list of normalZombies
+     * @param dec as decrement of life state
+     * @param row as row number
+     * @param shooterX as x coordinate of peashooter
+     * @param zombieX as x coordinate of zombie
+     * @param loc as location
+     */
     public void normalKiller(HashMap.Entry<Integer, ArrayList<Integer>> set , Map.Entry<Integer, NormalZombie> normal,
-                             int dec) {
-        int row = 0;
-        int shooterX = 0;
-        int zombieX = 0;
-        int i = 0;
-        int loc;
+                             int dec,int row,int shooterX,int zombieX,int loc) {
         row = set.getKey() / 10;
         shooterX = set.getKey() % 10;
         loc = set.getKey();
         shooterX = 66 + (shooterX - 1) * 102;
         if (normal.getValue().getRow() == row) {
-            i = 0;
+            int i = 0;
             for (Integer x : set.getValue()) {
                 if (normal.getValue().getX() < (x + shooterX + 3.5) &&
                         normal.getValue().getX() > (x + shooterX - 3.5) &&
@@ -334,29 +320,31 @@ public class GameState {
                         stoppedPeas.replace(loc, null);
                     if (normal.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
-//                        System.out.println(info.get(zombieLoc).contains("dying"));
-//                        normal.getValue().setLife(60);
                         info.replace(zombieLoc, null);
                 }
                 i++;
             }
         }
     }
-
+    /**
+     * Decrease life state of zombie after peashooters attacking.
+     * @param set as list of peas
+     * @param cone as list of coneHeadZombies
+     * @param dec as decrement of life state
+     * @param row as row number
+     * @param shooterX as x coordinate of peashooter
+     * @param zombieX as x coordinate of zombie
+     * @param loc as location
+     */
     public void coneKiller(HashMap.Entry<Integer, ArrayList<Integer>> set , Map.Entry<Integer, ConeHeadZombie> cone,
-                           int dec)
+                           int dec,int row,int shooterX,int zombieX,int loc)
     {
-        int row = 0;
-        int shooterX = 0;
-        int zombieX = 0;
-        int i = 0;
-        int loc;
         row = set.getKey() / 10;
         shooterX = set.getKey() % 10;
         loc = set.getKey();
         shooterX = 66 + (shooterX - 1) * 102;
         if (cone.getValue().getRow() == row) {
-            i = 0;
+            int i = 0;
             for (Integer x : set.getValue()) {
                 if (cone.getValue().getX() < (x + shooterX + 3.5) &&
                         cone.getValue().getX() > (x + shooterX - 3.5) &&
@@ -377,21 +365,25 @@ public class GameState {
             }
         }
     }
-
+    /**
+     * Decrease life state of zombie after peashooters attacking.
+     * @param set as list of peas
+     * @param bucket as list of bucketHeadZombies
+     * @param dec as decrement of life state
+     * @param row as row number
+     * @param shooterX as x coordinate of peashooter
+     * @param zombieX as x coordinate of zombie
+     * @param loc as location
+     */
     public void bucketKiller (HashMap.Entry<Integer, ArrayList<Integer>> set , Map.Entry<Integer, BucketHeadZombie> bucket,
-                              int dec)
+                              int dec,int row,int shooterX,int zombieX,int loc)
     {
-        int row = 0;
-        int shooterX = 0;
-        int zombieX = 0;
-        int i = 0;
-        int loc;
         row = set.getKey() / 10;
         shooterX = set.getKey() % 10;
         loc = set.getKey();
         shooterX = 66 + (shooterX - 1) * 102;
         if (bucket.getValue().getRow() == row) {
-            i = 0;
+            int i = 0;
             for (Integer x : set.getValue()) {
                 if (bucket.getValue().getX() < (x + shooterX + 3.5) &&
                         bucket.getValue().getX() > (x + shooterX - 3.5) &&
@@ -413,24 +405,32 @@ public class GameState {
         }
     }
 
+    /**
+     * Iterates zombies and peashooter lists and calls killer mothodas
+     */
     public void killZombies() {
+        int row = 0;
+        int shooterX = 0;
+        int zombieX = 0;
+        int i = 0;
+        int loc = 0;
         for (Map.Entry<Integer, NormalZombie> normal : zombie.getNormalInfo().entrySet()) {
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet())
-                normalKiller(set, normal, 30);
+                normalKiller(set, normal, 30, row, shooterX, zombieX, loc);
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : freezePeaShooter.getBullets().entrySet())
-                normalKiller(set, normal, 35);
+                normalKiller(set, normal, 35, row, shooterX, zombieX, loc);
         }
         for (Map.Entry<Integer, ConeHeadZombie> cone : zombie.getConeInfo().entrySet()) {
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet())
-                coneKiller(set, cone, 30);
+                coneKiller(set, cone, 30, row, shooterX, zombieX, loc);
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : freezePeaShooter.getBullets().entrySet())
-                coneKiller(set, cone, 35);
+                coneKiller(set, cone, 35, row, shooterX, zombieX, loc);
         }
         for (Map.Entry<Integer, BucketHeadZombie> bucket : zombie.getBucketInfo().entrySet()) {
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : peashooter.getBullets().entrySet())
-                bucketKiller(set, bucket, 30);
+                bucketKiller(set, bucket, 30, row, shooterX, zombieX, loc);
             for (HashMap.Entry<Integer, ArrayList<Integer>> set : freezePeaShooter.getBullets().entrySet())
-                bucketKiller(set, bucket, 35);
+                bucketKiller(set, bucket, 35, row, shooterX, zombieX, loc);
         }
     }
 
@@ -615,7 +615,6 @@ public class GameState {
                 bucket.getValue().setStopped(false);
         }
     }
-
     /**
      * Changes flower based on its life state when zombie received to it and stops
      * @param zombieLoc location of zombie and flower
@@ -654,21 +653,6 @@ public class GameState {
             return false;
         }
     }
-
-    /**
-     * Removes squash after jumping on zombie
-     * @param x as x coordinate
-     * @param y as y coordinate
-     */
-    public void removeSquash(int x, int y)
-    {
-        int loc = findLoc(x,y);
-        if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
-            info.replace(loc-1, null);
-        else if(info.get(loc)!=null && info.get(loc).contains("quash"))
-            info.replace(loc, null);
-    }
-
     /**
      * makes state of cards based on proper time
      */
@@ -705,16 +689,12 @@ public class GameState {
                 lock = false;
 
     }
-
     /**
      * This class controls sun when it is dropping down.
      */
-    private void changeSunState()
-    {
-        if(sunY > (GAME_HEIGHT - 100))
-        {
-            if(System.currentTimeMillis() - sunDropping > 3000 )
-            {
+    private void changeSunState() {
+        if(sunY > (GAME_HEIGHT - 100)) {
+            if(System.currentTimeMillis() - sunDropping > 3000 ) {
                 sunY = 60;
                 sunX = rand.nextInt(GAME_WIDTH) - 100;
                 if(sunX < 150)
@@ -722,13 +702,10 @@ public class GameState {
                 sunDropping = System.currentTimeMillis();
             }
         }
-        else
-        {
-            if(System.currentTimeMillis() - sunDropping > 1000 )
-            {
+        else {
+            if(System.currentTimeMillis() - sunDropping > 1000 ) {
                 sunY = sunY + 30;
-                if(sunY > (GAME_HEIGHT - 100))
-                {
+                if(sunY > (GAME_HEIGHT - 100)) {
                     sunTime = System.currentTimeMillis();
                     sunState = true;
                 }
@@ -736,123 +713,6 @@ public class GameState {
             }
         }
     }
-
-    /**
-     * Returns mouse handler
-     */
-    public MouseListener getMouseListener() {
-        return mouseHandler;
-    }
-    /**
-     * Returns mouse handler
-     */
-    public MouseMotionListener getMouseMotionListener() {
-        return mouseHandler;
-    }
-
-    /**
-     *If sun has been chosen returns true.
-     * When returns false, means sun should continue dropping.
-     */
-    public boolean getSun()
-    {
-        return sunState;
-    }
-
-    /**
-     * Returns the number of chosen suns*25.
-     */
-    public int getSunNumber(){
-        return sunNumber;
-    }
-    /**
-     * Returns peashooter
-     */
-    public PeaShooter getPea()
-    {
-        return peashooter;
-    }
-    /**
-     * Returns sunFlower
-     */
-    public SunFlower getSunFlower()
-    {
-        return sunFlower;
-    }
-    /**
-     * Returns getCherry
-     */
-    public CherryBomb getCherry()
-    {
-        return cherryBomb;
-    }
-    /**
-     * Returns wall nut
-     */
-    public WallNut getWallNut()
-    {
-        return wallNut;
-    }
-    /**
-     * Returns squash
-     */
-    public Squash getSquash()
-    {
-        return squash;
-    }
-    /**
-     * Returns freeze pea shooter
-     */
-    public FreezePeaShooter getFreezePea()
-    {
-        return freezePeaShooter;
-    }
-    /**
-     *Returns mushroom
-     */
-    public Mushroom getMushroom()
-    {
-        return mushroom;
-    }
-    /**
-     * If shovel has been chosen, returns true.
-     */
-    public boolean getShovel()
-    {
-        return shovel;
-    }
-    /**
-     * Returns info
-     */
-    public HashMap<Integer, String> getInfo()
-    {
-        return info;
-    }
-    /**
-     * Returns all zombies that are playing
-     */
-    public Zombies getZombie(){return zombie;}
-
-    public String getType() {
-        return type;
-    }
-
-    public String getTimeType() {
-        return timeType;
-    }
-
-    public HashMap<Integer, Integer> getLifeInfo() {
-        return lifeInfo;
-    }
-
-    public long getCherryBombState() {
-        return cherryBombState;
-    }
-
-    public long getSunDropping() {
-        return sunDropping;
-    }
-
     /**
      * Returns the information of peas which are stopped by zombies
      * @return HashMap<Integer, Integer> --> key: location of pea shooter,
@@ -866,34 +726,7 @@ public class GameState {
      * After dying a zombie, removes the location of peashooter that its peas were stopped by zombie
      * @param loc as location of pea shooter/ freeze pea shooter.
      */
-    public void removeStoppedPea(int loc)
-    {
-//        System.out.println("NULLLLLL");
-//        System.out.println("BEFORE"+stoppedPeas.get(loc));
-//        stoppedPeas.replace(loc, null);
-//        System.out.println(stoppedPeas.get(loc));
-        if(info.get(loc)!= null && info.get(loc).equals("peaShooter"))
-            peashooter.addPea(loc);
-        else if(info.get(loc)!= null && info.get(loc).equals("freezePeaShooter"))
-            freezePeaShooter.addPea(loc);
-    }
-    /**
-     * Returns the arrayList of 5 lawn makers in the game
-     */
-    public ArrayList<LawnMower> getLawnMowers() {
-        return lawnMowers;
-    }
-    /**
-     * Returns true if player lose and false if they should continue playing
-     */
-    public boolean isGameOver() {
-        return gameOver;
-    }
-    public long getStartTime(){return startTime;}
-
-    public boolean getMenu(){return menu;}
-    public void setMenu(boolean set){menu = set;}
-
+    public void removeStoppedPea(int loc) { stoppedPeas.replace(loc, null); }
     /**
      * find columns number of a location
      * @param x as x coordinate
@@ -928,7 +761,7 @@ public class GameState {
      * @param y of clicked location
      * @return chosen location in the form of yx -> row*10 + column
      */
-    public int findLoc(int x, int y)
+    public static int findLoc(int x, int y)
     {
         int c=0, r=0;
         //find row of chosen cell
@@ -1208,5 +1041,119 @@ public class GameState {
         public void mouseMoved(MouseEvent e) {
         }
     }
+    //Getter setters
+    /**
+     * Returns mouse handler
+     */
+    public MouseListener getMouseListener() { return mouseHandler; }
+    /**
+     * Returns mouse handler
+     */
+    public MouseMotionListener getMouseMotionListener() { return mouseHandler;}
+    /**
+     *If sun has been chosen returns true.
+     * When returns false, means sun should continue dropping.
+     */
+    public boolean getSun() { return sunState; }
+    /**
+     * Returns the number of chosen suns*25.
+     */
+    public int getSunNumber(){ return sunNumber; }
+    /**
+     * Returns peashooter
+     */
+    public PeaShooter getPea() { return peashooter; }
+    /**
+     * Returns sunFlower
+     */
+    public SunFlower getSunFlower() { return sunFlower; }
+    /**
+     * Returns getCherry
+     */
+    public CherryBomb getCherry() { return cherryBomb; }
+    /**
+     * Returns wall nut
+     */
+    public WallNut getWallNut() { return wallNut; }
+    /**
+     * Returns squash
+     */
+    public Squash getSquash() { return squash; }
+    /**
+     * Returns freeze pea shooter
+     */
+    public FreezePeaShooter getFreezePea() { return freezePeaShooter; }
+    /**
+     *Returns mushroom
+     */
+    public Mushroom getMushroom() { return mushroom; }
+    /**
+     * If shovel has been chosen, returns true.
+     */
+    public boolean getShovel() { return shovel; }
+    /**
+     * Returns info
+     */
+    public HashMap<Integer, String> getInfo() { return info; }
+    /**
+     * Returns all zombies that are playing
+     */
+    public Zombies getZombie(){return zombie;}
+    /**
+     * Returns game type: normal / hard
+     */
+    public String getType() { return type; }
+    /**
+     * Returns game time type: day / night
+     */
+    public String getTimeType() {return timeType; }
+    /**
+     * Returns hashmap of life state infromation
+     */
+    public HashMap<Integer, Integer> getLifeInfo() { return lifeInfo; }
+    /**
+     * Returns cherryBomb state -> the time of starting to explode
+     */
+    public long getCherryBombState() { return cherryBombState; }
+    /**
+     * Returns the time of starting to drop
+     */
+    public long getSunDropping() {return sunDropping; }
+    /**
+     * Returns the arrayList of 5 lawn makers in the game
+     */
+    public ArrayList<LawnMower> getLawnMowers() { return lawnMowers; }
+    /**
+     * Returns true if player lose and false if they should continue playing
+     */
+    public boolean isGameOver() { return gameOver; }
+    /**
+     * Returns the time that game started
+     */
+    public long getStartTime(){return startTime;}
+    /**
+     * If menu has been selected returns true
+     */
+    public boolean getMenu(){return menu;}
+    /**
+     * Sets if menu has been chosen -> true
+     */
+    public void setMenu(boolean set){menu = set;}
+    /**
+     * Sets time of game -> normal / hard
+     */
+    public void setType(String type) {this.type = type; }
+    /**
+     * Sets time type of game -> night / day
+     */
+    public void setTimeType(String timeType) { this.timeType = timeType; }
+    /**
+     * Sets time of starting the game
+     */
+    public void setStartTime(long startTime) { this.startTime = startTime; }
+    /**
+     * Sets the number of suns
+     */
+    public void setSunNumber(int sunNumber) {this.sunNumber = sunNumber; }
 }
 

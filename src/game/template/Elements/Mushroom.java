@@ -58,6 +58,11 @@ public class Mushroom implements Card, Images{
         return mushroomFull;
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override

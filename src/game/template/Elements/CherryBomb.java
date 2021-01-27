@@ -59,6 +59,11 @@ public class CherryBomb implements Card, Images{
         return cherryFull;
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override
