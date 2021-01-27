@@ -3,6 +3,8 @@ package utils;
 //import model.Note;
 
 import java.io.*;
+import java.util.Scanner;
+
 /**
  * This class does things related to files, such as reading a file, writing a file
  * and other things that are clear in the methods.
@@ -100,5 +102,62 @@ public class FileUtils {
             return content;
         }
         return System.currentTimeMillis() + "_new file.txt";
+    }
+    /**
+     * Scans a file and reads it line by line and finds the wanted line
+     * @param file as file
+     * @param lineNumber as number of wanted line
+     * @return String of wanted line
+     */
+    public static String scanByLineNumber(File file, int lineNumber)
+    {
+        String result = "";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+        int counter = 0;
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if(counter == lineNumber)
+                result = line;
+            counter++;
+        }
+        scanner.close();
+        return result;
+    }
+
+    /**
+     * Scans a file and reads it line by line and finds the wanted lines
+     * @param file as a file that should be read
+     * @param str1 as string that starts
+     * @param str2 as that starts next content.
+     * @return wanted String
+     */
+    public static String scanByLineNumber(File file, String str1, String str2)
+    {
+        String result = "";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if(line.equals(str1))
+                result = line;
+            else if(!line.equals(str2))
+                result = result + "\n"+ line;
+            else if(line.equals(str2))
+            {
+                scanner.close();
+                break;
+            }
+        }
+        scanner.close();
+        return result;
     }
 }

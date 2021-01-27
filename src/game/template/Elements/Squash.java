@@ -114,4 +114,9 @@ public class Squash implements Card, Images{
     {
         this.lock = lock;
     }
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    @Override
+    public long getFlowerTime(){return flowerTime;}
 }

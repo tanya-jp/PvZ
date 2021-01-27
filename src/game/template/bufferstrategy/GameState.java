@@ -845,6 +845,14 @@ public class GameState {
         return lifeInfo;
     }
 
+    public long getCherryBombState() {
+        return cherryBombState;
+    }
+
+    public long getSunDropping() {
+        return sunDropping;
+    }
+
     /**
      * Returns the information of peas which are stopped by zombies
      * @return HashMap<Integer, Integer> --> key: location of pea shooter,

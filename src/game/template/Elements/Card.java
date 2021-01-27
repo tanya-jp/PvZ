@@ -37,5 +37,9 @@ public interface Card {
      * Locks or unlocks the flower.
      */
     void setLock(boolean lock);
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    long getFlowerTime();
 
 }
