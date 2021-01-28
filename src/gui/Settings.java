@@ -132,12 +132,10 @@ public class Settings {
                 if(typeButton.getBackground().equals(Color.YELLOW)){
                     typeButton.setBackground(Color.CYAN);
                     typeButton.setText("Night");
-//                    System.out.println("to night");
                 }
                 else {
                     typeButton.setBackground(Color.YELLOW);
                     typeButton.setText("Day");
-//                    System.out.println("to day");
                 }
             }
         });
@@ -153,13 +151,13 @@ public class Settings {
                     soundButton.setBackground(Color.darkGray);
                     soundButton.setIcon(offIcon);
                     soundButton.setText("Off");
-//                    System.out.println("to off");
+
                 }
                 else {
                     soundButton.setBackground(bgColor);
                     soundButton.setIcon(onIcon);
                     soundButton.setText("On");
-//                    System.out.println("to on");
+
                 }
             }
         });
@@ -235,11 +233,6 @@ public class Settings {
         cherryLabel.setOpaque(true);
 
         plantsPanel.add(cherryLabel);
-//        plantsPanel.add(new JLabel());
-//        plantsPanel.add(new JLabel());
-//        plantsPanel.add(new JLabel());
-//        plantsPanel.add(new JLabel());
-//        plantsPanel.add(new JLabel());
 
         plantsBg.add(plantsPanel);
 
@@ -250,7 +243,7 @@ public class Settings {
     public JButton getOkButton() {
         return okButton;
     }
-    //TODO
+
     public JButton getSoundButton() {
         return soundButton;
     }
