@@ -301,4 +301,9 @@ public class MainMenu{
     {
         mainFrame.setVisible(false);
     }
+
+
+    public User getUser() {
+        return user;
+    }
 }
