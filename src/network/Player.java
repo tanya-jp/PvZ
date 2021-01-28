@@ -27,11 +27,12 @@ public class Player {
         }
         //StartManager startManager = new StartManager();
         StartManager.getMainMenu().createStartGUI();
+        StartManager.setMusic("on");
         StartManager.update();
         String newUsername;
         JButton okButton;
         newUsername = StartManager.getMainMenu().getUser().getNewUserField().getText().toLowerCase();
-        okButton = StartManager.getMainMenu().getUser().getCreateButton();
+        okButton = StartManager.getMainMenu().getUser().getLoginButton();
 
         okButton.addMouseListener(new MouseAdapter() {
             @Override

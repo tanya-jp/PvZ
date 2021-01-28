@@ -22,6 +22,10 @@ public class User {
 
     private final Font font;
 
+    //TODO:add new buttons
+    private JButton loginButton;
+    private JButton signUpButton;
+
     {
         try {
             userBg = new Background(".\\Extras\\new_user.jpeg");
@@ -54,6 +58,10 @@ public class User {
         renameUserField = new JTextField();
 
         font = new Font("new",Font.PLAIN,18);
+
+        //TODO:
+        loginButton = new JButton("Login");
+        signUpButton = new JButton("Sign Up");
     }
 
     public void createUserFrame(){
@@ -67,8 +75,16 @@ public class User {
         createButton.setBounds(40,210,320,30);
         makeButton(createButton);
 
+        //TODO:
+        loginButton.setBounds(40,210,160,30);
+        signUpButton.setBounds(200,210,160,30);
+        makeButton(loginButton);
+        makeButton(signUpButton);
+
         userBg.add(newUserField);
-        userBg.add(createButton);
+        userBg.add(loginButton);
+        userBg.add(signUpButton);
+//        userBg.add(createButton);
         userFrame.setVisible(true);
 
     }
@@ -116,4 +132,11 @@ public class User {
         return newUserField;
     }
 
+    //TODO:
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+    public JButton getSignUpButton() {
+        return signUpButton;
+    }
 }

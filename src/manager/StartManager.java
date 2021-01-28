@@ -6,6 +6,7 @@ import game.template.bufferstrategy.GameLoop;
 import game.template.bufferstrategy.ThreadPool;
 import gui.MainMenu;
 import gui.PauseMenu;
+import network.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class StartManager {
-    private static MainMenu mainMenu;
+    private static MainMenu mainMenu = new MainMenu();
     private static String type;
     private static String mode;
     private PauseMenu pauseMenu;
@@ -23,13 +24,17 @@ public class StartManager {
     //TODO
     private static String music;
 
+    private Server server;
+
     public StartManager()
     {
+        server = new Server();
         //TODO
-        music = "on";
-        mainMenu = new MainMenu();
-        mainMenu.createStartGUI();
-        update();
+        server.waitForClient();
+ //       music = "on";
+ //       mainMenu = new MainMenu();
+ //       mainMenu.createStartGUI();
+        //       update();
     }
     public static void update()
     {
@@ -108,5 +113,17 @@ public class StartManager {
                 // and the game starts ...
             }
         });
+    }
+
+    public static MainMenu getMainMenu() {
+        return mainMenu;
+    }
+
+    public static String getMusic() {
+        return music;
+    }
+
+    public static void setMusic(String music) {
+        StartManager.music = music;
     }
 }
