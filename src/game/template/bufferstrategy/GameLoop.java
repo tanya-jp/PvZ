@@ -2,12 +2,15 @@
 package game.template.bufferstrategy;
 
 import game.memory.Save;
+import gui.GameOver;
 import gui.PauseMenu;
 import manager.StartManager;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 /**
@@ -64,7 +67,8 @@ public class GameLoop implements Runnable {
         boolean gameOver = false;
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
-        while (!gameOver && !leave) {
+        //TODO
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 1000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -102,18 +106,43 @@ public class GameLoop implements Runnable {
                 } catch (InterruptedException ex) {
                 }
             }
-            if(gameOver)
-                leave = true;
             gameOver = state.isGameOver();
             audio.playBackGround(state, leave, gameOver);
 
         }
+        //TODO
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 1000)
+        {
+            GameOver end = new GameOver();
+            audio.playEndGame(true);
+            int flag = 0;
+            if(gameOver)
+                end.setType("gameOver");
+            else if(System.currentTimeMillis() - state.getStartTime() >= 1000)
+                end.setType("endOfGame");
+            end.start();
+            end.getLeaveButton().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    audio.playEndGame(false);
+                    end.closeFrame();
+                    backToMenu();
+                }
+            });
+        }
+        else if(leave)
+        {
+            backToMenu();
+        }
+    }
+    //TODO
+    /**
+     * Closes gameFrame and shows main menu again.
+     */
+    private void backToMenu()
+    {
         StartManager.leave();
         StartManager.update();
         leave = false;
-    }
-
-    public boolean isLeave() {
-        return leave;
     }
 }
