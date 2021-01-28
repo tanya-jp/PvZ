@@ -78,6 +78,11 @@ public class WallNut implements Card, Images{
         return wallNutDead;
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override
@@ -126,4 +131,9 @@ public class WallNut implements Card, Images{
     {
         this.lock = lock;
     }
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    @Override
+    public long getFlowerTime(){return flowerTime;}
 }

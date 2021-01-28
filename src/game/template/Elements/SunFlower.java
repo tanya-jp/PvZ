@@ -88,6 +88,13 @@ public class SunFlower implements Card, Images {
     }
 
     /**
+     * Returns time of appearing suns.
+     */
+    public HashMap<Integer, Long> getSunFlowerSunTime() {
+        return sunFlowerSunTime;
+    }
+
+    /**
      * After clicking on the produced sun by sunFlower, increases sunNumbers and removes if from hashmaps.
      * @param loc clicked location(location of sinFlower)
      * @param sunNumber number of chosen suns
@@ -160,6 +167,11 @@ public class SunFlower implements Card, Images {
         return sunFlowerDead;
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override
@@ -208,4 +220,9 @@ public class SunFlower implements Card, Images {
     {
         this.lock = lock;
     }
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    @Override
+    public long getFlowerTime(){return flowerTime;}
 }

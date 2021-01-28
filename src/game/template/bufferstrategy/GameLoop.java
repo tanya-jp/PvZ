@@ -1,8 +1,14 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import game.memory.Save;
 import gui.PauseMenu;
 import manager.StartManager;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 
 /**
  * A very simple structure for the main game loop.
@@ -31,6 +37,7 @@ public class GameLoop implements Runnable {
     private String type;
     private String timeType;
     private PauseMenu pauseMenu;
+    private GameAudio audio;
     private boolean leave;
 
     public GameLoop(GameFrame frame, String type, String timeType) {
@@ -54,38 +61,35 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        boolean gameOver = state.isGameOver();
+        boolean gameOver = false;
         pauseMenu = new PauseMenu();
+        audio = new GameAudio();
         while (!gameOver && !leave) {
             pauseMenu = new PauseMenu();
-            while (state.getMenu() && !pauseMenu.isExitClicked())
-            {
+            while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
                 while (!pauseMenu.isResumeClicked() && !pauseMenu.isExitClicked())
                     pauseMenu.getPauseFrame().setVisible(true);
-                if(pauseMenu.isResumeClicked())
-                {
+                if(pauseMenu.isResumeClicked()) {
                     state.setMenu(false);
-                    pauseMenu.falseResumeButton();
-                }
-                while (pauseMenu.isExitClicked() && !leave)
-                {
+                    pauseMenu.falseResumeButton(); }
+                if(pauseMenu.isSaveClicked()) {
+                    pauseMenu.falseSaveButton();
+                    Save save;
+                    save = new Save(state); }
+                while (pauseMenu.isExitClicked() && !leave) {
                     pauseMenu.askUser();
                     state.setMenu(true);
-                    if(pauseMenu.isLeaveClicked())
-                    {
+                    if(pauseMenu.isLeaveClicked()) {
                         leave = true;
                         pauseMenu.getAskFrame().setVisible(false);
-                        pauseMenu.getPauseFrame().setVisible(false);
-                    }
+                        pauseMenu.getPauseFrame().setVisible(false); }
                 }
                 if(!pauseMenu.isExitClicked())
-                {
                     pauseMenu.getAskFrame().setVisible(false);
-                }
             }
-            if(!state.getMenu())
-            {
+            if(!state.getMenu()) {
+                audio.playZombiesComing(state);
                 try {
                     long start = System.currentTimeMillis();
                     //
@@ -97,10 +101,16 @@ public class GameLoop implements Runnable {
                         Thread.sleep(delay);
                 } catch (InterruptedException ex) {
                 }
-                gameOver = state.isGameOver();
             }
+            if(gameOver)
+                leave = true;
+            gameOver = state.isGameOver();
+            audio.playBackGround(state, leave, gameOver);
+
         }
+        StartManager.leave();
         StartManager.update();
+        leave = false;
     }
 
     public boolean isLeave() {
