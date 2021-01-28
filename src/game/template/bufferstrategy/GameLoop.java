@@ -39,14 +39,18 @@ public class GameLoop implements Runnable {
     private GameState state;
     private String type;
     private String timeType;
+    //TODO
+    private String music;
     private PauseMenu pauseMenu;
     private GameAudio audio;
     private boolean leave;
 
-    public GameLoop(GameFrame frame, String type, String timeType) {
+    public GameLoop(GameFrame frame, String type, String timeType, String music) {
         leave = false;
         this.type = type;
         this.timeType = timeType;
+        //TODO
+        this.music = music;
         canvas = frame;
 //        pauseMenu = new PauseMenu();
     }
@@ -68,7 +72,7 @@ public class GameLoop implements Runnable {
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
         //TODO
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 1000) {
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 480000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -93,7 +97,8 @@ public class GameLoop implements Runnable {
                     pauseMenu.getAskFrame().setVisible(false);
             }
             if(!state.getMenu()) {
-                audio.playZombiesComing(state);
+                if(!music.equals("off"))
+                    audio.playZombiesComing(state);
                 try {
                     long start = System.currentTimeMillis();
                     //
@@ -107,24 +112,27 @@ public class GameLoop implements Runnable {
                 }
             }
             gameOver = state.isGameOver();
-            audio.playBackGround(state, leave, gameOver);
+            if(!music.equals("off"))
+                audio.playBackGround(state, leave, gameOver);
 
         }
         //TODO
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 1000)
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 480000)
         {
             GameOver end = new GameOver();
-            audio.playEndGame(true);
+            if(!music.equals("off"))
+                audio.playEndGame(true);
             int flag = 0;
             if(gameOver)
                 end.setType("gameOver");
-            else if(System.currentTimeMillis() - state.getStartTime() >= 1000)
+            else if(System.currentTimeMillis() - state.getStartTime() >= 480000)
                 end.setType("endOfGame");
             end.start();
             end.getLeaveButton().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    audio.playEndGame(false);
+                    if(!music.equals("off"))
+                        audio.playEndGame(false);
                     end.closeFrame();
                     backToMenu();
                 }

@@ -20,9 +20,13 @@ public class StartManager {
     private  static GameFrame frame;
     private static int flag;
     private static GameAudio audio;
+    //TODO
+    private static String music;
 
     public StartManager()
     {
+        //TODO
+        music = "on";
         mainMenu = new MainMenu();
         mainMenu.createStartGUI();
         update();
@@ -30,13 +34,16 @@ public class StartManager {
     public static void update()
     {
         audio = new GameAudio();
-        audio.playMenu(true);
+        if(!music.equals("off"))
+            audio.playMenu(true);
         if(flag>0)
         {
             mainMenu.createMainMenu();
         }
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
         mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
+        //TODO
+        music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
         select();
         if(flag == 0)
             startNewGame();
@@ -52,6 +59,13 @@ public class StartManager {
             public void mouseClicked(MouseEvent e) {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
+                //TODO
+                music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
+                if(music.equals("off"))
+                {
+                    audio.playMenu(false);
+                    System.out.println("***");
+                }
             }
         });
     }
@@ -78,14 +92,17 @@ public class StartManager {
             @Override
             public void run() {
                 flag++;
-                audio.playMenu(false);
+                //TODO
+                if(!music.equals("off"))
+                    audio.playMenu(false);
                 frame = new GameFrame("Plants Vs. Zombies !", mode, type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                 frame.initBufferStrategy();
                 // Create and execute the game-loop
-                GameLoop game = new GameLoop(frame,  mode, type);
+                //TODO
+                GameLoop game = new GameLoop(frame,  mode, type, music);
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
