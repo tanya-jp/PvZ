@@ -21,7 +21,8 @@ public class GameAudio {
         zombiesComing = ".\\PVS Design Kit\\sounds\\zombies_coming.wav";
         background = ".\\PVS Design Kit\\sounds\\background.wav";
         menu = ".\\PVS Design Kit\\sounds\\menu.wav";
-        gameEnd = ".\\PVS Design Kit\\game_end\\menu.wav";
+        //TODO correct the path
+        gameEnd = ".\\PVS Design Kit\\sounds\\game_end.wav";
         zombiesComingState = false;
         backGroundState = false;
         menuState = false;
@@ -45,7 +46,7 @@ public class GameAudio {
         backGroundClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void playBackGround(GameState state, boolean leave, boolean gameOver) {
-    if (System.currentTimeMillis() - state.getStartTime() < 480000 && !gameOver
+        if (System.currentTimeMillis() - state.getStartTime() < 480000 && !gameOver
                 && !leave && !backGroundState)
         {
             try {
@@ -91,6 +92,24 @@ public class GameAudio {
         {
             try {
                 MusicPlayer.play(menu);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            MusicPlayer.stopPlaying();
+    }
+    //TODO
+    public void playEndGame(boolean play)
+    {
+        if(play)
+        {
+            try {
+                MusicPlayer.play(gameEnd);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (UnsupportedAudioFileException e) {

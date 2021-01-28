@@ -250,4 +250,8 @@ public class Settings {
     public JButton getOkButton() {
         return okButton;
     }
+    //TODO
+    public JButton getSoundButton() {
+        return soundButton;
+    }
 }
