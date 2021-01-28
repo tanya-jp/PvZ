@@ -1,9 +1,9 @@
 package manager;
 
+import game.template.bufferstrategy.GameAudio;
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameLoop;
 import game.template.bufferstrategy.ThreadPool;
-import gui.Background;
 import gui.MainMenu;
 import gui.PauseMenu;
 
@@ -17,25 +17,22 @@ public class StartManager {
     private static String type;
     private static String mode;
     private PauseMenu pauseMenu;
-//    private static boolean leave;
     private  static GameFrame frame;
-//    private static GameLoop game;
     private static int flag;
+    private static GameAudio audio;
 
     public StartManager()
     {
         mainMenu = new MainMenu();
-//        mainMenu.setStartBackground();
         mainMenu.createStartGUI();
         update();
     }
     public static void update()
     {
-//        leave = false;
-        System.out.println(flag);
+        audio = new GameAudio();
+        audio.playMenu(true);
         if(flag>0)
         {
-//            frame.setVisible(false);
             mainMenu.createMainMenu();
         }
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
@@ -47,7 +44,6 @@ public class StartManager {
     public static void leave()
     {
         frame.setVisible(false);
-        System.out.println("leave");
     }
     public static void select()
     {
@@ -56,8 +52,6 @@ public class StartManager {
             public void mouseClicked(MouseEvent e) {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
-                System.out.println(type);
-                System.out.println(mode);
             }
         });
     }
@@ -84,6 +78,7 @@ public class StartManager {
             @Override
             public void run() {
                 flag++;
+                audio.playMenu(false);
                 frame = new GameFrame("Plants Vs. Zombies !", mode, type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

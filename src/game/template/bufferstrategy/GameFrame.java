@@ -3,17 +3,13 @@ package game.template.bufferstrategy;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.sound.sampled.*;
 import javax.swing.*;
 
 import game.template.Elements.*;
 import game.template.doublebuffering.GameCanvas;
-import player.AudioPlayer;
 
 /**
  * The window on which the rendering is performed.

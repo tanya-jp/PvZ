@@ -243,7 +243,7 @@ public class GameState {
                         lawnMower.setAvailable(false);
                         return true;
                     }
-                    else
+                    else if(lawnMower.getX() > GAME_WIDTH)
                         gameOver = true;
                 }
         return false;
@@ -274,9 +274,9 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        if(System.currentTimeMillis() - startTime > 1000 &&
+        if(System.currentTimeMillis() - startTime > 300 &&
                 System.currentTimeMillis() - startTime < 150000)
-            zombie.setZombies(2, 5000);
+            zombie.setZombies(2, 10000);
         else if(System.currentTimeMillis() - startTime >= 150000 &&
                 System.currentTimeMillis() - startTime < 150000+180000)
             zombie.setZombies(2, 30000);

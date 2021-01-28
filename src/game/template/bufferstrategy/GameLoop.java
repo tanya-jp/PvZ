@@ -5,6 +5,10 @@ import game.memory.Save;
 import gui.PauseMenu;
 import manager.StartManager;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
@@ -32,7 +36,7 @@ public class GameLoop implements Runnable {
     private String type;
     private String timeType;
     private PauseMenu pauseMenu;
-//    private GameAudio audio;
+    private GameAudio audio;
     private boolean leave;
 
     public GameLoop(GameFrame frame, String type, String timeType) {
@@ -49,7 +53,6 @@ public class GameLoop implements Runnable {
     public void init() {
         // Perform all initializations ...
         state = new GameState(type, timeType);
-//        audio = new GameAudio();
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
@@ -58,63 +61,34 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         boolean gameOver = state.isGameOver();
-        boolean startAudio = false;
-        boolean zombiesComing = false;
         pauseMenu = new PauseMenu();
-//        audio.playZombiesComing(state);
+        audio = new GameAudio();
         while (!gameOver && !leave) {
             pauseMenu = new PauseMenu();
-            while (state.getMenu() && !pauseMenu.isExitClicked())
-            {
+            while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
                 while (!pauseMenu.isResumeClicked() && !pauseMenu.isExitClicked())
                     pauseMenu.getPauseFrame().setVisible(true);
-                if(pauseMenu.isResumeClicked())
-                {
+                if(pauseMenu.isResumeClicked()) {
                     state.setMenu(false);
-                    pauseMenu.falseResumeButton();
-                }
-                if(pauseMenu.isSaveClicked())
-                {
+                    pauseMenu.falseResumeButton(); }
+                if(pauseMenu.isSaveClicked()) {
                     pauseMenu.falseSaveButton();
                     Save save;
-                    save = new Save(state);
-                }
-                while (pauseMenu.isExitClicked() && !leave)
-                {
+                    save = new Save(state); }
+                while (pauseMenu.isExitClicked() && !leave) {
                     pauseMenu.askUser();
                     state.setMenu(true);
-                    if(pauseMenu.isLeaveClicked())
-                    {
+                    if(pauseMenu.isLeaveClicked()) {
                         leave = true;
                         pauseMenu.getAskFrame().setVisible(false);
-                        pauseMenu.getPauseFrame().setVisible(false);
-                    }
+                        pauseMenu.getPauseFrame().setVisible(false); }
                 }
                 if(!pauseMenu.isExitClicked())
-                {
                     pauseMenu.getAskFrame().setVisible(false);
-                }
             }
-            if(!state.getMenu())
-            {
-//                if(!startAudio)
-//                {
-//                    audio.playStarter(state);
-//                    startAudio = true;
-//                }
-//                if(System.currentTimeMillis() - state.getStartTime() > 40090 &&
-//                        System.currentTimeMillis() - state.getStartTime() < 40090 + 5000 && !zombiesComing)
-//                {
-//                    audio.playZombiesComing(state);
-//                    zombiesComing = true;
-//                }
-//                else if(System.currentTimeMillis() - state.getStartTime() > 40090 + 5000 && zombiesComing)
-//                {
-//                    audio.playZombiesComing(state);
-//                }
-//                audio.playZombiesComing(state);
-
+            if(!state.getMenu()) {
+                audio.playZombiesComing(state);
                 try {
                     long start = System.currentTimeMillis();
                     //
@@ -128,11 +102,13 @@ public class GameLoop implements Runnable {
                 }
                 gameOver = state.isGameOver();
             }
+            if(gameOver)
+                leave = true;
+            audio.playBackGround(state, leave, gameOver);
         }
         StartManager.leave();
         StartManager.update();
         leave = false;
-//        System.out.println("leave" + leave);
     }
 
     public boolean isLeave() {
