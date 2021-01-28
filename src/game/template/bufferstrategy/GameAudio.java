@@ -31,7 +31,6 @@ public class GameAudio {
             try {
                 MusicPlayer.play(background);
                 backGroundState = true;
-                System.out.println("(((((");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (UnsupportedAudioFileException e) {
@@ -44,7 +43,6 @@ public class GameAudio {
                 || leave) && backGroundState)
         {
             MusicPlayer.stopPlaying();
-            System.out.println(")))))))))");
         }
     }
     public void playZombiesComing(GameState state) {
