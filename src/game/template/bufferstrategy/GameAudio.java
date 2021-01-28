@@ -3,6 +3,7 @@ package game.template.bufferstrategy;
 import player.MusicPlayer;
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 
 public class GameAudio {
@@ -13,6 +14,8 @@ public class GameAudio {
     private boolean zombiesComingState;
     private boolean backGroundState;
     private boolean menuState;
+    private Clip backGroundClip;
+    AudioInputStream audioInputStream;
     public GameAudio()
     {
         zombiesComing = ".\\PVS Design Kit\\sounds\\zombies_coming.wav";
@@ -22,27 +25,44 @@ public class GameAudio {
         zombiesComingState = false;
         backGroundState = false;
         menuState = false;
+        try {
+            setBackground();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void setBackground()throws IOException, UnsupportedAudioFileException, LineUnavailableException
+    {
+        audioInputStream =
+                AudioSystem.getAudioInputStream(new File(background).getAbsoluteFile());
+        backGroundClip = AudioSystem.getClip();
+
+        backGroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
     public void playBackGround(GameState state, boolean leave, boolean gameOver) {
     if (System.currentTimeMillis() - state.getStartTime() < 480000 && !gameOver
                 && !leave && !backGroundState)
         {
             try {
-                MusicPlayer.play(background);
-                backGroundState = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
+                backGroundClip.open(audioInputStream);
+                backGroundClip.loop(Clip.LOOP_CONTINUOUSLY);
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            backGroundClip.start();
+            backGroundState = true;
         }
         else if( (System.currentTimeMillis() - state.getStartTime() >= 480000 || gameOver
                 || leave) && backGroundState)
         {
-            MusicPlayer.stopPlaying();
+            backGroundClip.close();
         }
     }
     public void playZombiesComing(GameState state) {

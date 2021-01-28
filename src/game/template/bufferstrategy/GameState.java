@@ -274,9 +274,9 @@ public class GameState {
     public void updateZombies() {
         //find zombies location
         zombie.findCells(info);
-        if(System.currentTimeMillis() - startTime > 300 &&
+        if(System.currentTimeMillis() - startTime > 50000 &&
                 System.currentTimeMillis() - startTime < 150000)
-            zombie.setZombies(2, 10000);
+            zombie.setZombies(1, 25000);
         else if(System.currentTimeMillis() - startTime >= 150000 &&
                 System.currentTimeMillis() - startTime < 150000+180000)
             zombie.setZombies(2, 30000);

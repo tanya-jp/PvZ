@@ -5,6 +5,7 @@ import game.memory.Save;
 import gui.PauseMenu;
 import manager.StartManager;
 
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        boolean gameOver = state.isGameOver();
+        boolean gameOver = false;
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
         while (!gameOver && !leave) {
@@ -100,11 +101,12 @@ public class GameLoop implements Runnable {
                         Thread.sleep(delay);
                 } catch (InterruptedException ex) {
                 }
-                gameOver = state.isGameOver();
             }
             if(gameOver)
                 leave = true;
+            gameOver = state.isGameOver();
             audio.playBackGround(state, leave, gameOver);
+
         }
         StartManager.leave();
         StartManager.update();
