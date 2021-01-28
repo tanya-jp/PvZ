@@ -46,7 +46,7 @@ public class GameAudio {
         backGroundClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void playBackGround(GameState state, boolean leave, boolean gameOver) {
-    if (System.currentTimeMillis() - state.getStartTime() < 1000 && !gameOver
+    if (System.currentTimeMillis() - state.getStartTime() < 480000 && !gameOver
                 && !leave && !backGroundState)
         {
             try {
@@ -60,7 +60,7 @@ public class GameAudio {
             backGroundClip.start();
             backGroundState = true;
         }
-        else if( (System.currentTimeMillis() - state.getStartTime() >= 1000 || gameOver
+        else if( (System.currentTimeMillis() - state.getStartTime() >= 480000 || gameOver
                 || leave) && backGroundState)
         {
             backGroundClip.close();
