@@ -102,4 +102,18 @@ public class User {
         frame.setSize(400,280);
         frame.setResizable(false);
     }
+
+
+    public JButton getRenameButton() {
+        return renameButton;
+    }
+
+    public JTextField getRenameUserField() {
+        return renameUserField;
+    }
+
+    public JTextField getNewUserField() {
+        return newUserField;
+    }
+
 }
