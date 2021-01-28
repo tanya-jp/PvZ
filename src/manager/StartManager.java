@@ -1,5 +1,6 @@
 package manager;
 
+import game.template.bufferstrategy.GameAudio;
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameLoop;
 import game.template.bufferstrategy.ThreadPool;
@@ -16,21 +17,33 @@ public class StartManager {
     private static String type;
     private static String mode;
     private PauseMenu pauseMenu;
-    private static boolean leave;
+    private  static GameFrame frame;
+    private static int flag;
+    private static GameAudio audio;
 
     public StartManager()
     {
-        leave = false;
+        mainMenu = new MainMenu();
+        mainMenu.createStartGUI();
         update();
     }
     public static void update()
     {
-        leave = false;
-        mainMenu = new MainMenu();
+        audio = new GameAudio();
+        audio.playMenu(true);
+        if(flag>0)
+        {
+            mainMenu.createMainMenu();
+        }
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
         mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
         select();
-        startNewGame();
+        if(flag == 0)
+            startNewGame();
+    }
+    public static void leave()
+    {
+        frame.setVisible(false);
     }
     public static void select()
     {
@@ -39,14 +52,11 @@ public class StartManager {
             public void mouseClicked(MouseEvent e) {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
-                System.out.println(type);
-                System.out.println(mode);
             }
         });
     }
     public static void startNewGame()
     {
-        System.out.println("***");
         mainMenu.getNewGameButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -67,7 +77,9 @@ public class StartManager {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GameFrame frame = new GameFrame("Plants Vs. Zombies !", mode, type);
+                flag++;
+                audio.playMenu(false);
+                frame = new GameFrame("Plants Vs. Zombies !", mode, type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
@@ -77,11 +89,7 @@ public class StartManager {
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
-                System.out.println(game.isLeave());
-                leave = game.isLeave();
             }
         });
-//        if(leave)
-//            update();
     }
 }

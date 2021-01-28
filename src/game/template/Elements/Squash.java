@@ -1,7 +1,10 @@
 package game.template.Elements;
 
+import game.template.bufferstrategy.GameState;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 /**
  * This class controls the time of showing card of squash and showing it.
@@ -34,6 +37,25 @@ public class Squash implements Card, Images{
         neededSuns = 50;
         setImages();
     }
+
+    /**
+     * Removes squash after jumping on zombie
+     * @param x as x coordinate
+     * @param y as y coordinate
+     * @param info as flowers state information
+     */
+    public void removeSquash(int x, int y, HashMap<Integer, String > info)
+    {
+        int loc = GameState.findLoc(x,y);
+        if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
+            info.replace(loc-1, null);
+        else if(info.get(loc)!=null && info.get(loc).contains("quash"))
+            info.replace(loc, null);
+    }
+    /**
+     * Returns Image of Attacker squash
+     * @return
+     */
     public Image getAttackSquash(){return attackSquash;}
     /**
      * Sets all images of that squash
@@ -60,6 +82,11 @@ public class Squash implements Card, Images{
     {
         return squashFull;
     }
+    /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
     /**
      * makes state of cards based on proper time
      */
@@ -114,4 +141,9 @@ public class Squash implements Card, Images{
     {
         this.lock = lock;
     }
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    @Override
+    public long getFlowerTime(){return flowerTime;}
 }

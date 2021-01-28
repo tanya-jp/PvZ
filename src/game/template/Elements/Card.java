@@ -19,6 +19,10 @@ public interface Card {
      */
     void setCard();
     /**
+     * Sets card state
+     */
+    void setCardState(boolean card);
+    /**
      * If card can be appeared, returns false.
      */
     boolean getCard();
@@ -37,5 +41,9 @@ public interface Card {
      * Locks or unlocks the flower.
      */
     void setLock(boolean lock);
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    long getFlowerTime();
 
 }

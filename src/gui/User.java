@@ -102,5 +102,4 @@ public class User {
         frame.setSize(400,280);
         frame.setResizable(false);
     }
-
 }

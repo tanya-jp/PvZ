@@ -59,6 +59,11 @@ public class CherryBomb implements Card, Images{
         return cherryFull;
     }
     /**
+     * Sets card state
+     */
+    @Override
+    public void setCardState(boolean card){this.card = card;}
+    /**
      * makes state of cards based on proper time
      */
     @Override
@@ -112,4 +117,9 @@ public class CherryBomb implements Card, Images{
     {
         this.lock = lock;
     }
+    /**
+     * Returns the time that this flower has been chosen.
+     */
+    @Override
+    public long getFlowerTime(){return flowerTime;}
 }

@@ -32,6 +32,9 @@ public class PauseMenu {
     private boolean exitClicked;
     private boolean leaveClicked;
 
+    //TODO
+    private boolean saveClicked;
+
 
     private final Font font;
     //create all images and handling exceptions
@@ -65,6 +68,8 @@ public class PauseMenu {
         resumeClicked = false;
         exitClicked = false;
         leaveClicked = false;
+        //TODO
+        saveClicked = false;
     }
 
     public void start(){
@@ -104,6 +109,13 @@ public class PauseMenu {
         //save game buttons
         saveButton.setBounds(255, 258, 170, 32);
         makeButton(saveButton);
+        //TODO
+        saveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                saveClicked = true;
+            }
+        });
 
         //add image to label
         pauseBgLabel.setIcon(img);
@@ -205,5 +217,12 @@ public class PauseMenu {
 
     public JFrame getAskFrame() {
         return askFrame;
+    }
+
+    //TODO
+    public void falseSaveButton(){saveClicked = false;}
+
+    public boolean isSaveClicked() {
+        return saveClicked;
     }
 }
