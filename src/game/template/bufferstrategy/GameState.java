@@ -216,6 +216,8 @@ public class GameState {
                 return 40;
             else if(lawnMakerCol == zombieCol+1 || zombieCol == 1)
                 return 0;
+            else if(lawnMakerCol == zombieCol-1)
+                return 40;
         }
         return -1;
     }
