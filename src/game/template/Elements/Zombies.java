@@ -269,4 +269,45 @@ public class Zombies {
             }
         }
     }
+
+    public void setNormalNum(int normalNum) {
+        this.normalNum = normalNum;
+    }
+
+    public void setConeNum(int coneNum) {
+        this.coneNum = coneNum;
+    }
+
+    public void setBucketNum(int bucketNum) {
+        this.bucketNum = bucketNum;
+    }
+
+    public void setNormal(int loc, float x, int life)
+    {
+        normalInfo.put(normalNum, new NormalZombie());
+        normalInfo.get(normalNum).setRow(loc);
+        normalInfo.get(normalNum).setX(x);
+        normalInfo.get(normalNum).setLife(life);
+        zombieNum++;
+        normalNum++;
+    }
+    public void setCone(int loc, float x, int life)
+    {
+        coneInfo.put(coneNum, new ConeHeadZombie());
+        coneInfo.get(coneNum).setRow(loc);
+        coneInfo.get(coneNum).setX(x);
+        coneInfo.get(coneNum).setLife(life);
+        zombieNum++;
+        coneNum++;
+    }
+    public void setBucket(int loc, float x, int life)
+    {
+        bucketInfo.put(bucketNum, new BucketHeadZombie());
+        bucketInfo.get(bucketNum).setRow(loc);
+        bucketInfo.get(bucketNum).setX(x);
+        bucketInfo.get(bucketNum).setLife(life);
+        zombieNum++;
+        bucketNum++;
+    }
+
 }

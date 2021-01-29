@@ -1,6 +1,7 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import game.memory.Reload;
 import game.memory.Save;
 import gui.GameOver;
 import gui.PauseMenu;
@@ -61,6 +62,7 @@ public class GameLoop implements Runnable {
     public void init() {
         // Perform all initializations ...
         state = new GameState(type, timeType);
+        Reload reload = new Reload(state, "Qoli");
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());

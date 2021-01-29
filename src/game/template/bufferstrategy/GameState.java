@@ -1157,5 +1157,18 @@ public class GameState {
      * Sets the number of suns
      */
     public void setSunNumber(int sunNumber) {this.sunNumber = sunNumber; }
+    //TODO
+    /**
+     * Sets sunDropping -> last time of dropping a sun
+     */
+    public void setSunDropping(long sunDropping) { this.sunDropping = sunDropping;}
+    /**
+     * Sets x coordinate of dropping sun
+     */
+    public void setSunX(int sunX) {this.sunX = sunX;}
+    /**
+     * Sets y coordinate of dropping sun
+     */
+    public void setSunY(int sunY) { this.sunY = sunY; }
 }
 

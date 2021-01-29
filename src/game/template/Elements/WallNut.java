@@ -136,4 +136,11 @@ public class WallNut implements Card, Images{
      */
     @Override
     public long getFlowerTime(){return flowerTime;}
+    /**
+     * Sets the time that this flower has been chosen.
+     */
+    @Override
+    public void setFlowerTime(long flowerTime) {
+        this.flowerTime = flowerTime;
+    }
 }
