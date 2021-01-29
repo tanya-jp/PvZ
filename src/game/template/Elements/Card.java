@@ -45,5 +45,8 @@ public interface Card {
      * Returns the time that this flower has been chosen.
      */
     long getFlowerTime();
-
+    /**
+     * Sets the time that this flower has been chosen.
+     */
+    void setFlowerTime(long flowerTime);
 }

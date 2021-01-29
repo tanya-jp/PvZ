@@ -70,4 +70,18 @@ public class LawnMower {
     public int getX() {
         return x;
     }
+
+    /**
+     * Sets X coordinate of car
+     * @param x as x coordinate
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+    /**
+     * Sets row number of the car
+     */
+    public void setRow(int row) {
+        this.row = row;
+    }
 }
