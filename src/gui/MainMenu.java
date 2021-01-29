@@ -307,26 +307,16 @@ public class MainMenu{
     public User getUser() {
         return user;
     }
+//TODO:this method changed
     public void login(){
-        //     user create button action listener
-        //ask for user first and then run the main menu
-//        user.getCreateButton().addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-        user.getNewUserField().setText(user.getNewUserField().getText());
-        //          Server server = new Server();
-        //        server.waitForClient();
-        if (user.getNewUserField().getText().equals("player")){
             createMainMenu();
             startFrame.setVisible(false);
             user.getUserFrame().setVisible(false);
             mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        }
-        else {
-            JOptionPane.showMessageDialog(user.getCreateButton(),"error");
-        }
     }
+//    public void setUserField(){
+//
+//    }
 //        });
 //        //user create button action listener
 //        //ask for user first and then run the main menu

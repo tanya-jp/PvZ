@@ -1,6 +1,7 @@
 package network;
 
 import gui.MainMenu;
+import gui.User;
 import manager.StartManager;
 
 import javax.swing.*;
@@ -29,23 +30,51 @@ public class Player {
         StartManager.getMainMenu().createStartGUI();
         StartManager.setMusic("on");
         StartManager.update();
-        String newUsername;
-        JButton okButton;
-        newUsername = StartManager.getMainMenu().getUser().getNewUserField().getText().toLowerCase();
-        okButton = StartManager.getMainMenu().getUser().getLoginButton();
 
-        okButton.addMouseListener(new MouseAdapter() {
+        //needed fields
+//        final String newUsername = "";
+        JButton logButton;
+        JButton signButton;
+        String mode; // hard or normal
+        String type; //day or night
+        int numOfWins = 2;
+        int numOfLooses = 0;
+        int score = 100;
+
+        //user
+        User user = StartManager.getMainMenu().getUser();
+//        user.getNewUserField().setText(user.getNewUserField().getText());
+//        //user field
+//        newUsername = user.getNewUserField().getText().toLowerCase();
+        //login button
+        logButton = StartManager.getMainMenu().getUser().getLoginButton();
+        //sign up button
+        signButton = StartManager.getMainMenu().getUser().getSignUpButton();
+        //mode
+        mode = StartManager.getMainMenu().getSettings().getModeButton().getText().toLowerCase();
+        //type
+        type = StartManager.getMainMenu().getSettings().getTypeButton().getText().toLowerCase();
+        Server server = StartManager.getServer();
+
+        signButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                StartManager.getMainMenu().login();
-//                if(newUsername.equals("player"))
-//                    StartManager.getMainMenu().login();
-//                else
-//                    System.out.println(newUsername);
+                user.getNewUserField().setText(user.getNewUserField().getText());
+                //user field
+                String newUsername = user.getNewUserField().getText().toLowerCase();
+                if(newUsername.equals("")) {
+                    JOptionPane.showMessageDialog(signButton, "Please Fill " +
+                            "The field");
+                }
+                else if (server.isSignUpAvailable(newUsername)) {
+                        StartManager.getMainMenu().login();
+                    } else
+                        JOptionPane.showMessageDialog(signButton, "Username Is" +
+                                " Already Taken.");
             }
         });
 
-        try (Socket client = new Socket("localhost", 6023);) {
+        try (Socket client = new Socket("localhost", 5000);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
