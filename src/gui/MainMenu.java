@@ -314,7 +314,12 @@ public class MainMenu{
             user.getUserFrame().setVisible(false);
             mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
-//    public void setUserField(){
+
+    public JLabel getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    //    public void setUserField(){
 //
 //    }
 //        });

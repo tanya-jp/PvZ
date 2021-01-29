@@ -20,13 +20,13 @@ public class Server {
         }
     }
 
-    public Server(){
+    public Server() {
         userInfoMap = new HashMap<>();
         restoreUserInfo(); //this method is called each time server is created
     }
 
     //method to restore all file lines  into user info hashmap in the beginning
-    public void restoreUserInfo(){
+    public void restoreUserInfo() {
         BufferedReader br = null;
 
         try {
@@ -56,25 +56,22 @@ public class Server {
                 //put name and info array in HashMap if they aren't empty
                 if (!u.equals("") && !m.equals("") && !t.equals("") && !w.equals("")
                         && !l.equals("") && !s.equals(""))
-                    userInfoMap.put(u,restoredInfo);
+                    userInfoMap.put(u, restoredInfo);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 assert br != null;
                 br.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
     public void writeToFile(String username, String mode, String type, Integer wins
-    , Integer looses, Integer score){
+            , Integer looses, Integer score) {
         //array list for user info
         ArrayList<String> info = new ArrayList<>();
         //set info
@@ -91,7 +88,7 @@ public class Server {
         info.add(l);
         info.add(s);
 
-        userInfoMap.put(u,info);
+        userInfoMap.put(u, info);
 
         BufferedWriter bf = null;
 
@@ -102,22 +99,19 @@ public class Server {
             for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
                 //write values separated by -
                 bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                 //go to new line
                 bf.newLine();
             }
             bf.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 assert bf != null;
                 bf.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -148,14 +142,20 @@ public class Server {
 //    }
 
 //    public boolean isChangeAvailable(){
-//
 //    }
-//
-//    public boolean isLoginAvailable(String username){
-//    }
-//
-    public boolean isSignUpAvailable(String username){
-        if(!userInfoMap.isEmpty()) {
+
+    public boolean isLoginAvailable(String username) {
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+            //username exists and is correct
+            if (entry.getKey().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSignUpAvailable(String username) {
+        if (!userInfoMap.isEmpty()) {
             for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
                 //username is already taken
                 if (entry.getKey().equalsIgnoreCase(username)) {
@@ -164,23 +164,23 @@ public class Server {
             }
         }
         //username is new and will be added
-        writeToFile(username,null,null,0,0,0);
+        writeToFile(username, null, null, 0, 0, 0);
         return true;
     }
 
-public File createAFile() throws IOException {
-    File usersInfoFile = null;
-    try {
-        usersInfoFile = new File("C:\\Users\\kanoon\\IdeaProjects\\final-project\\src\\network\\usersInfoFile.txt");
-        if (usersInfoFile.createNewFile()) {
-            System.out.println("File created: " + usersInfoFile.getName());
-        } else {
-            System.out.println("File already exists.");
+    public File createAFile() throws IOException {
+        File usersInfoFile = null;
+        try {
+            usersInfoFile = new File("C:\\Users\\kanoon\\IdeaProjects\\final-project\\src\\network\\usersInfoFile.txt");
+            if (usersInfoFile.createNewFile()) {
+                System.out.println("File created: " + usersInfoFile.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
-    } catch (IOException e) {
-        System.out.println("An error occurred.");
-        e.printStackTrace();
+        return usersInfoFile;
     }
-    return usersInfoFile;
-}
 }

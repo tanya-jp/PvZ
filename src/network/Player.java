@@ -35,6 +35,7 @@ public class Player {
 //        final String newUsername = "";
         JButton logButton;
         JButton signButton;
+        JButton changeUserButton;
         String mode; // hard or normal
         String type; //day or night
         int numOfWins = 2;
@@ -50,6 +51,8 @@ public class Player {
         logButton = StartManager.getMainMenu().getUser().getLoginButton();
         //sign up button
         signButton = StartManager.getMainMenu().getUser().getSignUpButton();
+        //change username button
+        changeUserButton = StartManager.getMainMenu().getUser().getRenameButton();
         //mode
         mode = StartManager.getMainMenu().getSettings().getModeButton().getText().toLowerCase();
         //type
@@ -68,9 +71,37 @@ public class Player {
                 }
                 else if (server.isSignUpAvailable(newUsername)) {
                         StartManager.getMainMenu().login();
+                        StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
                     } else
                         JOptionPane.showMessageDialog(signButton, "Username Is" +
                                 " Already Taken.");
+            }
+        });
+
+
+        logButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                user.getNewUserField().setText(user.getNewUserField().getText());
+                //user field
+                String newUsername = user.getNewUserField().getText().toLowerCase();
+                if(newUsername.equals("")) {
+                    JOptionPane.showMessageDialog(signButton, "Please Fill " +
+                            "The field");
+                }
+                else if (server.isLoginAvailable(newUsername)) {
+                    StartManager.getMainMenu().login();
+                    StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
+                } else
+                    JOptionPane.showMessageDialog(signButton, "Incorrect Username!");
+            }
+        });
+
+
+        changeUserButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
             }
         });
 
