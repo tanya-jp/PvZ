@@ -132,11 +132,14 @@ public class User {
         return newUserField;
     }
 
-    //TODO:
     public JButton getLoginButton() {
         return loginButton;
     }
     public JButton getSignUpButton() {
         return signUpButton;
+    }
+    //TODO:
+    public JFrame getRenameFrame() {
+        return renameFrame;
     }
 }

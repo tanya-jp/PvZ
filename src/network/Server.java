@@ -4,8 +4,13 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Server {
@@ -136,13 +141,31 @@ public class Server {
         }
     }
 
-//    public boolean isUserAdded(String username){
-//        //check all lines, if it doesn't exit add it and let in
-//
-//    }
 
-//    public boolean isChangeAvailable(){
-//    }
+    public boolean isChangeAvailable(String oldUsername, String newUsername){
+        int flag = 0;
+        //check if new username is available
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+            //new username is already taken
+            if (entry.getKey().equalsIgnoreCase(newUsername)) {
+                flag = 1;
+                return false;
+            }
+        }
+        //replace with new one
+        if(flag == 0){
+            for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(oldUsername)) {
+                    ArrayList<String> temp = entry.getValue();
+                    userInfoMap.remove(oldUsername);
+                    userInfoMap.put(newUsername,temp);
+                    changeUserInFile(oldUsername,newUsername,temp);
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
 
     public boolean isLoginAvailable(String username) {
         for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
@@ -167,6 +190,49 @@ public class Server {
         writeToFile(username, null, null, 0, 0, 0);
         return true;
     }
+
+
+
+
+    public void changeUserInFile(String oldUser,String newUSer, ArrayList<String> newInfo){
+        BufferedReader br = null;
+        ArrayList<String> lines = new ArrayList<>();
+
+ //       List<String> content = new ArrayList<String>(Paths.get(userInfoFile.getAbsolutePath()),StandardCharsets.UTF_8);
+
+        //add all lines to a list
+        try {
+            br = new BufferedReader(new FileReader(userInfoFile));
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+
+            for(int i = 0; i < lines.size(); i++){
+                String[] info = lines.get(i).split("-");
+                String u = info[0].trim(); //username
+                if(u.equalsIgnoreCase(oldUser)){
+                    lines.set(i,newUSer + "-" + newInfo.get(0) + "-" + newInfo.get(1) + "-"
+                            + newInfo.get(2) + "-" + newInfo.get(3) + "-" +
+                            newInfo.get(4));
+                }
+            }
+
+            Files.write(Paths.get(userInfoFile.getAbsolutePath()),lines,StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert br != null;
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
     public File createAFile() throws IOException {
         File usersInfoFile = null;

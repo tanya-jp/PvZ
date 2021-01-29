@@ -36,6 +36,7 @@ public class Player {
         JButton logButton;
         JButton signButton;
         JButton changeUserButton;
+        JTextField renameUserField;
         String mode; // hard or normal
         String type; //day or night
         int numOfWins = 2;
@@ -53,6 +54,8 @@ public class Player {
         signButton = StartManager.getMainMenu().getUser().getSignUpButton();
         //change username button
         changeUserButton = StartManager.getMainMenu().getUser().getRenameButton();
+        //rename user field
+        renameUserField = StartManager.getMainMenu().getUser().getRenameUserField();
         //mode
         mode = StartManager.getMainMenu().getSettings().getModeButton().getText().toLowerCase();
         //type
@@ -67,7 +70,7 @@ public class Player {
                 String newUsername = user.getNewUserField().getText().toLowerCase();
                 if(newUsername.equals("")) {
                     JOptionPane.showMessageDialog(signButton, "Please Fill " +
-                            "The field");
+                            "The Field");
                 }
                 else if (server.isSignUpAvailable(newUsername)) {
                         StartManager.getMainMenu().login();
@@ -87,7 +90,7 @@ public class Player {
                 String newUsername = user.getNewUserField().getText().toLowerCase();
                 if(newUsername.equals("")) {
                     JOptionPane.showMessageDialog(signButton, "Please Fill " +
-                            "The field");
+                            "The Field");
                 }
                 else if (server.isLoginAvailable(newUsername)) {
                     StartManager.getMainMenu().login();
@@ -101,7 +104,20 @@ public class Player {
         changeUserButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+                String oldUsername = StartManager.getMainMenu().getUsernameLabel().getText().toLowerCase();
+                String newUsername = StartManager.getMainMenu().getUser().getRenameUserField().getText().toLowerCase();
+                if(newUsername.equals("")) {
+                    JOptionPane.showMessageDialog(signButton, "Please Fill " +
+                            "The Field");
+                }
+                else if (server.isChangeAvailable(oldUsername,newUsername)) {
+                    JOptionPane.showMessageDialog(changeUserButton,"Changed" +
+                            "Successfully!");
+                    StartManager.getMainMenu().getUser().getRenameFrame().setVisible(false);
+                    StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
+                } else {
+                    JOptionPane.showMessageDialog(signButton, "Not Available :(");
+                }
             }
         });
 
