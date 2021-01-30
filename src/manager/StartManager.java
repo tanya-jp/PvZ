@@ -6,6 +6,7 @@ import game.template.bufferstrategy.GameLoop;
 import game.template.bufferstrategy.ThreadPool;
 import gui.MainMenu;
 import gui.PauseMenu;
+import network.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,23 +14,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class StartManager {
-    private static MainMenu mainMenu;
+    private static MainMenu mainMenu = new MainMenu();
     private static String type;
     private static String mode;
     private PauseMenu pauseMenu;
     private  static GameFrame frame;
     private static int flag;
     private static GameAudio audio;
-    //TODO
     private static String music;
+    //TODO: create server here
+    private static final Server server = new Server();
 
     public StartManager()
     {
+//        music = "on";
+//        server = new Server();
         //TODO
-        music = "on";
-        mainMenu = new MainMenu();
-        mainMenu.createStartGUI();
-        update();
+        server.waitForClient();
+
+        //       mainMenu = new MainMenu();
+        //       mainMenu.createStartGUI();
+        //       update();
     }
     public static void update()
     {
@@ -42,7 +47,6 @@ public class StartManager {
         }
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
         mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
-        //TODO
         music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
         select();
         if(flag == 0)
@@ -59,7 +63,6 @@ public class StartManager {
             public void mouseClicked(MouseEvent e) {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
-                //TODO
                 music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
                 if(music.equals("off"))
                 {
@@ -92,7 +95,6 @@ public class StartManager {
             @Override
             public void run() {
                 flag++;
-                //TODO
                 if(!music.equals("off"))
                     audio.playMenu(false);
                 frame = new GameFrame("Plants Vs. Zombies !", mode, type);
@@ -101,12 +103,27 @@ public class StartManager {
                 frame.setVisible(true);
                 frame.initBufferStrategy();
                 // Create and execute the game-loop
-                //TODO
                 GameLoop game = new GameLoop(frame,  mode, type, music);
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
             }
         });
+    }
+    //TODO:
+    public static MainMenu getMainMenu() {
+        return mainMenu;
+    }
+
+    public static String getMusic() {
+        return music;
+    }
+
+    public static void setMusic(String music) {
+        StartManager.music = music;
+    }
+
+    public static Server getServer() {
+        return server;
     }
 }

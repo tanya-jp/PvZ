@@ -71,7 +71,7 @@ public class Scoreboard {
 
         //create title
         normalTitle = createTitle("name","type","wins","looses"
-        ,"score");
+                ,"score");
 
         hardTitle = createTitle("name","type","wins","looses"
                 ,"score");
@@ -122,7 +122,7 @@ public class Scoreboard {
     }
 
     public ArrayList<JLabel> createArray(String username, String type
-    ,Integer numOfWins,Integer numOfLooses, Integer score){
+            ,String numOfWins,String numOfLooses, String score){
         //create the main array
         ArrayList<JLabel> array = new ArrayList<>();
 
@@ -133,13 +133,13 @@ public class Scoreboard {
         JLabel gType = new JLabel(type,SwingConstants.CENTER);
         gType.setBackground(color);
         gType.setOpaque(true);
-        JLabel wins = new JLabel(numOfWins.toString(),SwingConstants.CENTER);
+        JLabel wins = new JLabel(numOfWins,SwingConstants.CENTER);
         wins.setBackground(color);
         wins.setOpaque(true);
-        JLabel lost = new JLabel(numOfLooses.toString(),SwingConstants.CENTER);
+        JLabel lost = new JLabel(numOfLooses,SwingConstants.CENTER);
         lost.setBackground(color);
         lost.setOpaque(true);
-        JLabel scores = new JLabel(score.toString(),SwingConstants.CENTER);
+        JLabel scores = new JLabel(score,SwingConstants.CENTER);
         scores.setBackground(color);
         scores.setOpaque(true);
 
@@ -154,9 +154,16 @@ public class Scoreboard {
         //return the array
         return array;
     }
+    //TODO:
+    public void updateBoard(ArrayList<String> info){
+        //split a line using -
+        String username = info.get(0); //username
+        String mode = info.get(1); //mode
+        String type = info.get(2); //type
+        String numOfWins = info.get(3); //wins
+        String numOfLooses = info.get(4); //looses
+        String score = info.get(5); //score
 
-    public void updateBoard(String mode,String username, String type
-            ,Integer numOfWins, Integer numOfLooses, Integer score){
 
         //create a new row for the new user
         ArrayList<JLabel> row = createArray(username,type
@@ -172,7 +179,7 @@ public class Scoreboard {
 //        || (mode.equals("hard") && hardNumOfRows < normalNumOfRows))
 //            height = (modePane.getHeight());
 //        else
-            height = (modePane.getHeight()) + 40;
+        height = (modePane.getHeight()) + 40;
 
         mainNormalPanel.setLayout(new GridLayout(normalNumOfRows + 1,5,5,5));
         mainHardPanel.setLayout(new GridLayout(hardNumOfRows + 1,5,5,5));
@@ -237,4 +244,9 @@ public class Scoreboard {
         return array;
     }
 
+    //TODO:
+
+    public JFrame getRankFrame() {
+        return rankFrame;
+    }
 }

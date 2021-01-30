@@ -370,4 +370,8 @@ public class GameFrame extends JFrame {
             }
         }
     }
+
+    public void setType(String timeType) {
+        this.timeType = timeType;
+    }
 }

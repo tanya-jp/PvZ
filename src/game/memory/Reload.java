@@ -4,6 +4,7 @@ import game.template.Elements.BucketHeadZombie;
 import game.template.Elements.ConeHeadZombie;
 import game.template.Elements.LawnMower;
 import game.template.Elements.NormalZombie;
+import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
 import utils.FileUtils;
 
@@ -17,6 +18,7 @@ import java.io.File;
  */
 public class Reload {
     private GameState state;
+    private GameFrame canvas;
     private String thisUser;
     private String timeType;
     private long startTime;
@@ -28,10 +30,11 @@ public class Reload {
     /**
      * Creates reload class structure by game state and the path of saved  game
      */
-    public Reload(GameState state, String path)
+    public Reload(GameState state, GameFrame canvas, String path)
     {
         this.state = state;
         this.thisUser = path;
+        this.canvas = canvas;
         reloadGame();
     }
 
@@ -72,7 +75,10 @@ public class Reload {
     /**
      * Sets type of game -> normal / hard
      */
-    private void setType() { state.setType(getInfo(1, 1)); }
+    private void setType()
+    {
+        state.setType(getInfo(1, 1));
+    }
 
     /**
      * Sets time type -> day / night
@@ -80,6 +86,7 @@ public class Reload {
     private void setTimeType() {
         timeType = getInfo(2, 1);
         state.setTimeType(timeType);
+        canvas.setType(timeType);
     }
     /**
      * Finds how many millie seconds ago this game has benn started.
@@ -279,7 +286,6 @@ public class Reload {
     }
     private void setMushroom()
     {
-        System.out.println(getInfo(mushroom+1+5+1, (1-1)));
         for (int j = 1; j <= 5; j++){
             for (int i = 1; i <= 9; i++) {
                 int loc = j * 10 + i;
