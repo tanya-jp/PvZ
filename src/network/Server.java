@@ -8,13 +8,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Server {
+    //hashmap to save all info
     private HashMap<String, ArrayList<String>> userInfoMap;
+    //array list to save all info
+    private ArrayList<ArrayList<String>> userAndInfo;
+    int numOfUsers = 0;
+    int index = 0;
+
+    public int getNumOfUsers() {
+        return numOfUsers;
+    }
+
     private File userInfoFile;
 
     {
@@ -27,11 +34,13 @@ public class Server {
 
     public Server() {
         userInfoMap = new HashMap<>();
+        userAndInfo = new ArrayList<>();
         restoreUserInfo(); //this method is called each time server is created
     }
 
     //method to restore all file lines  into user info hashmap in the beginning
     public void restoreUserInfo() {
+//        int count = 0;
         BufferedReader br = null;
 
         try {
@@ -58,10 +67,30 @@ public class Server {
                 restoredInfo.add(l);
                 restoredInfo.add(s);
 
+
+                ArrayList<String> userInfo = new ArrayList<>();
+                userInfo.add(u);
+                userInfo.add(m);
+                userInfo.add(t);
+                userInfo.add(w);
+                userInfo.add(l);
+                userInfo.add(s);
+
                 //put name and info array in HashMap if they aren't empty
                 if (!u.equals("") && !m.equals("") && !t.equals("") && !w.equals("")
-                        && !l.equals("") && !s.equals(""))
+                        && !l.equals("") && !s.equals("")) {
                     userInfoMap.put(u, restoredInfo);
+                    userAndInfo.add(userInfo);
+//                    userAndInfo.get(count).add(u);
+//                    userAndInfo.get(count).add(m);
+//                    userAndInfo.get(count).add(t);
+//                    userAndInfo.get(count).add(w);
+//                    userAndInfo.get(count).add(l);
+//                    userAndInfo.get(count).add(s);
+//                    count++;
+                }
+
+                numOfUsers = userInfoMap.size();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,10 +263,17 @@ public class Server {
     }
 
 
+    public ArrayList<String> returnUserAndInfo(){
+        ArrayList<String> info = userAndInfo.get(index);
+        index++;
+        return info;
+    }
+
+
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File("C:\\Users\\kanoon\\IdeaProjects\\final-project\\src\\network\\usersInfoFile.txt");
+            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {

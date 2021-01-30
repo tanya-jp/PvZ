@@ -36,6 +36,7 @@ public class Player {
         JButton logButton;
         JButton signButton;
         JButton changeUserButton;
+        JButton scoreboardButton;
         JTextField renameUserField;
         String mode; // hard or normal
         String type; //day or night
@@ -54,6 +55,8 @@ public class Player {
         signButton = StartManager.getMainMenu().getUser().getSignUpButton();
         //change username button
         changeUserButton = StartManager.getMainMenu().getUser().getRenameButton();
+        //scoreboard button
+        scoreboardButton = StartManager.getMainMenu().getRankingButton();
         //rename user field
         renameUserField = StartManager.getMainMenu().getUser().getRenameUserField();
         //mode
@@ -121,6 +124,24 @@ public class Player {
             }
         });
 
+
+        scoreboardButton.addMouseListener(new MouseAdapter() {
+            int numOfClicks = 0;
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                numOfClicks++;
+                if(numOfClicks == 1) {
+                    StartManager.getMainMenu().getScoreboard().createBoard();
+                    for (int i = 0; i < server.getNumOfUsers(); i++) {
+  //                      StartManager.getMainMenu().getScoreboard().createBoard();
+                        StartManager.getMainMenu().getScoreboard().updateBoard(server.returnUserAndInfo());
+                    }
+                }
+                else if (numOfClicks > 1)
+                    StartManager.getMainMenu().getScoreboard().getRankFrame().setVisible(true);
+            }
+        });
+
         try (Socket client = new Socket("localhost", 5000);) {
             System.out.println("Client connected.");
 
@@ -146,6 +167,4 @@ public class Player {
         }
         System.out.println("Client closed.");
     }
-
- //   public void
 }

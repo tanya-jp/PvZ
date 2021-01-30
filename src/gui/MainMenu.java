@@ -207,13 +207,13 @@ public class MainMenu{
                 clicks++;
             }
         });
-
-        rankingButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                scoreboard.createBoard();
-            }
-        });
+//TODO:
+//        rankingButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                scoreboard.createBoard();
+//            }
+//        });
     }
 
     public void makeLabels(){
@@ -318,7 +318,14 @@ public class MainMenu{
     public JLabel getUsernameLabel() {
         return usernameLabel;
     }
+//TODO:
+    public JButton getRankingButton() {
+        return rankingButton;
+    }
 
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
     //    public void setUserField(){
 //
 //    }
