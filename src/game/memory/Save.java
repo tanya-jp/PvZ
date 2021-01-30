@@ -34,6 +34,8 @@ public class Save {
     private String lawnMowers;
     private String sunFlowerTime;
     private String sunFlowerState;
+    private String mushroomTime;
+    private String mushroomState;
     private String sun;
     private static final String PATH = ".\\users\\";
 
@@ -106,6 +108,8 @@ public class Save {
         lifeInfo = "";
         sunFlowerTime = "";
         sunFlowerState = "";
+        mushroomState = "";
+        mushroomTime = "";
         for (int j = 1; j <= 5; j++){
             for (int i = 1; i <= 9; i++){
                 int loc = j * 10 + i;
@@ -113,11 +117,18 @@ public class Save {
                 lifeInfo = lifeInfo + state.getLifeInfo().get(loc) + " ";
                 sunFlowerTime = sunFlowerTime + state.getSunFlower().getSunFlowerSunTime().get(loc) + " ";
                 sunFlowerState = sunFlowerState + state.getSunFlower().getSunFlowerState().get(loc) + " ";
+                if(timeType.equals("night"))
+                {
+                    mushroomTime = mushroomTime + state.getMushroom().getSunFlowerSunTime().get(loc) + " ";
+                    mushroomState = mushroomState + state.getMushroom().getSunFlowerState().get(loc) + " ";
+                }
             }
             info = info + ("\n");
             lifeInfo = lifeInfo + "\n";
             sunFlowerTime = sunFlowerTime + ("\n");
             sunFlowerState = sunFlowerState + "\n";
+            mushroomTime = mushroomTime + "\n";
+            mushroomState = mushroomState + "\n";
         }
     }
 
@@ -165,13 +176,16 @@ public class Save {
     @Override
     public String toString()
     {
-        return userName + "\ntype " + type + "\ntimeType " + timeType
+        String res = userName + "\ntype " + type + "\ntimeType " + timeType
                 + "\nstartTime " + startTime + "\ncurrentTime " + currentTime +"\nsunNumber " + sunNumber
                 + "\nsun " + sun
                 + "\ninfo\n" + info + "lifeInfo\n" + lifeInfo
-                + "sunFlowerTime\n" + sunFlowerTime + "sunFlowerState\n" + sunFlowerTime
+                + "sunFlowerTime\n" + sunFlowerTime + "sunFlowerState\n" + sunFlowerState
                 + "normalZombies\n" + normalZombies + "coneHeadZombies\n" + coneHead + "bucketHeadZombies\n" + bucketHead
                 + "lawnMowers\n" + lawnMowers + "cards\n" + cards;
+        if(timeType.equals("night"))
+            res = res + "\nmushroomTime\n" + mushroomTime + "mushroomState\n" + mushroomState;
+        return res;
     }
 
 }

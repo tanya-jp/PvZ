@@ -13,22 +13,17 @@ import game.template.Elements.*;
  * @authors Tanya Djavaherpour and Elaheh Akbari
  */
 public class GameState {
-
     public static final int GAME_HEIGHT = 772;
     public static final int GAME_WIDTH = 1010;
     private final MouseHandler mouseHandler;
-    private boolean sunState;
     public int sunX, sunY, sunNumber, cardW, cardH;
     private final Image sun;
-    private boolean lock, shovel;
-    private boolean gameOver;
-    private boolean menu;
+    private boolean lock, shovel, gameOver, menu, sunState;
     private HashMap<Integer, String> info;
     private HashMap<Integer, Integer> lifeInfo;
-    Random rand = new Random();
+    private Random rand;
     private long sunTime, cherryBombState, sunDropping, startTime;
-    private String type;
-    private String timeType;
+    private String type, timeType;
     private PeaShooter peashooter;
     private SunFlower sunFlower;
     private CherryBomb cherryBomb;
@@ -36,44 +31,34 @@ public class GameState {
     private FreezePeaShooter freezePeaShooter;
     private Squash squash;
     private Mushroom mushroom;
-    private Zombies zombie;
-    private NormalZombie normalZombie;
-    private ConeHeadZombie coneHead;
-    private BucketHeadZombie bucketHead;
-    private HashMap<Integer, Long> deletedSquash;
+    private final Zombies zombie;
     private HashMap<Integer, Integer> stoppedPeas;
     private ArrayList<LawnMower> lawnMowers;
-
     /**
      * Constructs game state and sets first state of game lements
-     *
-     * @param type     normal/hard
+     * @param type normal/hard
      * @param timeType day/night
      */
     public GameState(String type, String timeType) {
         //
         // Initialize the game state and all elements ...
         //
+        rand = new Random();
         sunX = rand.nextInt(GAME_WIDTH);
         info = new HashMap<>();
         lifeInfo = new HashMap<>();
         this.type = type;
         this.timeType = timeType;
         sunY = 60;
-        sunNumber = 800;
+        sunNumber = 50;
         peashooter = new PeaShooter(type, timeType);
         sunFlower = new SunFlower(type, timeType);
         cherryBomb = new CherryBomb(type, timeType);
         wallNut = new WallNut(type, timeType);
         freezePeaShooter = new FreezePeaShooter(type, timeType);
         squash = new Squash(type, timeType);
-        if (timeType.equals("night"))
-            mushroom = new Mushroom(type, timeType);
+        mushroom = new Mushroom(type, timeType);
         zombie = new Zombies();
-        normalZombie = new NormalZombie();
-        bucketHead = new BucketHeadZombie();
-        coneHead = new ConeHeadZombie();
-        deletedSquash = new HashMap<>();
         stoppedPeas = new HashMap<>();
         sunState = false;
         lock = false;
@@ -96,16 +81,12 @@ public class GameState {
         sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
         setLawnMowers();
     }
-
     /**
      * The method which updates the game state.
      */
     public void update() {
-
-        //
         // Update the state of all game elements
         //  based on user input and elapsed time ...
-        //
         //set cards
         setCardsState();
         //checks time of dropping
@@ -119,6 +100,8 @@ public class GameState {
         }
         //checks sunflower's sun time
         sunFlower.setSunFlowerState();
+        if(timeType.equals("night"))
+            mushroom.setSunFlowerState();
         //shoots peas
         peashooter.setBullets();
         freezePeaShooter.setBullets();
@@ -168,7 +151,6 @@ public class GameState {
                 }
             }
     }
-
     /**
      * When lawn maker arrives, kills zombies.
      */
@@ -199,7 +181,6 @@ public class GameState {
                 bucket.getValue().setLife(dec+1100);
         }
     }
-
     /**
      * When lawn maker arrives, changes zombies life state to show them the way they are.
      * @param zombieRow as row of zombie
@@ -230,7 +211,6 @@ public class GameState {
         for (int i = 1; i <= 5; i++)
             lawnMowers.add(new LawnMower(i));
     }
-
     /**
      * Moves lawn makers when a zombie arrives and if lawn maker is not available the player will lose.
      * @param zombieX as x coordinate of zombie
@@ -250,8 +230,6 @@ public class GameState {
                 }
         return false;
     }
-
-
     /**
      * Checks if a zombie is approaching to a lawn maker, moves it.
      */
@@ -268,7 +246,6 @@ public class GameState {
                 bucket.getValue().setKilled(moveLawnMovers((int) bucket.getValue().getX(), bucket.getValue().getRow()));
         for (LawnMower lawnMower: lawnMowers)
             lawnMower.move();
-
     }
     /**
      * This method calls all methods which are related to zombies and sets zombies state.
@@ -278,7 +255,7 @@ public class GameState {
         zombie.findCells(info);
         if(System.currentTimeMillis() - startTime > 50000 &&
                 System.currentTimeMillis() - startTime < 150000)
-            zombie.setZombies(1, 25000);
+            zombie.setZombies(1, 30000);
         else if(System.currentTimeMillis() - startTime >= 150000 &&
                 System.currentTimeMillis() - startTime < 150000+180000)
             zombie.setZombies(2, 30000);
@@ -322,7 +299,12 @@ public class GameState {
                         stoppedPeas.replace(loc, null);
                     if (normal.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
+                    {
                         info.replace(zombieLoc, null);
+                        normal.getValue().setLife(80);
+                    }
+                    if(normal.getValue().isBurnt() || normal.getValue().isSquashAttacked())
+                        stoppedPeas.replace(loc, null);
                 }
                 i++;
             }
@@ -361,7 +343,12 @@ public class GameState {
                         stoppedPeas.replace(loc, null);
                     if (cone.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
+                    {
                         info.replace(zombieLoc, null);
+                        cone.getValue().setLife(80);
+                    }
+                    if(cone.getValue().isBurnt() || cone.getValue().isSquashAttacked())
+                        stoppedPeas.replace(loc, null);
                 }
                 i++;
             }
@@ -400,13 +387,17 @@ public class GameState {
                         stoppedPeas.replace(loc, null);
                     if (bucket.getValue().getLife() < 70 && info.get(zombieLoc) != null &&
                             info.get(zombieLoc).contains("dying"))
+                    {
                         info.replace(zombieLoc, null);
+                        bucket.getValue().setLife(80);
+                    }
+                    if(bucket.getValue().isBurnt() || bucket.getValue().isSquashAttacked())
+                        stoppedPeas.replace(loc, null);
                 }
                 i++;
             }
         }
     }
-
     /**
      * Iterates zombies and peashooter lists and calls killer mothodas
      */
@@ -446,41 +437,32 @@ public class GameState {
         int zombieLoc;
         int loc;
         //Checks normal zombies
-        for (Map.Entry<Integer, NormalZombie> normal: zombie.getNormalInfo().entrySet())
-        {
+        for (Map.Entry<Integer, NormalZombie> normal: zombie.getNormalInfo().entrySet()) {
             zombieLoc = normal.getValue().getRow()*10 + findColumn((int)normal.getValue().getX());
             //Checks if zombie has received to squash
             loc = (int) (zombieLoc-0.25);
             if(info.get(normal.getValue().getRow()*10+9)!=null &&
-                    info.get(normal.getValue().getRow()*10+9).contains("quash"))
-            {
+                    info.get(normal.getValue().getRow()*10+9).contains("quash")) {
                 info.replace(normal.getValue().getRow()*10+9, "attackSquash");
                 normal.getValue().setSquashAttacked(true);
                 normal.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
-            else if(info.get(loc) != null && info.get(loc).contains("quash") && !normal.getValue().isSquashAttacked())
-            {
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !normal.getValue().isSquashAttacked()) {
                 info.replace(loc, "attackSquash");
                 normal.getValue().setSquashAttacked(true);
                 normal.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
             //Checks if cherryBomb exploded
             if(normal.getValue().isBurnt() && (System.currentTimeMillis()-normal.getValue().getBurntTime())>5000)
-            {
                 normal.getValue().setX((float) (-200));
-            }
             //Checks if zombie has received to flower and controls it
-            for(Map.Entry<Integer, String> information: info.entrySet())
-            {
-                if(information.getKey() == zombieLoc && information.getValue()!=null)
-                {
-                    if(!normal.getValue().isStopped())
-                    {
+            for(Map.Entry<Integer, String> information: info.entrySet()) {
+                if(information.getKey() == zombieLoc && information.getValue()!=null) {
+                    if(!normal.getValue().isStopped()) {
                         normal.getValue().setStopTime(System.currentTimeMillis());
                         normal.getValue().setStopped(true);
                     }
-                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800)
-                    {
+                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800) {
                         normal.getValue().setBurnt(true);
                         normal.getValue().setBurntTime(System.currentTimeMillis());
                     }
@@ -499,44 +481,36 @@ public class GameState {
                 normal.getValue().setStopped(false);
         }
         //Checks coneHead zombies
-        for (Map.Entry<Integer, ConeHeadZombie> cone: zombie.getConeInfo().entrySet())
-        {
+        for (Map.Entry<Integer, ConeHeadZombie> cone: zombie.getConeInfo().entrySet()) {
             zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
             loc = (int) (zombieLoc-0.25);
             //Checks if zombie has received to squash
             if(info.get(cone.getValue().getRow()*10+9)!=null &&
-                    info.get(cone.getValue().getRow()*10+9).contains("quash"))
-            {
+                    info.get(cone.getValue().getRow()*10+9).contains("quash")) {
                 info.replace(cone.getValue().getRow()*10+9, "attackSquash");
                 cone.getValue().setSquashAttacked(true);
                 cone.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
-            else if(info.get(loc) != null && info.get(loc).contains("quash") && !cone.getValue().isSquashAttacked())
-            {
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !cone.getValue().isSquashAttacked()) {
                 info.replace(loc, "attackSquash");
                 cone.getValue().setSquashAttacked(true);
                 cone.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
             //Checks if cherryBomb exploded
             if(cone.getValue().isBurnt() && (System.currentTimeMillis()-cone.getValue().getBurntTime())>5000)
-            {
                 cone.getValue().setX((float) (-200));
-            }
             //Checks if zombie has received to flower and controls it
-            for(Map.Entry<Integer, String> information: info.entrySet())
-            {
+            for(Map.Entry<Integer, String> information: info.entrySet()) {
                 zombieLoc = cone.getValue().getRow()*10 + findColumn((int)cone.getValue().getX());
-                if(information.getKey() == zombieLoc && information.getValue()!=null)
-                {
-                    if(!cone.getValue().isStopped())
-                    {
+                if(information.getKey() == zombieLoc && information.getValue()!=null) {
+                    if(!cone.getValue().isStopped()) {
                         cone.getValue().setStopTime(System.currentTimeMillis());
                         cone.getValue().setStopped(true);
                     }
-                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800)
-                    {
+                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800) {
                         cone.getValue().setBurnt(true);
                         cone.getValue().setBurntTime(System.currentTimeMillis());
+                        stoppedPeas.replace(loc, null);
                     }
                     else if(cone.getValue().isStopped() &&
                             (System.currentTimeMillis() - cone.getValue().getStopTime()) >= 1000 ){
@@ -550,7 +524,6 @@ public class GameState {
                             cone.getValue().setStopTime(System.currentTimeMillis());
                         else
                             cone.getValue().setStopped(false);
-
                     }
                 }
             }
@@ -558,44 +531,36 @@ public class GameState {
                 cone.getValue().setStopped(false);
         }
         //Checks bucketHead zombies
-        for (Map.Entry<Integer, BucketHeadZombie> bucket: zombie.getBucketInfo().entrySet())
-        {
+        for (Map.Entry<Integer, BucketHeadZombie> bucket: zombie.getBucketInfo().entrySet()) {
             zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
             loc = (int) (zombieLoc-0.25);
             //Checks if zombie has received to squash
             if(info.get(bucket.getValue().getRow()*10+9)!=null &&
-                    info.get(bucket.getValue().getRow()*10+9).contains("quash"))
-            {
+                    info.get(bucket.getValue().getRow()*10+9).contains("quash")) {
                 info.replace(bucket.getValue().getRow()*10+9, "attackSquash");
                 bucket.getValue().setSquashAttacked(true);
                 bucket.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
-            else if(info.get(loc) != null && info.get(loc).contains("quash") && !bucket.getValue().isSquashAttacked())
-            {
+            else if(info.get(loc) != null && info.get(loc).contains("quash") && !bucket.getValue().isSquashAttacked()) {
                 info.replace(loc, "attackSquash");
                 bucket.getValue().setSquashAttacked(true);
                 bucket.getValue().setSquashAttackTime(System.currentTimeMillis());
             }
             //Checks if cherryBomb exploded
             if(bucket.getValue().isBurnt() && (System.currentTimeMillis()-bucket.getValue().getBurntTime())>5000)
-            {
                 bucket.getValue().setX((float) (-200));
-            }
             //Checks if zombie has received to flower and controls it
-            for(Map.Entry<Integer, String> information: info.entrySet())
-            {
+            for(Map.Entry<Integer, String> information: info.entrySet()) {
                 zombieLoc = bucket.getValue().getRow()*10 + findColumn((int)bucket.getValue().getX());
-                if(information.getKey() == zombieLoc && information.getValue()!=null)
-                {
-                    if(!bucket.getValue().isStopped())
-                    {
+                if(information.getKey() == zombieLoc && information.getValue()!=null) {
+                    if(!bucket.getValue().isStopped()) {
                         bucket.getValue().setStopTime(System.currentTimeMillis());
                         bucket.getValue().setStopped(true);
                     }
-                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800)
-                    {
+                    else if(info.get(zombieLoc).equals("cherryBomb") && (System.currentTimeMillis() - cherryBombState) >= 1800) {
                         bucket.getValue().setBurnt(true);
                         bucket.getValue().setBurntTime(System.currentTimeMillis());
+                        stoppedPeas.replace(loc, null);
                     }
                     else if(bucket.getValue().isStopped() &&
                             (System.currentTimeMillis() - bucket.getValue().getStopTime()) >= 1000 ){
@@ -716,15 +681,6 @@ public class GameState {
         }
     }
     /**
-     * Returns the information of peas which are stopped by zombies
-     * @return HashMap<Integer, Integer> --> key: location of pea shooter,
-     * value: x coordinate tha this peashooter's peas are stopped
-     */
-    public HashMap<Integer, Integer> getStoppedPeas() {
-        return stoppedPeas;
-    }
-
-    /**
      * After dying a zombie, removes the location of peashooter that its peas were stopped by zombie
      * @param loc as location of pea shooter/ freeze pea shooter.
      */
@@ -777,11 +733,8 @@ public class GameState {
             r = 4;
         else if( y > 618 && y <= 742)
             r = 5;
-        //find column on chosen cell
-        c = findColumn(x);
-        return r*10 + c;
+        return r*10 + findColumn(x);
     }
-
     /**
      * Finds which item has been chosen. Flower or shovel.
      * If a flower had been chosen will find which flower
@@ -793,8 +746,7 @@ public class GameState {
         if(e.getX() >= 110 - cardW &&
                 e.getX() <= 110 + cardW &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = peashooter.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -804,8 +756,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW &&
                 e.getX() <= 110 + cardW + cardW &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = sunFlower.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -815,8 +766,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW*2 &&
                 e.getX() <= 110 + cardW + cardW*2 &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = cherryBomb.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -826,8 +776,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW*3 &&
                 e.getX() <= 110 + cardW + cardW*3 &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = wallNut.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -837,8 +786,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW*4 &&
                 e.getX() <= 110 + cardW + cardW*4 &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = freezePeaShooter.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -848,8 +796,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW*5 &&
                 e.getX() <= 110 + cardW + cardW*5 &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH)
-        {
+                e.getY() <= 38 + cardH) {
             sunNumber = squash.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -859,8 +806,7 @@ public class GameState {
         else if(e.getX() >= 110 - cardW + cardW*6 &&
                 e.getX() <= 110 + cardW + cardW*6 &&
                 e.getY() >= 38 - cardH &&
-                e.getY() <= 38 + cardH && timeType.equals("night"))
-        {
+                e.getY() <= 38 + cardH && timeType.equals("night")) {
             sunNumber = mushroom.chooseFlower(sunNumber);
             lock = false;
             //unlock
@@ -871,11 +817,8 @@ public class GameState {
                 e.getX() <= 700 &&
                 e.getY() >= 38 - cardH &&
                 e.getY() <= 38 + cardH)
-        {
             shovel = true;
-        }
     }
-
     /**
      * Saves dropping sun after clicking
      * @param e clicked location
@@ -889,18 +832,16 @@ public class GameState {
             if((e.getX() >= sunX - sun.getWidth(null) &&
                     e.getX() <= sunX + sun.getWidth(null)) &&
                     (e.getY() >= sunY - sun.getHeight(null) &&
-                            e.getY() <= sunY + sun.getHeight(null)))
-            {
+                            e.getY() <= sunY + sun.getHeight(null))) {
                 sunState = true;
                 sunNumber += 25;
                 sunY = GAME_HEIGHT;
                 sunTime = System.currentTimeMillis();
             }
-
-        int loc = findLoc(x,y);
-        sunNumber = sunFlower.saveSun(loc, sunNumber);
+        sunNumber = sunFlower.saveSun(findLoc(x,y), sunNumber);
+        if(timeType.equals("night"))
+            sunNumber = mushroom.saveSun(findLoc(x,y), sunNumber);
     }
-
     /**
      * Puts flower in selected cell after choosing its card
      * @param e clicked location
@@ -912,63 +853,54 @@ public class GameState {
         //find the selected location for putting flowers
         if((peashooter.getCard() || sunFlower.getCard() || cherryBomb.getCard()
                 || wallNut.getCard() || freezePeaShooter.getCard() || squash.getCard() ||
-                (timeType.equals("night") && mushroom.getCard())) && !lock)
-        {
+                (timeType.equals("night") && mushroom.getCard())) && !lock) {
             int loc = findLoc(x, y);
-            if(info.get(loc) == null)
-            {
-                if(peashooter.getCard() && !peashooter.getLock())
-                {
+            if(info.get(loc) == null){
+                if(peashooter.getCard() && !peashooter.getLock()){
                     info.replace(loc, "peaShooter");
                     lifeInfo.replace(loc,70);
                     peashooter.setLock(true);
                     peashooter.addPea(loc);
                 }
-                else if(sunFlower.getCard() && !sunFlower.getLock())
-                {
+                else if(sunFlower.getCard() && !sunFlower.getLock()){
                     info.replace(loc, "sunFlower");
                     lifeInfo.replace(loc,50);
                     sunFlower.addSunFlower(loc);
                     sunFlower.setLock(true);
                 }
-                else if(cherryBomb.getCard() && !cherryBomb.getLock())
-                {
+                else if(cherryBomb.getCard() && !cherryBomb.getLock()){
                     info.replace(loc, "cherryBomb");
                     lifeInfo.replace(loc,70);
                     cherryBombState = System.currentTimeMillis();
                     cherryBomb.setLock(true);
                 }
-                else if(wallNut.getCard() && !wallNut.getLock())
-                {
+                else if(wallNut.getCard() && !wallNut.getLock()){
                     info.replace(loc, "wallNut");
                     lifeInfo.replace(loc,150);
                     wallNut.setLock(true);
                 }
-                else if(freezePeaShooter.getCard() && !freezePeaShooter.getLock())
-                {
+                else if(freezePeaShooter.getCard() && !freezePeaShooter.getLock()){
                     info.replace(loc, "freezePeaShooter");
                     lifeInfo.replace(loc,100);
                     freezePeaShooter.setLock(true);
                     freezePeaShooter.addPea(loc);
                 }
-                else if(squash.getCard() && !squash.getLock())
-                {
+                else if(squash.getCard() && !squash.getLock()){
                     info.replace(loc, "squash");
                     lifeInfo.replace(loc,70);
                     squash.setLock(true);
                 }
                 else if(timeType.equals("night"))
-                    if(mushroom.getCard() && !mushroom.getLock())
-                    {
+                    if(mushroom.getCard() && !mushroom.getLock()){
                         info.replace(loc, "mushroom");
-                        lifeInfo.replace(loc,50);
+                        lifeInfo.replace(loc,25);
                         mushroom.setLock(true);
+                        mushroom.addSunFlower(loc);
                     }
                 lock = true;
             }
         }
     }
-
     /**
      * After choosing shovel, removes selected flower.
      * @param e clicked location
@@ -978,25 +910,21 @@ public class GameState {
         int x = e.getX();
         int y = e.getY();
         //removes a flower by shovel
-        if(shovel)
-        {
+        if(shovel) {
             int loc = findLoc(x, y);
-            if(info.get(loc) != null)
-            {
+            if(info.get(loc) != null) {
                 if(info.get(loc).equals("sunFlower"))
                     sunFlower.removeSunFlower(loc);
-                else if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter"))
-                {
+                else if(info.get(loc).equals("deadPeaShooter") || info.get(loc). equals("peaShooter")) {
                     info.replace(loc, null);
                     peashooter.removeBullet(loc);
-                    removeStoppedPea(loc);
-                }
-                else if(info.get(loc).equals("freezePeaShooter"))
-                {
+                    removeStoppedPea(loc); }
+                else if(info.get(loc).equals("freezePeaShooter")) {
                     info.replace(loc, null);
                     freezePeaShooter.removeBullet(loc);
-                    removeStoppedPea(loc);
-                }
+                    removeStoppedPea(loc); }
+                else if(info.get(loc).equals("mushroom"))
+                    mushroom.removeSunFlower(loc);
                 info.replace(loc, null);
                 shovel = false;
             }
@@ -1006,7 +934,6 @@ public class GameState {
      * The mouse handler.
      */
     class MouseHandler implements MouseListener, MouseMotionListener {
-
         @Override
         public void mouseClicked(MouseEvent e) {
             chooseItem(e);
@@ -1015,35 +942,33 @@ public class GameState {
             if(x > 864 && x < 990 && y > 32 && y < 60)
                 menu = true;
         }
-
         @Override
         public void mousePressed(MouseEvent e) {
             saveSun(e);
         }
-
         @Override
         public void mouseReleased(MouseEvent e) {
             putFlower(e);
             removeFlower(e);
         }
-
         @Override
-        public void mouseEntered(MouseEvent e) {
-        }
-
+        public void mouseEntered(MouseEvent e) {}
         @Override
-        public void mouseExited(MouseEvent e) {
-        }
-
+        public void mouseExited(MouseEvent e) {}
         @Override
-        public void mouseDragged(MouseEvent e) {
-        }
-
+        public void mouseDragged(MouseEvent e) {}
         @Override
-        public void mouseMoved(MouseEvent e) {
-        }
+        public void mouseMoved(MouseEvent e) {}
     }
     //Getter setters
+    /**
+     * Returns the information of peas which are stopped by zombies
+     * @return HashMap<Integer, Integer> --> key: location of pea shooter,
+     * value: x coordinate tha this peashooter's peas are stopped
+     */
+    public HashMap<Integer, Integer> getStoppedPeas() {
+        return stoppedPeas;
+    }
     /**
      * Returns mouse handler
      */
@@ -1157,5 +1082,17 @@ public class GameState {
      * Sets the number of suns
      */
     public void setSunNumber(int sunNumber) {this.sunNumber = sunNumber; }
+    //TODO
+    /**
+     * Sets sunDropping -> last time of dropping a sun
+     */
+    public void setSunDropping(long sunDropping) { this.sunDropping = sunDropping;}
+    /**
+     * Sets x coordinate of dropping sun
+     */
+    public void setSunX(int sunX) {this.sunX = sunX;}
+    /**
+     * Sets y coordinate of dropping sun
+     */
+    public void setSunY(int sunY) { this.sunY = sunY; }
 }
-
