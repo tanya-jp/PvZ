@@ -24,6 +24,7 @@ public class Reload {
     private long newStartTime;
     private static final String PATH = ".\\users\\";
     private int lawnMowers;
+    private int mushroom;
     /**
      * Creates reload class structure by game state and the path of saved  game
      */
@@ -51,6 +52,8 @@ public class Reload {
         setLawnMowers();
         setCards();
         System.out.println(stopTime - startTime);
+        if(timeType.equals("night"))
+            setMushroom();
     }
 
     /**
@@ -140,7 +143,6 @@ public class Reload {
                     state.getSunFlower().getSunFlowerState().replace(loc, Boolean.parseBoolean(getInfo(26+j-1, (i-1))));
             }
         }
-
     }
     /**
      * Sets all zombies that were in the playground. Sets their x coordinate, roe number and life state.
@@ -266,11 +268,29 @@ public class Reload {
         if(timeType.equals("night"))
         {
             ++cards;
-            state.getMushroom().setCardState(Boolean.parseBoolean(getInfo(cards, 1)));
+            state.getMushroom().setCardState(true);
             if(!getInfo(cards, 2).equals("0"))
             {
                 time = Long.parseLong(getInfo(cards, 2));
                 state.getMushroom().setFlowerTime(System.currentTimeMillis() - (stopTime - time));
+            }
+        }
+        mushroom = cards;
+    }
+    private void setMushroom()
+    {
+        System.out.println(getInfo(mushroom+1+5+1, (1-1)));
+        for (int j = 1; j <= 5; j++){
+            for (int i = 1; i <= 9; i++) {
+                int loc = j * 10 + i;
+                //mushroomSunTime
+                if(!getInfo(mushroom+j+1, (i-1)).equals("null")){
+                    long time = Long.parseLong(getInfo(mushroom+j+1, (i-1)));
+                    state.getMushroom().getSunFlowerSunTime().replace(loc, System.currentTimeMillis() - (stopTime - time));
+                }
+                //mushroomState
+                if(!getInfo(mushroom+5+j+2, (i-1)).equals("null"))
+                    state.getMushroom().getSunFlowerState().replace(loc, Boolean.parseBoolean(getInfo(mushroom +5+j+2, (i-1))));
             }
         }
     }
