@@ -66,7 +66,7 @@ public class GameFrame extends JFrame {
         sun = new ImageIcon(".\\PVS Design Kit\\images\\sun.png").getImage();
         shovel = new ImageIcon(".\\PVS Design Kit\\images\\shovel.png").getImage();
         gameOver = new ImageIcon(".\\PVS Design Kit\\images\\gameOver.jpg").getImage();
-        finalWave = new ImageIcon(".\\PVS Design Kit\\images\\huge_wave_of_zombies_text.png.jpg").getImage();
+        finalWave = new ImageIcon(".\\PVS Design Kit\\images\\huge_wave_of_zombies_text.png").getImage();
     }
 
     /**
@@ -106,16 +106,14 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         GameCanvas canvas = new GameCanvas(timeType);
-//        if(!state.isGameOver())
-        {
             canvas.paintComponent(g2d);
             g2d.setFont(g2d.getFont().deriveFont(18.0f));
             g2d.setColor(Color.GREEN);
             g2d.drawString("MENU", 890, 50);
-            if(System.currentTimeMillis() - state.getStartTime()> 150000+180000+150000 &&
-                    System.currentTimeMillis() - state.getStartTime()< 150000+180000+150000+500)
-                g2d.drawImage(finalWave, (GAME_WIDTH)/2, GAME_HEIGHT/2, null);
-            //set shovel
+            if(System.currentTimeMillis() - state.getStartTime()> 150000+180000 &&
+                System.currentTimeMillis() - state.getStartTime()< 150000+180000+1000)
+                g2d.drawImage(finalWave, 100, GAME_HEIGHT/2, null);
+        //set shovel
             setShovel(g2d, state);
             //set cards
             putCards(g2d, state);
@@ -127,10 +125,6 @@ public class GameFrame extends JFrame {
             putLawnMower(g2d, state);
             //set sun
             setSun(g2d, state);
-        }
-//        else
-//            g2d.drawImage(gameOver, 2,30, GAME_WIDTH, GAME_HEIGHT, null);
-
 //        canvas.render(state);
         //
         // Draw all game elements according
