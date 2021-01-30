@@ -207,13 +207,13 @@ public class MainMenu{
                 clicks++;
             }
         });
-
-        rankingButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                scoreboard.createBoard();
-            }
-        });
+//TODO:
+//        rankingButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                scoreboard.createBoard();
+//            }
+//        });
     }
 
     public void makeLabels(){
@@ -307,26 +307,28 @@ public class MainMenu{
     public User getUser() {
         return user;
     }
+    //TODO:this method changed
     public void login(){
-        //     user create button action listener
-        //ask for user first and then run the main menu
-//        user.getCreateButton().addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-        user.getNewUserField().setText(user.getNewUserField().getText());
-        //          Server server = new Server();
-        //        server.waitForClient();
-        if (user.getNewUserField().getText().equals("player")){
-            createMainMenu();
-            startFrame.setVisible(false);
-            user.getUserFrame().setVisible(false);
-            mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        }
-        else {
-            JOptionPane.showMessageDialog(user.getCreateButton(),"error");
-        }
+        createMainMenu();
+        startFrame.setVisible(false);
+        user.getUserFrame().setVisible(false);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+
+    public JLabel getUsernameLabel() {
+        return usernameLabel;
+    }
+    //TODO:
+    public JButton getRankingButton() {
+        return rankingButton;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+    //    public void setUserField(){
+//
+//    }
 //        });
 //        //user create button action listener
 //        //ask for user first and then run the main menu
