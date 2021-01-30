@@ -71,7 +71,7 @@ public class Scoreboard {
 
         //create title
         normalTitle = createTitle("name","type","wins","looses"
-                ,"score");
+        ,"score");
 
         hardTitle = createTitle("name","type","wins","looses"
                 ,"score");
@@ -122,7 +122,7 @@ public class Scoreboard {
     }
 
     public ArrayList<JLabel> createArray(String username, String type
-            ,String numOfWins,String numOfLooses, String score){
+    ,String numOfWins,String numOfLooses, String score){
         //create the main array
         ArrayList<JLabel> array = new ArrayList<>();
 
@@ -154,7 +154,7 @@ public class Scoreboard {
         //return the array
         return array;
     }
-    //TODO:
+//TODO:
     public void updateBoard(ArrayList<String> info){
         //split a line using -
         String username = info.get(0); //username
@@ -179,7 +179,7 @@ public class Scoreboard {
 //        || (mode.equals("hard") && hardNumOfRows < normalNumOfRows))
 //            height = (modePane.getHeight());
 //        else
-        height = (modePane.getHeight()) + 40;
+            height = (modePane.getHeight()) + 40;
 
         mainNormalPanel.setLayout(new GridLayout(normalNumOfRows + 1,5,5,5));
         mainHardPanel.setLayout(new GridLayout(hardNumOfRows + 1,5,5,5));

@@ -32,8 +32,8 @@ public class StartManager {
         //TODO
         server.waitForClient();
 
-        //       mainMenu = new MainMenu();
-        //       mainMenu.createStartGUI();
+ //       mainMenu = new MainMenu();
+ //       mainMenu.createStartGUI();
         //       update();
     }
     public static void update()
@@ -110,7 +110,7 @@ public class StartManager {
             }
         });
     }
-    //TODO:
+//TODO:
     public static MainMenu getMainMenu() {
         return mainMenu;
     }

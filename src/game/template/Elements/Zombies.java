@@ -48,7 +48,7 @@ public class Zombies {
      */
     public void setNormal(int loc)
     {
-            normalInfo.put(normalNum, new NormalZombie());
+        normalInfo.put(normalNum, new NormalZombie());
         normalInfo.get(normalNum).setRow(loc);
         normalInfo.get(normalNum).setX(1005);
 //        normalInfo.get(normalNum).add(200);
@@ -82,7 +82,7 @@ public class Zombies {
      */
     public void setCone(int loc)
     {
-            coneInfo.put(coneNum, new ConeHeadZombie());
+        coneInfo.put(coneNum, new ConeHeadZombie());
         coneInfo.get(coneNum).setRow(loc);
         coneInfo.get(coneNum).setX(1005);
 //        coneInfo.get(coneNum).add(560);
@@ -202,7 +202,7 @@ public class Zombies {
                             flag++;
                         }
                     }
-                    }
+                }
                 i++;
                 flag = 0;
             }

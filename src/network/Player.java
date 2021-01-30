@@ -76,11 +76,11 @@ public class Player {
                             "The Field");
                 }
                 else if (server.isSignUpAvailable(newUsername)) {
-                    StartManager.getMainMenu().login();
-                    StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
-                } else
-                    JOptionPane.showMessageDialog(signButton, "Username Is" +
-                            " Already Taken.");
+                        StartManager.getMainMenu().login();
+                        StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
+                    } else
+                        JOptionPane.showMessageDialog(signButton, "Username Is" +
+                                " Already Taken.");
             }
         });
 
@@ -133,7 +133,7 @@ public class Player {
                 if(numOfClicks == 1) {
                     StartManager.getMainMenu().getScoreboard().createBoard();
                     for (int i = 0; i < server.getNumOfUsers(); i++) {
-                        //                      StartManager.getMainMenu().getScoreboard().createBoard();
+  //                      StartManager.getMainMenu().getScoreboard().createBoard();
                         StartManager.getMainMenu().getScoreboard().updateBoard(server.returnUserAndInfo());
                     }
                 }
