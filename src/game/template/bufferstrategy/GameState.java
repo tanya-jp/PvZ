@@ -57,8 +57,7 @@ public class GameState {
         wallNut = new WallNut(type, timeType);
         freezePeaShooter = new FreezePeaShooter(type, timeType);
         squash = new Squash(type, timeType);
-        if (timeType.equals("night"))
-            mushroom = new Mushroom(type, timeType);
+        mushroom = new Mushroom(type, timeType);
         zombie = new Zombies();
         stoppedPeas = new HashMap<>();
         sunState = false;
@@ -101,6 +100,8 @@ public class GameState {
         }
         //checks sunflower's sun time
         sunFlower.setSunFlowerState();
+        if(timeType.equals("night"))
+            mushroom.setSunFlowerState();
         //shoots peas
         peashooter.setBullets();
         freezePeaShooter.setBullets();
@@ -838,6 +839,8 @@ public class GameState {
                 sunTime = System.currentTimeMillis();
             }
         sunNumber = sunFlower.saveSun(findLoc(x,y), sunNumber);
+        if(timeType.equals("night"))
+            sunNumber = mushroom.saveSun(findLoc(x,y), sunNumber);
     }
     /**
      * Puts flower in selected cell after choosing its card
@@ -890,8 +893,9 @@ public class GameState {
                 else if(timeType.equals("night"))
                     if(mushroom.getCard() && !mushroom.getLock()){
                         info.replace(loc, "mushroom");
-                        lifeInfo.replace(loc,50);
+                        lifeInfo.replace(loc,25);
                         mushroom.setLock(true);
+                        mushroom.addSunFlower(loc);
                     }
                 lock = true;
             }
@@ -919,6 +923,8 @@ public class GameState {
                     info.replace(loc, null);
                     freezePeaShooter.removeBullet(loc);
                     removeStoppedPea(loc); }
+                else if(info.get(loc).equals("mushroom"))
+                    mushroom.removeSunFlower(loc);
                 info.replace(loc, null);
                 shovel = false;
             }

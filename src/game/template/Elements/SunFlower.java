@@ -11,16 +11,12 @@ import java.awt.*;
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class SunFlower implements Card, Images {
+public class SunFlower extends SunProducer implements Card, Images {
 
     private final int neededSuns;
-    private String type;
-    private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private HashMap<Integer, Boolean> sunFlowerState;
-    private HashMap<Integer, Long> sunFlowerSunTime;
     private Image sunFlowerCard;
     private Image sunFlowerFull;
     private Image sunFlowerDead;
@@ -32,10 +28,7 @@ public class SunFlower implements Card, Images {
      */
     public SunFlower(String type, String timeType)
     {
-        sunFlowerState = new HashMap<>();
-        sunFlowerSunTime = new HashMap<>();
-        this.type = type;
-        this.timeType = timeType;
+        super(type, timeType);
         this.card = false;
         this.lock = true;
         neededSuns = 50;
@@ -47,51 +40,35 @@ public class SunFlower implements Card, Images {
      * Puts all cells to the  hashMaps and makes their values null for the first time
      * that means there is not any sun that location.
      */
-    private void init()
+    @Override
+    public void init()
     {
-        sunFlowerState = new HashMap<>();
-        for (int i = 1; i <= 9; i++)
-        {
-            for(int j = 1; j <= 5; j++)
-            {
-                int loc = j*10 + i;
-                sunFlowerState.put(loc, null);
-                sunFlowerSunTime.put(loc, null);
-            }
-        }
+        super.init();
     }
     /**
      * Checks if sun flower can make based on game type.
      * If it is possible, sets it location.
      */
+    @Override
     public void setSunFlowerState()
     {
-        long time = System.currentTimeMillis();
-        for (HashMap.Entry<Integer, Boolean> set : sunFlowerState.entrySet()) {
-            if (set.getValue() != null)
-                if(!set.getValue())
-                {
-                    int loc = set.getKey();
-                    if(type.equals("normal") && time - sunFlowerSunTime.get(loc) >= 20000)
-                        sunFlowerState.replace(loc, true);
-                    else if(type.equals("hard") && time - sunFlowerSunTime.get(loc) >= 25000)
-                        sunFlowerState.replace(loc, true);
-                }
-        }
+        super.setSunFlowerState();
     }
     /**
      * If sunflower's sun can be appeared, returns true.
      */
+    @Override
     public HashMap<Integer, Boolean> getSunFlowerState()
     {
-        return sunFlowerState;
+        return super.getSunFlowerState();
     }
 
     /**
      * Returns time of appearing suns.
      */
+    @Override
     public HashMap<Integer, Long> getSunFlowerSunTime() {
-        return sunFlowerSunTime;
+        return super.getSunFlowerSunTime();
     }
 
     /**
@@ -100,39 +77,30 @@ public class SunFlower implements Card, Images {
      * @param sunNumber number of chosen suns
      * @return new sun number, after adding produced sun of sunFlower
      */
+    @Override
     public int saveSun(int loc, int sunNumber)
     {
-        if(sunFlowerState.get(loc) != null)
-            if (sunFlowerState.get(loc))
-            {
-                sunFlowerState.replace(loc, false);
-                sunFlowerSunTime.replace(loc, System.currentTimeMillis());
-                sunNumber += 25;
-            }
-        return sunNumber;
+        return super.saveSun(loc, sunNumber);
     }
 
     /**
      * makes a new sunFlower and sets time of adding and sets its state true.
      * @param loc as location of sunFlower
      */
+    @Override
     public void addSunFlower(int loc)
     {
-        if(sunFlowerState.get(loc) == null)
-            sunFlowerState.replace(loc, true);
-        long time = System.currentTimeMillis();
-        if(sunFlowerSunTime.get(loc) == null)
-            sunFlowerSunTime.replace(loc, time);
+        super.addSunFlower(loc);
     }
 
     /**
      * Removes chosen sun flower by shovel
      * @param loc as location of selected sunFlower
      */
+    @Override
     public void removeSunFlower(int loc)
     {
-        sunFlowerState.replace(loc, null);
-        sunFlowerSunTime.replace(loc, null);
+        super.removeSunFlower(loc);
     }
     /**
      * Sets all images of that sunFlower

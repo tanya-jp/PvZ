@@ -62,7 +62,7 @@ public class GameLoop implements Runnable {
     public void init() {
         // Perform all initializations ...
         state = new GameState(type, timeType);
-//        Reload reload = new Reload(state, "Qoli");
+        Reload reload = new Reload(state, "Qoli");
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());

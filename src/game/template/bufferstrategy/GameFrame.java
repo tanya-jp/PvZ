@@ -356,7 +356,12 @@ public class GameFrame extends JFrame {
                                             state.getStoppedPeas().get(loc) > locX+value)
                                         g2d.drawImage(state.getFreezePea().getPea(), locX + value + 51, locY + 10, null);
                     } else if (state.getInfo().get(loc).equals("mushroom"))
+                    {
                         g2d.drawImage(state.getMushroom().getFullImage(), locX - 20, locY, 100, 100, null);
+                        if (state.getMushroom().getSunFlowerState().containsKey(loc) &&
+                                state.getMushroom().getSunFlowerState().get(loc))
+                            g2d.drawImage(sun, locX, locY, 40, 40, null);
+                    }
                     else if (state.getInfo().get(loc).equals("squash"))
                         g2d.drawImage(state.getSquash().getFullImage(), locX-15, locY, 100, 100, null);
                     else if (state.getInfo().get(loc).equals("attackSquash"))
