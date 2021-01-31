@@ -1,5 +1,7 @@
 package network;
 
+import utils.FileUtils;
+
 import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
@@ -180,7 +182,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(1010);) {
+                ServerSocket welcomingSocket = new ServerSocket(2011);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -225,7 +227,38 @@ public class Server {
         }
         userInfoMapHard.remove(oldUsername);
         userInfoMapHard.put(newUsername,temp);
+        changeUserFiles(oldUsername, newUsername);
         return true;
+    }
+
+    public void changeUserFiles(String oldUsername, String newUsername)
+    {
+        FileUtils.makeFolder(".\\users\\"+newUsername+"\\");
+        File[] allFiles = FileUtils.getFilesInDirectory(".\\users\\"+oldUsername+"\\");
+        for (File allFile : allFiles) {
+            String content="";
+            if (allFile.getName().equals("score")) {
+                content = "score" + FileUtils.scanByLineNumber(allFile, 1);
+                FileUtils.fileWriter(content, ".\\users\\" + newUsername + "\\");
+            }
+            else {
+                String fileName = allFile.getName();
+                String[] fName = fileName.split("\\.");
+                Scanner scanner = null;
+                try {
+                    scanner = new Scanner(allFile);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    content = content + line + "\n";
+                }
+                scanner.close();
+                FileUtils.fileWriterByFileName(content, fName[0], ".\\users\\"+newUsername+"\\");
+            }
+            allFile.delete();
+        }
     }
 
     public boolean isLoginAvailable(String username) {
@@ -359,7 +392,7 @@ public class Server {
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
+            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {

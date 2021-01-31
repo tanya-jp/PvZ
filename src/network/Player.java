@@ -150,7 +150,7 @@ public class Player {
             }
         });
 
-        try (Socket client = new Socket("localhost", 1010);) {
+        try (Socket client = new Socket("localhost", 2011);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
