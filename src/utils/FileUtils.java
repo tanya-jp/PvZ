@@ -249,13 +249,17 @@ public class FileUtils {
         }
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(!line.equals(str1))
-                result = line + "\n";
+            String[] res = line.split("-");
+            if(!res[0].equals(str1))
+            {
+                result = result + line + "\n";
+            }
             else
             {
-                String[] res = line.split("-");
                 if(!res[1].equals(type))
-                    result = line + "\n";
+                {
+                    result = result + line + "\n";
+                }
             }
         }
         scanner.close();
