@@ -12,9 +12,11 @@ import java.util.*;
 
 public class Server {
     //hashmap to save all info
-    private HashMap<String, ArrayList<String>> userInfoMap;
+    private HashMap<String, ArrayList<String>> userInfoMapNormal;
+    private HashMap<String, ArrayList<String>> userInfoMapHard;
     //array list to save all info
-    private ArrayList<ArrayList<String>> userAndInfo;
+    private ArrayList<ArrayList<String>> userAndInfoNormal;
+    private ArrayList<ArrayList<String>> userAndInfoHard;
     int numOfUsers = 0;
     int index = 0;
 
@@ -33,8 +35,10 @@ public class Server {
     }
 
     public Server() {
-        userInfoMap = new HashMap<>();
-        userAndInfo = new ArrayList<>();
+        userInfoMapNormal = new HashMap<>();
+        userInfoMapHard = new HashMap<>();
+        userAndInfoNormal = new ArrayList<>();
+        userAndInfoHard = new ArrayList<>();
         restoreUserInfo(); //this method is called each time server is created
     }
 
@@ -75,22 +79,24 @@ public class Server {
                 userInfo.add(w);
                 userInfo.add(l);
                 userInfo.add(s);
-
-                //put name and info array in HashMap if they aren't empty
-                if (!u.equals("") && !m.equals("") && !t.equals("") && !w.equals("")
-                        && !l.equals("") && !s.equals("")) {
-                    userInfoMap.put(u, restoredInfo);
-                    userAndInfo.add(userInfo);
-//                    userAndInfo.get(count).add(u);
-//                    userAndInfo.get(count).add(m);
-//                    userAndInfo.get(count).add(t);
-//                    userAndInfo.get(count).add(w);
-//                    userAndInfo.get(count).add(l);
-//                    userAndInfo.get(count).add(s);
-//                    count++;
+                if(m.equalsIgnoreCase("normal")) {
+                    //put name and info array in HashMap if they aren't empty
+                    if (!u.equals("") && !t.equals("") && !w.equals("")
+                            && !l.equals("") && !s.equals("")) {
+                        userInfoMapNormal.put(u, restoredInfo);
+                        userAndInfoNormal.add(userInfo);
+                    }
+                }else{
+                    //put name and info array in HashMap if they aren't empty
+                    if (!u.equals("") && !t.equals("") && !w.equals("")
+                            && !l.equals("") && !s.equals("")) {
+                        userInfoMapHard.put(u, restoredInfo);
+                        userAndInfoHard.add(userInfo);
+                    }
                 }
 
-                numOfUsers = userInfoMap.size();
+
+                numOfUsers = userInfoMapNormal.size();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,25 +127,48 @@ public class Server {
         info.add(w);
         info.add(l);
         info.add(s);
+        System.out.println(info);
 
-        userInfoMap.put(u, info);
+        if(mode.equalsIgnoreCase("normal"))
+            userInfoMapNormal.put(u, info);
+        else
+            userInfoMapHard.put(u, info);
 
         BufferedWriter bf = null;
 
         try {
             bf = new BufferedWriter(new FileWriter(userInfoFile));
+            if(mode.equalsIgnoreCase("normal")){
 
-            //iterate hashmap keys
-            for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
-                //write values separated by -
-                bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4)
-                +"\n" + entry.getKey() + "-" + "hard"
-                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-                //go to new line
-                bf.newLine();
+                //iterate hashmap keys
+                for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
+                    //write values separated by -
+                    bf.write(entry.getKey() + "-" + entry.getValue().get(0)
+                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                    System.out.println("we are here at normal");
+                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
+                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                    //go to new line
+                    bf.newLine();
+                }
+            }
+            else{
+
+                //iterate hashmap keys
+                for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
+                    //write values separated by -
+                    bf.write(entry.getKey() + "-" + entry.getValue().get(0)
+                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                    System.out.println("we are here at hard");
+                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
+                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                    //go to new line
+                    bf.newLine();
+                }
             }
             bf.flush();
         } catch (IOException e) {
@@ -157,7 +186,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(1011);) {
+                ServerSocket welcomingSocket = new ServerSocket(1010);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -177,30 +206,35 @@ public class Server {
     public boolean isChangeAvailable(String oldUsername, String newUsername){
         int flag = 0;
         //check if new username is available
-        for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
             //new username is already taken
             if (entry.getKey().equalsIgnoreCase(newUsername)) {
-                flag = 1;
                 return false;
             }
         }
         //replace with new one
-        if(flag == 0){
-            for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+            for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
                 if (entry.getKey().equalsIgnoreCase(oldUsername)) {
                     ArrayList<String> temp = entry.getValue();
-                    userInfoMap.remove(oldUsername);
-                    userInfoMap.put(newUsername,temp);
+                    userInfoMapNormal.remove(oldUsername);
+                    userInfoMapNormal.put(newUsername,temp);
                     changeUserInFile(oldUsername,newUsername,temp);
-                    return true;
                 }
+            }
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(oldUsername)) {
+                ArrayList<String> temp = entry.getValue();
+                userInfoMapNormal.remove(oldUsername);
+                userInfoMapNormal.put(newUsername,temp);
+                changeUserInFile(oldUsername,newUsername,temp);
+                return true;
             }
         }
         return true;
     }
 
     public boolean isLoginAvailable(String username) {
-        for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
             //username exists and is correct
             if (entry.getKey().equalsIgnoreCase(username)) {
                 return true;
@@ -210,8 +244,8 @@ public class Server {
     }
 
     public boolean isSignUpAvailable(String username) {
-        if (!userInfoMap.isEmpty()) {
-            for (Map.Entry<String, ArrayList<String>> entry : userInfoMap.entrySet()) {
+        if (!userInfoMapNormal.isEmpty()) {
+            for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
                 //username is already taken
                 if (entry.getKey().equalsIgnoreCase(username)) {
                     return false;
@@ -220,7 +254,7 @@ public class Server {
         }
         //username is new and will be added
         writeToFile(username, "normal", "d/n", 0, 0, 0);
-//        writeToFile(username, "hard", "d/n", 0, 0, 0);
+        writeToFile(username, "hard", "d/n", 0, 0, 0);
         return true;
     }
 
@@ -267,17 +301,21 @@ public class Server {
     }
 
 
-    public ArrayList<String> returnUserAndInfo(){
-        ArrayList<String> info = userAndInfo.get(index);
+    public ArrayList<String> returnUserAndInfoNormal(){
+        ArrayList<String> info = userAndInfoNormal.get(index);
+        index++;
+        return info;
+    }
+    public ArrayList<String> returnUserAndInfoHard(){
+        ArrayList<String> info = userAndInfoHard.get(index);
         index++;
         return info;
     }
 
-
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
+            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {
