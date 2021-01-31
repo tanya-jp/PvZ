@@ -81,6 +81,27 @@ public class FileUtils {
             }
         }
     }
+    public static void networkFileWriter(String content,String p) {
+        String fileName = "usersInfoFile";
+        File newFile = new File(p+fileName+".txt");
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(newFile));
+            writer.write(content);
+            writer.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        } finally {
+            try {
+                if (writer != null)
+                {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace(System.err);
+            }
+        }
+    }
 
     /**
      * Read from files using Buffered reader
@@ -186,6 +207,55 @@ public class FileUtils {
             {
                 scanner.close();
                 break;
+            }
+        }
+        scanner.close();
+        return result;
+    }
+    public static String scanByName(File file, String userName, String type)
+    {
+        String result = "";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] res = line.split("-");
+            if(res[0].equals(userName))
+            {
+                if(res[1].equals(type))
+                {
+                    result = line;
+                    scanner.close();
+                    return result;
+                }
+            }
+        }
+        scanner.close();
+        return result;
+    }
+
+    public static String scanOtherInfo(File file, String str1, String type)
+    {
+        String result = "";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if(!line.equals(str1))
+                result = line + "\n";
+            else
+            {
+                String[] res = line.split("-");
+                if(!res[1].equals(type))
+                    result = line + "\n";
             }
         }
         scanner.close();

@@ -13,6 +13,7 @@ public class SaveFinishedGame {
     private String type;
     private String timeType;
     private String text;
+    private int currentScore;
     private static final String PATH = ".\\users\\";
     private  String scorePath;
     public SaveFinishedGame(GameState state, String userName, String finishState)
@@ -25,6 +26,7 @@ public class SaveFinishedGame {
         scorePath = PATH+ userName +"\\score.txt";
         text = toString();
         saveInformation();
+        updateNetworkFile();
     }
     /**
      * Saves information as a text file in defined path.
@@ -36,10 +38,28 @@ public class SaveFinishedGame {
     }
     public void updateScore(int number)
     {
-        int currentScore = Integer.parseInt(FileUtils.scanByLineNumber(new File(scorePath), 1));
+        currentScore = Integer.parseInt(FileUtils.scanByLineNumber(new File(scorePath), 1));
         currentScore += number;
         String content = "score\n" + currentScore;
         FileUtils.fileWriter(content, PATH+userName+"\\");
+    }
+    public void updateNetworkFile()
+    {
+        String info = FileUtils.scanByName(new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt"),
+                userName, type);
+        String[] res = info.split("-");
+        System.out.println(info);
+        int wins = Integer.parseInt(res[3]);
+        int loses = Integer.parseInt(res[4]);
+        if(finishState.equals("gameOver"))
+            loses ++;
+        else
+            wins++;
+        String newInfo = userName + "-" + type + "-d/n-" + wins + "-" + loses + "-" + currentScore;
+        String other = FileUtils.scanOtherInfo(new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt"),
+                userName, type);
+        newInfo = other + newInfo;
+        FileUtils.networkFileWriter(newInfo, "C:\\AP\\final\\out\\production\\final\\network\\");
     }
     /**
      * Appends all information and make a string that should be saved in file.
