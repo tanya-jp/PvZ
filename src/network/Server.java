@@ -134,6 +134,9 @@ public class Server {
                 //write values separated by -
                 bf.write(entry.getKey() + "-" + entry.getValue().get(0)
                         + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4)
+                +"\n" + entry.getKey() + "-" + "hard"
+                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
                         + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                 //go to new line
                 bf.newLine();
@@ -154,7 +157,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(1012);) {
+                ServerSocket welcomingSocket = new ServerSocket(1011);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -216,7 +219,8 @@ public class Server {
             }
         }
         //username is new and will be added
-        writeToFile(username, null, null, 0, 0, 0);
+        writeToFile(username, "normal", "d/n", 0, 0, 0);
+//        writeToFile(username, "hard", "d/n", 0, 0, 0);
         return true;
     }
 
