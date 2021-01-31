@@ -127,7 +127,7 @@ public class Server {
         info.add(w);
         info.add(l);
         info.add(s);
-        System.out.println(info);
+//        System.out.println(info);
 
         if(mode.equalsIgnoreCase("normal"))
             userInfoMapNormal.put(u, info);
@@ -138,7 +138,7 @@ public class Server {
 
         try {
             bf = new BufferedWriter(new FileWriter(userInfoFile));
-            if(mode.equalsIgnoreCase("normal")){
+//            if(mode.equalsIgnoreCase("normal")){
 
                 //iterate hashmap keys
                 for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
@@ -146,15 +146,15 @@ public class Server {
                     bf.write(entry.getKey() + "-" + entry.getValue().get(0)
                             + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
                             + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-                    System.out.println("we are here at normal");
-                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
-                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+//                    System.out.println("we are here at normal");
+//                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
+//                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+//                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                     //go to new line
                     bf.newLine();
                 }
-            }
-            else{
+//            }
+//            else{
 
                 //iterate hashmap keys
                 for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
@@ -162,14 +162,14 @@ public class Server {
                     bf.write(entry.getKey() + "-" + entry.getValue().get(0)
                             + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
                             + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-                    System.out.println("we are here at hard");
-                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
-                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+//                    System.out.println("we are here at hard");
+//                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
+//                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+//                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                     //go to new line
                     bf.newLine();
                 }
-            }
+//            }
             bf.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -315,7 +315,7 @@ public class Server {
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
+            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {
