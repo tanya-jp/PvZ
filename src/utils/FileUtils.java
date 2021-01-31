@@ -56,6 +56,31 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Write on a file using BufferedWriter
+     * @param content String of content to be written on a file
+     */
+    public static void gamesWriter(String content,String p) {
+        String fileName = String.valueOf(getGameNumber(p));
+        File newFile = new File(p+fileName+".txt");
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(newFile));
+            writer.write(content);
+            writer.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        } finally {
+            try {
+                if (writer != null)
+                {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace(System.err);
+            }
+        }
+    }
 
     /**
      * Read from files using Buffered reader
@@ -86,6 +111,12 @@ public class FileUtils {
             }
         }
         return string;
+    }
+
+    public static int getGameNumber(String path)
+    {
+        File[] games = getFilesInDirectory(path);
+        return games.length;
     }
 
     /**

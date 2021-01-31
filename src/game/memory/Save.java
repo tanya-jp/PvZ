@@ -36,13 +36,15 @@ public class Save {
     private String sunFlowerState;
     private String mushroomTime;
     private String mushroomState;
+    private String finishState;
     private String sun;
     private static final String PATH = ".\\users\\";
 
-    public Save(GameState state)
+    public Save(GameState state, String userName, String finishState)
     {
         this.state = state;
-        userName = "Qoli";
+        this.userName = userName;
+        this.finishState = finishState;
         text = "";
         setInformation();
         saveInformation();
@@ -64,7 +66,7 @@ public class Save {
         setLawMower();
         setSun();
         text = toString();
-        System.out.println(text);
+//        System.out.println(text);
     }
 
     /**
@@ -73,7 +75,7 @@ public class Save {
     public void saveInformation()
     {
         FileUtils.makeFolder(PATH);
-        FileUtils.fileWriter(text, PATH);
+        FileUtils.gamesWriter(text, PATH+userName+"\\");
     }
     /**
      * Sets information which is necessary to show a card.
@@ -176,7 +178,7 @@ public class Save {
     @Override
     public String toString()
     {
-        String res = userName + "\ntype " + type + "\ntimeType " + timeType
+        String res = finishState + "\ntype " + type + "\ntimeType " + timeType
                 + "\nstartTime " + startTime + "\ncurrentTime " + currentTime +"\nsunNumber " + sunNumber
                 + "\nsun " + sun
                 + "\ninfo\n" + info + "lifeInfo\n" + lifeInfo
