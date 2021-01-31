@@ -140,6 +140,7 @@ public class GameLoop implements Runnable {
                     save.updateScore(-1);
                 else
                     save.updateScore(-3);
+                save.updateNetworkFile();
             }
             else if(System.currentTimeMillis() - state.getStartTime() >= 1000)
             {
@@ -149,6 +150,7 @@ public class GameLoop implements Runnable {
                     save.updateScore(+3);
                 else
                     save.updateScore(+10);
+                save.updateNetworkFile();
             }
             end.start();
             end.getLeaveButton().addMouseListener(new MouseAdapter() {

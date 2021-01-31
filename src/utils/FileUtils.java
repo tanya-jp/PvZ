@@ -81,6 +81,27 @@ public class FileUtils {
             }
         }
     }
+    public static void fileWriterByFileName(String content,String name, String p) {
+        String fileName = name;
+        File newFile = new File(p+fileName+".txt");
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(newFile));
+            writer.write(content);
+            writer.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        } finally {
+            try {
+                if (writer != null)
+                {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace(System.err);
+            }
+        }
+    }
     public static void networkFileWriter(String content,String p) {
         String fileName = "usersInfoFile";
         File newFile = new File(p+fileName+".txt");
@@ -238,7 +259,7 @@ public class FileUtils {
         return result;
     }
 
-    public static String scanOtherInfo(File file, String str1, String type)
+    public static String scanOtherInfo(File file, String str1, String type, int score)
     {
         String result = "";
         Scanner scanner = null;
@@ -258,7 +279,8 @@ public class FileUtils {
             {
                 if(!res[1].equals(type))
                 {
-                    result = result + line + "\n";
+
+                    result = result+res[0]+"-"+res[1]+"-"+res[2]+"-"+res[3]+"-"+res[4]+"-"+score+ "\n";
                 }
             }
         }
