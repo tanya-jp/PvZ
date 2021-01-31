@@ -155,7 +155,7 @@ public class Scoreboard {
         return array;
     }
 //TODO:
-    public void updateBoard(ArrayList<String> info){
+    public void updateNormalBoard(ArrayList<String> info){
         //split a line using -
         String username = info.get(0); //username
         String mode = info.get(1); //mode
@@ -171,8 +171,8 @@ public class Scoreboard {
 
         int normalNumOfRows = mainNormalPanel.getComponentCount() % 5;
         int hardNumOfRows = mainHardPanel.getComponentCount() % 5;
-        System.out.println(normalNumOfRows);
-        System.out.println(hardNumOfRows);
+//        System.out.println(normalNumOfRows);
+//        System.out.println(hardNumOfRows);
         JPanel newRow = new JPanel(new GridLayout(1,5,5,5));
         int height = 60;
 //        if((mode.equals("normal") && normalNumOfRows < hardNumOfRows)
@@ -188,6 +188,10 @@ public class Scoreboard {
 
         modePane.revalidate();
         modePane.repaint();
+        mainNormalPanel.add(newRow);
+        for (JLabel label:row) {
+            newRow.add(label);
+        }
 
         if(mode.equals("normal")){
 //            mainNormalPanel.setSize(300,10);
@@ -207,6 +211,62 @@ public class Scoreboard {
                 newRow.add(label);
             }
         }
+
+    }
+
+    public void updateHardBoard(ArrayList<String> info){
+        //split a line using -
+        String username = info.get(0); //username
+        String mode = info.get(1); //mode
+        String type = info.get(2); //type
+        String numOfWins = info.get(3); //wins
+        String numOfLooses = info.get(4); //looses
+        String score = info.get(5); //score
+
+
+        //create a new row for the new user
+        ArrayList<JLabel> row = createArray(username,type
+                ,numOfWins,numOfLooses,score);
+
+        int normalNumOfRows = mainNormalPanel.getComponentCount() % 5;
+        int hardNumOfRows = mainHardPanel.getComponentCount() % 5;
+//        System.out.println(normalNumOfRows);
+//        System.out.println(hardNumOfRows);
+        JPanel newRow = new JPanel(new GridLayout(1,5,5,5));
+        int height = 60;
+//        if((mode.equals("normal") && normalNumOfRows < hardNumOfRows)
+//        || (mode.equals("hard") && hardNumOfRows < normalNumOfRows))
+//            height = (modePane.getHeight());
+//        else
+        height = (modePane.getHeight()) + 40;
+
+        mainNormalPanel.setLayout(new GridLayout(normalNumOfRows + 1,5,5,5));
+        mainHardPanel.setLayout(new GridLayout(hardNumOfRows + 1,5,5,5));
+
+        modePane.setSize(300,height);
+
+        modePane.revalidate();
+        modePane.repaint();
+
+        mainHardPanel.add(newRow);
+        for (JLabel label:row) {
+            newRow.add(label);
+        }
+
+//        if(mode.equals("normal")){
+//
+//            mainNormalPanel.add(newRow);
+//            for (JLabel label:row) {
+//                newRow.add(label);
+//            }
+//        }
+//        else if (mode.equals("hard")){
+//
+//            mainHardPanel.add(newRow);
+//            for (JLabel label:row) {
+//                newRow.add(label);
+//            }
+//        }
 
     }
 

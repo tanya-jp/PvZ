@@ -132,22 +132,23 @@ public class Player {
         });
 
 
-//        scoreboardButton.addMouseListener(new MouseAdapter() {
-//            int numOfClicks = 0;
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                numOfClicks++;
-//                if(numOfClicks == 1) {
-//                    StartManager.getMainMenu().getScoreboard().createBoard();
-//                    for (int i = 0; i < server.getNumOfUsers(); i++) {
-//  //                      StartManager.getMainMenu().getScoreboard().createBoard();
-//                        StartManager.getMainMenu().getScoreboard().updateBoard(server.returnUserAndInfo());
-//                    }
-//                }
-//                else if (numOfClicks > 1)
-//                    StartManager.getMainMenu().getScoreboard().getRankFrame().setVisible(true);
-//            }
-//        });
+        scoreboardButton.addMouseListener(new MouseAdapter() {
+            int numOfClicks = 0;
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                numOfClicks++;
+                if(numOfClicks == 1) {
+                    StartManager.getMainMenu().getScoreboard().createBoard();
+                    for (int i = 0; i < server.getNumOfUsers(); i++) {
+  //                      StartManager.getMainMenu().getScoreboard().createBoard();
+                        StartManager.getMainMenu().getScoreboard().updateNormalBoard(server.returnInfo());
+//                        StartManager.getMainMenu().getScoreboard().updateHardBoard(server.returnUserAndInfoHard());
+                    }
+                }
+                else if (numOfClicks > 1)
+                    StartManager.getMainMenu().getScoreboard().getRankFrame().setVisible(true);
+            }
+        });
 
         try (Socket client = new Socket("localhost", 1010);) {
             System.out.println("Client connected.");

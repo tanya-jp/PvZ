@@ -18,6 +18,8 @@ public class Server {
     private ArrayList<ArrayList<String>> userAndInfoNormal;
     private ArrayList<ArrayList<String>> userAndInfoHard;
     int numOfUsers = 0;
+    int normalIndex = 0;
+    int hardIndex = 0;
     int index = 0;
 
     public int getNumOfUsers() {
@@ -96,7 +98,7 @@ public class Server {
                 }
 
 
-                numOfUsers = userInfoMapNormal.size();
+                numOfUsers = userInfoMapNormal.size() + userInfoMapHard.size();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,10 +148,6 @@ public class Server {
                     bf.write(entry.getKey() + "-" + entry.getValue().get(0)
                             + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
                             + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-//                    System.out.println("we are here at normal");
-//                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
-//                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-//                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                     //go to new line
                     bf.newLine();
                 }
@@ -162,10 +160,6 @@ public class Server {
                     bf.write(entry.getKey() + "-" + entry.getValue().get(0)
                             + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
                             + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-//                    System.out.println("we are here at hard");
-//                    System.out.println(entry.getKey() + "-" + entry.getValue().get(0)
-//                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-//                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
                     //go to new line
                     bf.newLine();
                 }
@@ -212,24 +206,25 @@ public class Server {
                 return false;
             }
         }
+        ArrayList<String> temp = new ArrayList<>();
         //replace with new one
             for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
                 if (entry.getKey().equalsIgnoreCase(oldUsername)) {
-                    ArrayList<String> temp = entry.getValue();
-                    userInfoMapNormal.remove(oldUsername);
-                    userInfoMapNormal.put(newUsername,temp);
+                    temp = entry.getValue();
                     changeUserInFile(oldUsername,newUsername,temp);
                 }
             }
+
+        userInfoMapNormal.remove(oldUsername);
+        userInfoMapNormal.put(newUsername,temp);
         for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(oldUsername)) {
-                ArrayList<String> temp = entry.getValue();
-                userInfoMapNormal.remove(oldUsername);
-                userInfoMapNormal.put(newUsername,temp);
+                temp = entry.getValue();
                 changeUserInFile(oldUsername,newUsername,temp);
-                return true;
             }
         }
+        userInfoMapHard.remove(oldUsername);
+        userInfoMapHard.put(newUsername,temp);
         return true;
     }
 
@@ -265,7 +260,6 @@ public class Server {
         BufferedReader br = null;
         ArrayList<String> lines = new ArrayList<>();
 
- //       List<String> content = new ArrayList<String>(Paths.get(userInfoFile.getAbsolutePath()),StandardCharsets.UTF_8);
 
         //add all lines to a list
         try {
@@ -279,8 +273,14 @@ public class Server {
             for(int i = 0; i < lines.size(); i++){
                 String[] info = lines.get(i).split("-");
                 String u = info[0].trim(); //username
-                if(u.equalsIgnoreCase(oldUser)){
-                    lines.set(i,newUSer + "-" + newInfo.get(0) + "-" + newInfo.get(1) + "-"
+                String m = info[1].trim(); //mode
+                if(u.equalsIgnoreCase(oldUser) && m.equalsIgnoreCase("normal")){
+                    lines.set(i,newUSer + "-" + "normal" + "-" + newInfo.get(1) + "-"
+                            + newInfo.get(2) + "-" + newInfo.get(3) + "-" +
+                            newInfo.get(4));
+                }
+                else if(u.equalsIgnoreCase(oldUser) && m.equalsIgnoreCase("hard")){
+                    lines.set(i,newUSer + "-" + "hard" + "-" + newInfo.get(1) + "-"
                             + newInfo.get(2) + "-" + newInfo.get(3) + "-" +
                             newInfo.get(4));
                 }
@@ -302,20 +302,64 @@ public class Server {
 
 
     public ArrayList<String> returnUserAndInfoNormal(){
-        ArrayList<String> info = userAndInfoNormal.get(index);
-        index++;
+        ArrayList<String> info = userAndInfoNormal.get(normalIndex);
+        normalIndex++;
         return info;
     }
+
     public ArrayList<String> returnUserAndInfoHard(){
-        ArrayList<String> info = userAndInfoHard.get(index);
-        index++;
+        ArrayList<String> info = userAndInfoHard.get(hardIndex);
+        hardIndex++;
         return info;
+    }
+
+    public ArrayList<String> returnInfo() {
+        BufferedReader br = null;
+        ArrayList<String> userInfo = new ArrayList<>();
+        try {
+            br = new BufferedReader(new FileReader(userInfoFile));
+            String line = null;
+            for (int i = 0; i < index; i++) {
+                br.readLine();
+            }
+
+            String lastLine = br.readLine();
+            String[] info = lastLine.split("-");
+
+            //split a line using -
+            String u = info[0].trim(); //username
+            String m = info[1].trim(); //mode
+            String t = info[2].trim(); //type
+            String w = info[3].trim(); //wins
+            String l = info[4].trim(); //looses
+            String s = info[5].trim(); //score
+
+            userInfo.add(u);
+            userInfo.add(m);
+            userInfo.add(t);
+            userInfo.add(w);
+            userInfo.add(l);
+            userInfo.add(s);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert br != null;
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        index++;
+        return userInfo;
     }
 
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
+            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {
