@@ -3,6 +3,7 @@ package game.template.bufferstrategy;
 
 import game.memory.Reload;
 import game.memory.Save;
+import game.memory.SaveFinishedGame;
 import gui.GameOver;
 import gui.PauseMenu;
 import manager.StartManager;
@@ -44,12 +45,16 @@ public class GameLoop implements Runnable {
     private String music;
     private PauseMenu pauseMenu;
     private GameAudio audio;
+    private String userName;
     private boolean leave;
+    private boolean save;
 
-    public GameLoop(GameFrame frame, String type, String timeType, String music) {
+    public GameLoop(GameFrame frame, String type, String timeType, String music, String userName) {
         leave = false;
+        save = false;
         this.type = type;
         this.timeType = timeType;
+        this.userName = userName;
         //TODO
         this.music = music;
         canvas = frame;
@@ -61,7 +66,7 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-        state = new GameState(timeType, timeType);
+        state = new GameState(type, timeType);
 //        Reload reload = new Reload(state, canvas, "Qoli");
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
@@ -74,7 +79,7 @@ public class GameLoop implements Runnable {
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
         //TODO
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 480000) {
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 1000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -86,7 +91,8 @@ public class GameLoop implements Runnable {
                 if(pauseMenu.isSaveClicked()) {
                     pauseMenu.falseSaveButton();
                     Save save;
-                    save = new Save(state); }
+                    save = new Save(state, userName, "notFinished");
+                    }
                 while (pauseMenu.isExitClicked() && !leave) {
                     pauseMenu.askUser();
                     state.setMenu(true);
@@ -119,16 +125,31 @@ public class GameLoop implements Runnable {
 
         }
         //TODO
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 480000)
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 1000)
         {
             GameOver end = new GameOver();
+            SaveFinishedGame save;
             if(!music.equals("off"))
                 audio.playEndGame(true);
             int flag = 0;
             if(gameOver)
+            {
                 end.setType("gameOver");
-            else if(System.currentTimeMillis() - state.getStartTime() >= 480000)
+                save = new SaveFinishedGame(state, userName, "gameOver");
+                if(type.equals("normal"))
+                    save.updateScore(-1);
+                else
+                    save.updateScore(-3);
+            }
+            else if(System.currentTimeMillis() - state.getStartTime() >= 1000)
+            {
                 end.setType("endOfGame");
+                save = new SaveFinishedGame(state, userName, "endOfGame");
+                if(type.equals("normal"))
+                    save.updateScore(+3);
+                else
+                    save.updateScore(+10);
+            }
             end.start();
             end.getLeaveButton().addMouseListener(new MouseAdapter() {
                 @Override

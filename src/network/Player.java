@@ -3,6 +3,7 @@ package network;
 import gui.MainMenu;
 import gui.User;
 import manager.StartManager;
+import utils.FileUtils;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -13,7 +14,8 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Player {
-
+    private static final String PATH = ".\\users\\";
+    private static String name;
     public static void main(String[] args) {
         //Set nimbus look and feel
         try {
@@ -78,6 +80,11 @@ public class Player {
                 else if (server.isSignUpAvailable(newUsername)) {
                         StartManager.getMainMenu().login();
                         StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
+                        //make a new folder for this player
+                        FileUtils.makeFolder(PATH+newUsername);
+                        FileUtils.fileWriter("score\n0",PATH+newUsername+"\\");
+                        name = user.getNewUserField().getText().toLowerCase();
+//                        StartManager.setUserName(name);
                     } else
                         JOptionPane.showMessageDialog(signButton, "Username Is" +
                                 " Already Taken.");
@@ -142,7 +149,7 @@ public class Player {
             }
         });
 
-        try (Socket client = new Socket("localhost", 5000);) {
+        try (Socket client = new Socket("localhost", 1012);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
@@ -166,5 +173,9 @@ public class Player {
             e.printStackTrace();
         }
         System.out.println("Client closed.");
+    }
+
+    public static String getName() {
+        return name;
     }
 }

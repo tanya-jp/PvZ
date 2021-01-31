@@ -22,6 +22,7 @@ public class StartManager {
     private static int flag;
     private static GameAudio audio;
     private static String music;
+//    private String userName;
     //TODO: create server here
     private static final Server server = new Server();
 
@@ -94,6 +95,7 @@ public class StartManager {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                String userName = mainMenu.getUsernameLabel().getText();
                 flag++;
                 if(!music.equals("off"))
                     audio.playMenu(false);
@@ -103,7 +105,7 @@ public class StartManager {
                 frame.setVisible(true);
                 frame.initBufferStrategy();
                 // Create and execute the game-loop
-                GameLoop game = new GameLoop(frame,  mode, type, music);
+                GameLoop game = new GameLoop(frame,  mode, type, music, userName);
                 game.init();
                 ThreadPool.execute(game);
                 // and the game starts ...
@@ -126,4 +128,5 @@ public class StartManager {
     public static Server getServer() {
         return server;
     }
+
 }
