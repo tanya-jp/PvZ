@@ -39,6 +39,7 @@ public class Player {
         JButton signButton;
         JButton changeUserButton;
         JButton scoreboardButton;
+        JButton loadButton;
         JTextField renameUserField;
         String mode; // hard or normal
         String type; //day or night
@@ -65,6 +66,7 @@ public class Player {
         mode = StartManager.getMainMenu().getSettings().getModeButton().getText().toLowerCase();
         //type
         type = StartManager.getMainMenu().getSettings().getTypeButton().getText().toLowerCase();
+        loadButton = StartManager.getMainMenu().getLoadButton();
         Server server = StartManager.getServer();
 
         signButton.addMouseListener(new MouseAdapter() {
@@ -131,6 +133,14 @@ public class Player {
             }
         });
 
+        loadButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                StartManager.getMainMenu().showLoadBoard();
+                StartManager.getMainMenu().getLoadBoard().createLoadFrame();
+            }
+        });
+
 
         scoreboardButton.addMouseListener(new MouseAdapter() {
             int numOfClicks = 0;
@@ -150,7 +160,7 @@ public class Player {
             }
         });
 
-        try (Socket client = new Socket("localhost", 2011);) {
+        try (Socket client = new Socket("localhost", 2021);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));

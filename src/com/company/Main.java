@@ -2,6 +2,7 @@ package com.company;
 
 import game.memory.Reload;
 import game.template.bufferstrategy.GameState;
+import gui.LoadBoard;
 import gui.MainMenu;
 import manager.StartManager;
 

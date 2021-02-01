@@ -21,6 +21,7 @@ public class MainMenu{
     User user = new User();
     Scoreboard scoreboard = new Scoreboard();
     Settings settings = new Settings();
+    LoadBoard loadBoard;
 
     //to count the times of clicking settings button
     private int clicks = 0;
@@ -325,6 +326,19 @@ public class MainMenu{
 
     public Scoreboard getScoreboard() {
         return scoreboard;
+    }
+
+    public void showLoadBoard()
+    {
+       loadBoard = new LoadBoard( getUsernameLabel().getText());
+    }
+
+    public JButton getLoadButton() {
+        return loadButton;
+    }
+
+    public LoadBoard getLoadBoard() {
+        return loadBoard;
     }
     //    public void setUserField(){
 //

@@ -182,7 +182,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(2011);) {
+                ServerSocket welcomingSocket = new ServerSocket(2021);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
