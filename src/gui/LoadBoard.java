@@ -110,4 +110,8 @@ public class LoadBoard {
     public JButton getLoadButton() {
         return loadButton;
     }
+    public void disable()
+    {
+        loadFrame.setVisible(false);
+    }
 }
