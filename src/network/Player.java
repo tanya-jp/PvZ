@@ -157,20 +157,20 @@ public class Player {
             @Override
             public void mouseClicked(MouseEvent e) {
                 numOfClicks++;
-                if(numOfClicks == 1) {
-                    StartManager.getMainMenu().getScoreboard().createBoard();
-                    for (int i = 0; i < server.getNumOfUsers(); i++) {
+//                if(numOfClicks == 1) {
+                    StartManager.getMainMenu().getScoreboard().createBoard(server.returnAllInfo());
+//                    for (int i = 0; i < server.getNumOfUsers(); i++) {
   //                      StartManager.getMainMenu().getScoreboard().createBoard();
-                        StartManager.getMainMenu().getScoreboard().updateNormalBoard(server.returnInfo());
+//                        StartManager.getMainMenu().getScoreboard().updateScores();
 //                        StartManager.getMainMenu().getScoreboard().updateHardBoard(server.returnUserAndInfoHard());
-                    }
-                }
-                else if (numOfClicks > 1)
-                    StartManager.getMainMenu().getScoreboard().getRankFrame().setVisible(true);
+//                    }
+//                }
+//                else if (numOfClicks > 1)
+//                    StartManager.getMainMenu().getScoreboard().getRankFrame().setVisible(true);
             }
         });
 
-        try (Socket client = new Socket("localhost", 2021);) {
+        try (Socket client = new Socket("localhost", 5055);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));

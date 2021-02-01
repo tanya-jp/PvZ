@@ -24,6 +24,8 @@ public class Server {
     int hardIndex = 0;
     int index = 0;
 
+    private ArrayList<String> returnArray = new ArrayList<>();
+
     public int getNumOfUsers() {
         return numOfUsers;
     }
@@ -182,7 +184,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(2021);) {
+                ServerSocket welcomingSocket = new ServerSocket(5055);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -392,7 +394,7 @@ public class Server {
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
+            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {
@@ -403,6 +405,30 @@ public class Server {
             e.printStackTrace();
         }
         return usersInfoFile;
+    }
+
+    public ArrayList<String> returnAllInfo(){
+        //        int count = 0;
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader(userInfoFile));
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+                returnArray.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert br != null;
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return returnArray;
     }
 
 }
