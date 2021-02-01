@@ -48,15 +48,18 @@ public class GameLoop implements Runnable {
     private String userName;
     private boolean leave;
     private boolean save;
+    private String gameNum;
+    private Reload reload;
 
-    public GameLoop(GameFrame frame, String type, String timeType, String music, String userName) {
+    public GameLoop(GameFrame frame, String type, String timeType, String music, String userName,
+                    String gameNum) {
         leave = false;
         save = false;
         this.type = type;
         this.timeType = timeType;
         this.userName = userName;
-        //TODO
         this.music = music;
+        this.gameNum = gameNum;
         canvas = frame;
 //        pauseMenu = new PauseMenu();
     }
@@ -67,7 +70,8 @@ public class GameLoop implements Runnable {
     public void init() {
         // Perform all initializations ...
         state = new GameState(type, timeType);
-//        Reload reload = new Reload(state, canvas, "Qoli");
+       if(gameNum != null)
+            reload = new Reload(state, canvas, userName + "\\" + gameNum);
 //        canvas.addKeyListener(state.getKeyListener());
         canvas.addMouseListener(state.getMouseListener());
         canvas.addMouseMotionListener(state.getMouseMotionListener());
@@ -79,7 +83,7 @@ public class GameLoop implements Runnable {
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
         //TODO
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 1000) {
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 48000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -125,7 +129,7 @@ public class GameLoop implements Runnable {
 
         }
         //TODO
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 1000)
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 48000)
         {
             GameOver end = new GameOver();
             SaveFinishedGame save;
@@ -142,7 +146,7 @@ public class GameLoop implements Runnable {
                     save.updateScore(-3);
                 save.updateNetworkFile();
             }
-            else if(System.currentTimeMillis() - state.getStartTime() >= 1000)
+            else if(System.currentTimeMillis() - state.getStartTime() >= 48000)
             {
                 end.setType("endOfGame");
                 save = new SaveFinishedGame(state, userName, "endOfGame");
