@@ -138,8 +138,16 @@ public class Player {
             public void mouseClicked(MouseEvent e) {
                 StartManager.getMainMenu().showLoadBoard();
                 StartManager.getMainMenu().getLoadBoard().createLoadFrame();
-                StartManager.getMainMenu().setGameNumber(
-                        StartManager.getMainMenu().getLoadBoard().selectedItems());
+                StartManager.getMainMenu().getLoadBoard().getLoadButton().addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        StartManager.getMainMenu().setGameNumber(
+                                StartManager.getMainMenu().getLoadBoard().selectedItems());
+                        StartManager.getMainMenu().disable();
+                        StartManager.getMainMenu().getLoadBoard().disable();
+                        StartManager.startGame();
+                    }
+                });
             }
         });
 

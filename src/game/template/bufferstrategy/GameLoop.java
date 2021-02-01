@@ -41,7 +41,6 @@ public class GameLoop implements Runnable {
     private GameState state;
     private String type;
     private String timeType;
-    //TODO
     private String music;
     private PauseMenu pauseMenu;
     private GameAudio audio;
@@ -82,8 +81,7 @@ public class GameLoop implements Runnable {
         boolean gameOver = false;
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
-        //TODO
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 48000) {
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 480000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -128,8 +126,7 @@ public class GameLoop implements Runnable {
                 audio.playBackGround(state, leave, gameOver);
 
         }
-        //TODO
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 48000)
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 480000)
         {
             GameOver end = new GameOver();
             SaveFinishedGame save;
@@ -146,7 +143,7 @@ public class GameLoop implements Runnable {
                     save.updateScore(-3);
                 save.updateNetworkFile();
             }
-            else if(System.currentTimeMillis() - state.getStartTime() >= 48000)
+            else if(System.currentTimeMillis() - state.getStartTime() >= 480000)
             {
                 end.setType("endOfGame");
                 save = new SaveFinishedGame(state, userName, "endOfGame");
@@ -172,7 +169,6 @@ public class GameLoop implements Runnable {
             backToMenu();
         }
     }
-    //TODO
     /**
      * Closes gameFrame and shows main menu again.
      */

@@ -54,7 +54,6 @@ public class Reload {
         setZombies();
         setLawnMowers();
         setCards();
-        System.out.println(stopTime - startTime);
         if(timeType.equals("night"))
             setMushroom();
     }
@@ -220,7 +219,6 @@ public class Reload {
         long time;
         //cherryBomb
         state.getCherry().setCardState(Boolean.parseBoolean(getInfo(cards, 1)));
-        System.out.println(state.getCherry().getCard());
         if(!getInfo(cards, 2).equals("0"))
         {
             time = Long.parseLong(getInfo(cards, 2));
