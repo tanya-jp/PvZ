@@ -81,7 +81,7 @@ public class GameLoop implements Runnable {
         boolean gameOver = false;
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 480000) {
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 48000) {
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -93,7 +93,7 @@ public class GameLoop implements Runnable {
                 if(pauseMenu.isSaveClicked()) {
                     pauseMenu.falseSaveButton();
                     Save save;
-                    save = new Save(state, userName, "notFinished");
+                    save = new Save(state, userName, "notFinished", gameNum);
                     }
                 while (pauseMenu.isExitClicked() && !leave) {
                     pauseMenu.askUser();
@@ -126,7 +126,7 @@ public class GameLoop implements Runnable {
                 audio.playBackGround(state, leave, gameOver);
 
         }
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 480000)
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 48000)
         {
             GameOver end = new GameOver();
             SaveFinishedGame save;
@@ -136,17 +136,17 @@ public class GameLoop implements Runnable {
             if(gameOver)
             {
                 end.setType("gameOver");
-                save = new SaveFinishedGame(state, userName, "gameOver");
+                save = new SaveFinishedGame(state, userName, "gameOver", gameNum);
                 if(type.equals("normal"))
                     save.updateScore(-1);
                 else
                     save.updateScore(-3);
                 save.updateNetworkFile();
             }
-            else if(System.currentTimeMillis() - state.getStartTime() >= 480000)
+            else if(System.currentTimeMillis() - state.getStartTime() >= 48000)
             {
                 end.setType("endOfGame");
-                save = new SaveFinishedGame(state, userName, "endOfGame");
+                save = new SaveFinishedGame(state, userName, "endOfGame", gameNum);
                 if(type.equals("normal"))
                     save.updateScore(+3);
                 else

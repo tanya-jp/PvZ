@@ -159,7 +159,7 @@ public class Player {
                 numOfClicks++;
 //                if(numOfClicks == 1) {
 //                    StartManager.getMainMenu().newScoreBoard();
-                System.out.println(server.returnAllInfo().size());
+//                System.out.println(server.returnAllInfo().size());
                     StartManager.getMainMenu().getScoreboard().createBoard(server.returnAllInfo());
 //                    for (int i = 0; i < server.getNumOfUsers(); i++) {
   //                      StartManager.getMainMenu().getScoreboard().createBoard();
