@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Scoreboard {
     private Background rankingBg;
-    private final JFrame rankFrame;
+    private JFrame rankFrame;
 //    private final JPanel normalPanel;
 //    private final JPanel hardPanel;
 //
@@ -18,37 +18,38 @@ public class Scoreboard {
 
 //    JPanel mainNormalPanel = new JPanel(new GridLayout(15,5,5,5));
 //    JPanel mainHardPanel = new JPanel(new GridLayout(15,5,5,5));
+{
+
+}
+
+    private JTabbedPane modePane;
 
 
-    private final JTabbedPane modePane;
+    public Scoreboard(){
+//        rankFrame = new JFrame();
+//        normalPanel = new JPanel();
+//        hardPanel = new JPanel();
+//        normalTitle = new ArrayList<>();
+//        hardTitle = new ArrayList<>();
+    }
 
-    {
+    public void createBoard(ArrayList<String> allInfo){
         try {
             rankingBg = new Background(".\\Extras\\ranking_bg.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Scoreboard(){
         rankFrame = new JFrame();
-//        normalPanel = new JPanel();
-//        hardPanel = new JPanel();
-//        normalTitle = new ArrayList<>();
-//        hardTitle = new ArrayList<>();
+        rankFrame.setVisible(false);
         modePane = new JTabbedPane();
-
-    }
-
-    public void createBoard(ArrayList<String> allInfo){
 //        final JFrame rankFrame = new JFrame();;
 //         final JPanel normalPanel = new JPanel();;
 //         final JPanel hardPanel  = new JPanel();;
         JPanel mainNormalPanel = new JPanel(new GridLayout(15,5,5,5));
         JPanel mainHardPanel = new JPanel(new GridLayout(15,5,5,5));
 
-         ArrayList<JLabel> normalTitle = new ArrayList<>();;
-         ArrayList<JLabel> hardTitle = new ArrayList<>();;
+         ArrayList<JLabel> normalTitle;
+         ArrayList<JLabel> hardTitle;
         //create main frame for scoreboard
         rankFrame.setLayout(null);
         rankFrame.setLocation(300,180);
@@ -115,6 +116,7 @@ public class Scoreboard {
         int normalNum = 0;
         int hardNum = 0;
         for (String userInfo:allInfo) {
+//            System.out.println(allInfo.size());
             String[] info = userInfo.split("-");
             //split a line using -
             String u = info[0].trim(); //username
@@ -123,22 +125,46 @@ public class Scoreboard {
             String w = info[3].trim(); //wins
             String l = info[4].trim(); //looses
             String s = info[5].trim(); //score
+//            ArrayList<JLabel> row = new ArrayList<>();
+//            row = createArray(u,t,w,l,s);
 
-            ArrayList<JLabel> row = createArray(u,t,w,l,s);
+            if(m.equalsIgnoreCase("normal"))
+            {
+//                System.out.println(u);
+                mainNormalPanel.add(new JLabel(u));
+                mainNormalPanel.add(new JLabel(t));
+                mainNormalPanel.add(new JLabel(w));
+                mainNormalPanel.add(new JLabel(l));
+                mainNormalPanel.add(new JLabel(s));
+                normalNum += 5;
+            }
 
-            if(m.equalsIgnoreCase("normal")){
-                for (JLabel label : row) {
-                    mainNormalPanel.add(label);
-                    normalNum++;
-                }
+            else if (m.equalsIgnoreCase("hard"))
+            {
+                mainHardPanel.add(new JLabel(u));
+                mainHardPanel.add(new JLabel(t));
+                mainHardPanel.add(new JLabel(w));
+                mainHardPanel.add(new JLabel(l));
+                mainHardPanel.add(new JLabel(s));
+                hardNum += 5;
             }
-            else if (m.equalsIgnoreCase("hard")){
-                for (JLabel label : row) {
-                    mainHardPanel.add(label);
-                    hardNum++;
-                }
-            }
+
+//            if(m.equalsIgnoreCase("normal")){
+//                for (JLabel label : createArray(u,t,w,l,s)) {
+//                    mainNormalPanel.add(label);
+//                    normalNum++;
+//                }
+//            }
+//            else if (m.equalsIgnoreCase("hard")){
+//                for (JLabel label : createArray(u,t,w,l,s)) {
+//                    mainHardPanel.add(label);
+////                    System.out.println("hard" + label.getText());
+//                    hardNum++;
+//                }
+//            }
         }
+
+//        System.out.println(normalNum);
 
         for(int i = 0; i < (70 - hardNum); i++){
             JLabel label = new JLabel();
@@ -152,24 +178,6 @@ public class Scoreboard {
             label.setOpaque(true);
             mainHardPanel.add(label);
         }
-
-//        updateBoard("normal","mmd","day",
-//                2,3,100);
-//        updateBoard("normal","mmd","day",
-//                2,3,100);
-//
-//
-//        //test
-//
-//        updateBoard("normal","mmd","day",
-//                2,3,100);
-//
-//        updateBoard("hard","mmd","day",
-//                2,4,100);
-//        updateBoard("hard","mmd","day",
-//                2,4,100);
-//        updateBoard("hard","mmd","day",
-//                2,4,100);
 
         finalNormalPanel.add(mainNormalPanel);
         finalNormalPanel.add(normalScroll,BorderLayout.EAST);
@@ -212,121 +220,6 @@ public class Scoreboard {
         //return the array
         return array;
     }
-//TODO:
-//    public void updateNormalBoard(ArrayList<String> info){
-//        //split a line using -
-//        String username = info.get(0); //username
-//        String mode = info.get(1); //mode
-//        String type = info.get(2); //type
-//        String numOfWins = info.get(3); //wins
-//        String numOfLooses = info.get(4); //looses
-//        String score = info.get(5); //score
-//
-//
-//        //create a new row for the new user
-//        ArrayList<JLabel> row = createArray(username,type
-//                ,numOfWins,numOfLooses,score);
-//
-//        int normalNumOfRows = mainNormalPanel.getComponentCount() % 5;
-//        int hardNumOfRows = mainHardPanel.getComponentCount() % 5;
-////        System.out.println(normalNumOfRows);
-////        System.out.println(hardNumOfRows);
-//        JPanel newRow = new JPanel(new GridLayout(1,5,5,5));
-//        int height = 60;
-////        if((mode.equals("normal") && normalNumOfRows < hardNumOfRows)
-////        || (mode.equals("hard") && hardNumOfRows < normalNumOfRows))
-////            height = (modePane.getHeight());
-////        else
-//            height = (modePane.getHeight()) + 40;
-//
-//        mainNormalPanel.setLayout(new GridLayout(normalNumOfRows + 1,5,5,5));
-//        mainHardPanel.setLayout(new GridLayout(hardNumOfRows + 1,5,5,5));
-//
-//        modePane.setSize(300,height);
-//
-//        modePane.revalidate();
-//        modePane.repaint();
-//        mainNormalPanel.add(newRow);
-//        for (JLabel label:row) {
-//            newRow.add(label);
-//        }
-//
-//        if(mode.equals("normal")){
-////            mainNormalPanel.setSize(300,10);
-////            mainNormalPanel.revalidate();
-////            mainNormalPanel.repaint();
-//            mainNormalPanel.add(newRow);
-//            for (JLabel label:row) {
-//                newRow.add(label);
-//            }
-//        }
-//        else if (mode.equals("hard")){
-////            mainHardPanel.setSize(300,10);
-////            mainHardPanel.revalidate();
-////            mainHardPanel.repaint();
-//            mainHardPanel.add(newRow);
-//            for (JLabel label:row) {
-//                newRow.add(label);
-//            }
-//        }
-//
-//    }
-
-//    public void updateHardBoard(ArrayList<String> info){
-//        //split a line using -
-//        String username = info.get(0); //username
-//        String mode = info.get(1); //mode
-//        String type = info.get(2); //type
-//        String numOfWins = info.get(3); //wins
-//        String numOfLooses = info.get(4); //looses
-//        String score = info.get(5); //score
-//
-//
-//        //create a new row for the new user
-//        ArrayList<JLabel> row = createArray(username,type
-//                ,numOfWins,numOfLooses,score);
-//
-//        int normalNumOfRows = mainNormalPanel.getComponentCount() % 5;
-//        int hardNumOfRows = mainHardPanel.getComponentCount() % 5;
-////        System.out.println(normalNumOfRows);
-////        System.out.println(hardNumOfRows);
-//        JPanel newRow = new JPanel(new GridLayout(1,5,5,5));
-//        int height = 60;
-////        if((mode.equals("normal") && normalNumOfRows < hardNumOfRows)
-////        || (mode.equals("hard") && hardNumOfRows < normalNumOfRows))
-////            height = (modePane.getHeight());
-////        else
-//        height = (modePane.getHeight()) + 40;
-//
-//        mainNormalPanel.setLayout(new GridLayout(normalNumOfRows + 1,5,5,5));
-//        mainHardPanel.setLayout(new GridLayout(hardNumOfRows + 1,5,5,5));
-//
-//        modePane.setSize(300,height);
-//
-//        modePane.revalidate();
-//        modePane.repaint();
-//
-//        mainHardPanel.add(newRow);
-//        for (JLabel label:row) {
-//            newRow.add(label);
-//        }
-//
-////        if(mode.equals("normal")){
-////
-////            mainNormalPanel.add(newRow);
-////            for (JLabel label:row) {
-////                newRow.add(label);
-////            }
-////        }
-////        else if (mode.equals("hard")){
-////
-////            mainHardPanel.add(newRow);
-////            for (JLabel label:row) {
-////                newRow.add(label);
-////            }
-////        }
-//
-//    }
 
     public ArrayList<JLabel> createTitle(String username, String type
             , String numOfWins, String numOfLooses, String score) {
@@ -406,7 +299,7 @@ public class Scoreboard {
 //    }
     //TODO:
 
-    public JFrame getRankFrame() {
-        return rankFrame;
-    }
+//    public JFrame getRankFrame() {
+//        return rankFrame;
+//    }
 }

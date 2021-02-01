@@ -158,6 +158,8 @@ public class Player {
             public void mouseClicked(MouseEvent e) {
                 numOfClicks++;
 //                if(numOfClicks == 1) {
+//                    StartManager.getMainMenu().newScoreBoard();
+                System.out.println(server.returnAllInfo().size());
                     StartManager.getMainMenu().getScoreboard().createBoard(server.returnAllInfo());
 //                    for (int i = 0; i < server.getNumOfUsers(); i++) {
   //                      StartManager.getMainMenu().getScoreboard().createBoard();
@@ -170,7 +172,7 @@ public class Player {
             }
         });
 
-        try (Socket client = new Socket("localhost", 5055);) {
+        try (Socket client = new Socket("localhost", 2005);) {
             System.out.println("Client connected.");
 
             DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));

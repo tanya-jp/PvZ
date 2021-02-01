@@ -184,7 +184,7 @@ public class Server {
     //   public static void main(String[] args){
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(5055);) {
+                ServerSocket welcomingSocket = new ServerSocket(2005);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -394,7 +394,7 @@ public class Server {
     public File createAFile() throws IOException {
         File usersInfoFile = null;
         try {
-            usersInfoFile = new File(".\\src\\network\\usersInfoFile.txt");
+            usersInfoFile = new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt");
             if (usersInfoFile.createNewFile()) {
                 System.out.println("File created: " + usersInfoFile.getName());
             } else {
@@ -408,6 +408,7 @@ public class Server {
     }
 
     public ArrayList<String> returnAllInfo(){
+        returnArray = new ArrayList<>();
         //        int count = 0;
         BufferedReader br = null;
 

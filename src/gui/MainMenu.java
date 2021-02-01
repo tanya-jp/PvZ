@@ -326,6 +326,7 @@ public class MainMenu{
     }
 
     public Scoreboard getScoreboard() {
+//        scoreboard = new Scoreboard();
         return scoreboard;
     }
 
@@ -349,6 +350,8 @@ public class MainMenu{
     public String getGameNumber() {
         return gameNumber;
     }
+
+//    public void newScoreBoard(){scoreboard = new Scoreboard();}
     //    public void setUserField(){
 //
 //    }
