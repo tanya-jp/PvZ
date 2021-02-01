@@ -25,6 +25,7 @@ public class MainMenu{
 
     //to count the times of clicking settings button
     private int clicks = 0;
+    private String gameNumber = null;
 
     //back grounds for each page
     private Background startBackground;
@@ -339,6 +340,14 @@ public class MainMenu{
 
     public LoadBoard getLoadBoard() {
         return loadBoard;
+    }
+
+    public void setGameNumber(String gameNumber) {
+        this.gameNumber = gameNumber;
+    }
+
+    public String getGameNumber() {
+        return gameNumber;
     }
     //    public void setUserField(){
 //

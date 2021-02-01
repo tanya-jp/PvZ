@@ -98,6 +98,15 @@ public class LoadBoard {
             labelPanel.add(label);
     }
 
+    public String selectedItems(){
+        String text = null;
+        for (JRadioButton button:buttonArrayList) {
+            if(button.isSelected())
+                text = button.getText();
+        }
+        return text;
+    }
+
     public JButton getLoadButton() {
         return loadButton;
     }

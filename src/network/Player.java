@@ -138,6 +138,8 @@ public class Player {
             public void mouseClicked(MouseEvent e) {
                 StartManager.getMainMenu().showLoadBoard();
                 StartManager.getMainMenu().getLoadBoard().createLoadFrame();
+                StartManager.getMainMenu().setGameNumber(
+                        StartManager.getMainMenu().getLoadBoard().selectedItems());
             }
         });
 
