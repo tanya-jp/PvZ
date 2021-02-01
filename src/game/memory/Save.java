@@ -38,13 +38,15 @@ public class Save {
     private String mushroomState;
     private String finishState;
     private String sun;
+    private String gameNum;
     private static final String PATH = ".\\users\\";
 
-    public Save(GameState state, String userName, String finishState)
+    public Save(GameState state, String userName, String finishState, String gameNum)
     {
         this.state = state;
         this.userName = userName;
         this.finishState = finishState;
+        this.gameNum = gameNum;
         text = "";
         setInformation();
         saveInformation();
@@ -75,7 +77,10 @@ public class Save {
     public void saveInformation()
     {
         FileUtils.makeFolder(PATH);
-        FileUtils.gamesWriter(text, PATH+userName+"\\");
+        if(gameNum == null)
+            FileUtils.gamesWriter(text, PATH+userName+"\\");
+        else
+            FileUtils.fileWriterByFileName(text, gameNum, PATH+userName+"\\");
     }
     /**
      * Sets information which is necessary to show a card.

@@ -13,20 +13,22 @@ public class SaveFinishedGame {
     private String type;
     private String timeType;
     private String text;
+    private String gameNum;
     private int currentScore;
     private static final String PATH = ".\\users\\";
     private  String scorePath;
-    public SaveFinishedGame(GameState state, String userName, String finishState)
+    public SaveFinishedGame(GameState state, String userName, String finishState, String gameNum)
     {
         this.state = state;
         this.userName = userName;
         this.finishState = finishState;
         this.type = state.getType();
         this.timeType = state.getTimeType();
+        this.gameNum = gameNum;
         scorePath = PATH+ userName +"\\score.txt";
         text = toString();
         saveInformation();
-        updateNetworkFile();
+//        updateNetworkFile();
     }
     /**
      * Saves information as a text file in defined path.
@@ -34,7 +36,10 @@ public class SaveFinishedGame {
     public void saveInformation()
     {
         FileUtils.makeFolder(PATH);
-        FileUtils.gamesWriter(text, PATH+userName+"\\");
+        if(gameNum == null)
+            FileUtils.gamesWriter(text, PATH+userName+"\\");
+        else
+            FileUtils.fileWriterByFileName(text, gameNum, PATH+userName+"\\");
     }
     public void updateScore(int number)
     {
