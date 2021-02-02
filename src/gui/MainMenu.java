@@ -43,6 +43,7 @@ public class MainMenu{
     //main menu background
     private Background mainBackground;
 
+
     //create backgrounds and handle possible exception
     {
         try {
@@ -230,13 +231,6 @@ public class MainMenu{
             }
         });
 
-        //game ends whenever this button is clicked on
-        quitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.exit(0);
-            }
-        });
 
         //if its the first click, setting UI is created
         //more than one click just shows the same frame again with changes that were made
@@ -439,5 +433,13 @@ public class MainMenu{
      */
     public String getGameNumber() {
         return gameNumber;
+    }
+
+    /**
+     * gets quit button.
+     * @return quit button field.
+     */
+    public JButton getQuitButton() {
+        return quitButton;
     }
 }

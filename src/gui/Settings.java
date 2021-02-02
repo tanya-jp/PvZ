@@ -52,12 +52,12 @@ public class Settings {
 
     //images for all cards
     private ImageIcon cherry;
-    private Image freezePee;
-    private Image peeShooter;
-    private Image sunflower;
-    private Image wallNut;
-    private Image squash;
-    private Image mushroom;
+    private ImageIcon freezePee;
+    private ImageIcon peeShooter;
+    private ImageIcon sunflower;
+    private ImageIcon wallNut;
+    private ImageIcon squash;
+    private ImageIcon mushroom;
 
     /**
      * gets day/ night button
@@ -111,7 +111,7 @@ public class Settings {
             settingsBg = new Background(".\\Extras\\setting_bg.jpeg");
             onIcon = new ImageIcon(".\\Extras\\on_icon.png");
             offIcon = new ImageIcon(".\\Extras\\off_icon.png");
-            plantsBg = new Background(".\\Extras\\choosePlants_bg.jpeg");
+            plantsBg = new Background(".\\Extras\\choosePlants_bg400.jpeg");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public class Settings {
         modeButton = new JButton("Normal");
         typeButton = new JButton("Day");
         soundButton = new JButton("On");
-        choosePlantsButton = new JButton("Plants");
+        choosePlantsButton = new JButton("My Plants");
         okButton = new JButton("Done");
 
         //create frames and panels
@@ -135,12 +135,12 @@ public class Settings {
 
         //create images
         cherry = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png");
-        freezePee = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
-        peeShooter = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
-        sunflower = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
-        wallNut = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
-        //    squash = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
-        //    mushroom = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        freezePee = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png");
+        peeShooter = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png");
+        sunflower = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png");
+        wallNut = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png");
+        squash = new ImageIcon(".\\Extras\\card_squash_new.jpg");
+        mushroom = new ImageIcon(".\\Extras\\card_sun-shroom-new.png");
 
     }
 
@@ -301,23 +301,83 @@ public class Settings {
     private void choosePlants(){
         plantsFrame.setLayout(null);
         plantsFrame.setLocation(450,250);
-        plantsFrame.setSize(700,400);
+        plantsFrame.setSize(405,300);
         plantsFrame.setResizable(false);
         plantsFrame.setContentPane(plantsBg);
 
+        //create background color
+        Color bColor = new Color(102,102,102);
+
+        //create foreground color
+        Color fgColor = new Color(0,102,0);
+        JButton doneButton = new JButton("OK");
+        doneButton.setBounds(125,235,150,25);
+
+        doneButton.setBackground(bColor);
+        doneButton.setForeground(fgColor);
+
+        Color color = new Color(102,0,153);
+
+
         plantsBg.setLayout(null);
 
-        JPanel plantsPanel = new JPanel(null);
-        plantsPanel.setBackground(new Color(102,0,153));
-        plantsPanel.setBounds(30,50,450,290);
+        JPanel plantsPanel = new JPanel();
+        plantsPanel.setBackground(color);
+
+        plantsPanel.setBounds(12,22,377,210);
+        plantsPanel.setLayout(new GridLayout(2,4,5,5));
+
+
         JLabel cherryLabel = new JLabel(cherry);
-        cherryLabel.setBounds(10,10,80,90);
-        cherryLabel.setBackground(Color.GRAY);
+        cherryLabel.setBackground(color);
         cherryLabel.setOpaque(true);
 
+        JLabel fpLabel = new JLabel(freezePee);
+        fpLabel.setBackground(color);
+        fpLabel.setOpaque(true);
+
+        JLabel pLabel = new JLabel(peeShooter);
+        pLabel.setBackground(color);
+        pLabel.setOpaque(true);
+
+        JLabel sfLabel = new JLabel(sunflower);
+        sfLabel.setBackground(color);
+        sfLabel.setOpaque(true);
+
+        JLabel wLabel = new JLabel(wallNut);
+        wLabel.setBackground(color);
+        wLabel.setOpaque(true);
+
+        JLabel sqLabel = new JLabel(squash);
+        sqLabel.setBackground(color);
+        sqLabel.setOpaque(true);
+
+        JLabel mLabel = new JLabel(mushroom);
+        mLabel.setBackground(color);
+        mLabel.setOpaque(true);
+
+
+
+
+
         plantsPanel.add(cherryLabel);
+        plantsPanel.add(fpLabel);
+        plantsPanel.add(pLabel);
+        plantsPanel.add(sfLabel);
+        plantsPanel.add(wLabel);
+        plantsPanel.add(sqLabel);
+        plantsPanel.add(mLabel);
+        plantsPanel.add(new JLabel());
 
         plantsBg.add(plantsPanel);
+        plantsBg.add(doneButton);
+
+        doneButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                plantsFrame.setVisible(false);
+            }
+        });
 
         plantsFrame.setVisible(true);
 

@@ -21,15 +21,34 @@ import java.awt.event.MouseEvent;
  * @authors Elaheh Akbari and Tanya Djavaherpour
  */
 public class StartManager {
+    //create new main menu
     private static MainMenu mainMenu = new MainMenu();
+
+    //create a string to keep game type
     private static String type;
+
+    //create string to keep game mode
     private static String mode;
+
+    //pause menu field
     private PauseMenu pauseMenu;
+
+    //game frame field
     private  static GameFrame frame;
+
+    //flag to check whether to start a new gam
     private static int flag;
+
+    //audio field
     private static GameAudio audio;
+
+    //string to keep music status
     private static String music;
+
+    //string to keep game number (name of the game)
     private static String gameNum;
+
+    //create a new server object
     private static final Server server = new Server();
 
     /**
@@ -45,17 +64,29 @@ public class StartManager {
      */
     public static void update()
     {
+        //create a gameAudio object
         audio = new GameAudio();
         if(!music.equals("off"))
             audio.playMenu(true);
         if(flag>0)
         {
+            //create and show main menu
             mainMenu.createMainMenu();
         }
+
+        //get type from settings and set it here
         type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
+
+        //get mode from settings and set it here
         mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
+
+        //get music from settings and set it here
         music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
+
+        //call select method
         select();
+
+        //start a new game
         if(flag == 0)
             startNewGame();
     }
@@ -117,11 +148,14 @@ public class StartManager {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                //get username from main menu
                 String userName = mainMenu.getUsernameLabel().getText();
                 gameNum = mainMenu.getGameNumber();
                 flag++;
                 if(!music.equals("off"))
                     audio.playMenu(false);
+
+                //create new game frame
                 frame = new GameFrame("Plants Vs. Zombies !", mode, type);
                 frame.setLocationRelativeTo(null); // put frame at center of screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
