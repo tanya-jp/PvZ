@@ -2,16 +2,14 @@ package gui;
 
 
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 /**
  * This class sets GUI for gameOver state
  * Whenever the game is over, we create an object of this class
- * @author Elaheh Akbari
+ * @author Elaheh Akbari and Tanya Djavaherpour
+ * @version 1.0 2021
  */
 public class GameOver {
     //gameOver background
@@ -19,7 +17,7 @@ public class GameOver {
     //end of game background
     private Background endOfGameBg;
     //button to go redirect player to main menu
-    private JButton leaveButton;
+    private final JButton leaveButton;
     //frame
     private JFrame gameOverFrame;
     //gameOver of end of game
