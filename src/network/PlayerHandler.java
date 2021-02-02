@@ -1,9 +1,5 @@
 package network;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.Socket;
 
 public class PlayerHandler implements Runnable{
@@ -24,27 +20,9 @@ public class PlayerHandler implements Runnable{
      * Method to read each client massages until "over" is sent. it appends them all together
      */
     @Override
-    public void run() {
+    public void run(){
         try {
-            DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
-            DataOutputStream out = new DataOutputStream(new BufferedOutputStream(client.getOutputStream()));
-
-            String clientData = "";
-            while (true) {
-                String request = in.readUTF();
-
-                if (!request.equals("over\n")) {
-                    clientData += request;
-                    System.out.print("Client" + clientNum + ": " + request);
-                    out.writeUTF(clientData);
-                    out.flush();
-                } else {
-                    System.out.println("All client" + clientNum + " messages are sent.");
-                    break;
-                }
-            }
-            in.close();
-            out.close();
+            System.out.println("PlayerHandler Running");
             client.close();
         } catch (Exception e) {
             e.printStackTrace();
