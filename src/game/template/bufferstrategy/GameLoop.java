@@ -7,14 +7,11 @@ import game.memory.SaveFinishedGame;
 import gui.GameOver;
 import gui.PauseMenu;
 import manager.StartManager;
+import utils.FileUtils;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-
+import java.io.File;
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
@@ -27,7 +24,8 @@ import java.io.IOException;
  * patterns is available in the following link:
  *    http://gameprogrammingpatterns.com/game-loop.html
  *
- * @author Seyed Mohammad Ghaffarian
+ * @authors Seyed Mohammad Ghaffarian, Tanya Djavaherpour, Elaheh Akbari
+ *
  */
 public class GameLoop implements Runnable {
 
@@ -36,7 +34,7 @@ public class GameLoop implements Runnable {
      * Higher is better, but any value above 24 is fine.
      */
     public static final int FPS = 30;
-
+    //game backGround
     private GameFrame canvas;
     private GameState state;
     private String type;
@@ -49,7 +47,15 @@ public class GameLoop implements Runnable {
     private boolean save;
     private String gameNum;
     private Reload reload;
-
+    /**
+     * Creates a new game loop
+     * @param frame as frame of the game
+     * @param type -> normal / hard
+     * @param timeType -> day / night
+     * @param music -> music should be played or not
+     * @param userName as player's username
+     * @param gameNum as number of the selected game
+     */
     public GameLoop(GameFrame frame, String type, String timeType, String music, String userName,
                     String gameNum) {
         leave = false;
@@ -60,7 +66,6 @@ public class GameLoop implements Runnable {
         this.music = music;
         this.gameNum = gameNum;
         canvas = frame;
-//        pauseMenu = new PauseMenu();
     }
 
     /**
@@ -68,7 +73,9 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-        state = new GameState(type, timeType);
+        String score = FileUtils.scanByLineNumber(new File(".\\users\\"+userName+"\\score.txt"), 1);
+        state = new GameState(type, timeType, score);
+        //if it is a saves game
        if(gameNum != null)
             reload = new Reload(state, canvas, userName + "\\" + gameNum);
 //        canvas.addKeyListener(state.getKeyListener());
@@ -76,12 +83,17 @@ public class GameLoop implements Runnable {
         canvas.addMouseMotionListener(state.getMouseMotionListener());
     }
 
+    /**
+     * Runs the game until player leaves, loses or wins
+     */
     @Override
     public void run() {
         boolean gameOver = false;
         pauseMenu = new PauseMenu();
         audio = new GameAudio();
-        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 48000) {
+        //game loop starts until player leaves, loses or wins
+        while (!gameOver && !leave && System.currentTimeMillis() - state.getStartTime() < 480000) {
+            //shows pause menu
             pauseMenu = new PauseMenu();
             while (state.getMenu() && !pauseMenu.isExitClicked()) {
                 pauseMenu.start();
@@ -90,10 +102,12 @@ public class GameLoop implements Runnable {
                 if(pauseMenu.isResumeClicked()) {
                     state.setMenu(false);
                     pauseMenu.falseResumeButton(); }
+                //saves the game
                 if(pauseMenu.isSaveClicked()) {
                     pauseMenu.falseSaveButton();
                     Save save;
                     save = new Save(state, userName, "notFinished", gameNum);
+                    gameNum = save.saveInformation();
                     }
                 while (pauseMenu.isExitClicked() && !leave) {
                     pauseMenu.askUser();
@@ -126,13 +140,15 @@ public class GameLoop implements Runnable {
                 audio.playBackGround(state, leave, gameOver);
 
         }
-        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 48000)
+        //game finished
+        if(gameOver || System.currentTimeMillis() - state.getStartTime() >= 480000)
         {
             GameOver end = new GameOver();
             SaveFinishedGame save;
             if(!music.equals("off"))
                 audio.playEndGame(true);
             int flag = 0;
+            //lost
             if(gameOver)
             {
                 end.setType("gameOver");
@@ -143,7 +159,8 @@ public class GameLoop implements Runnable {
                     save.updateScore(-3);
                 save.updateNetworkFile();
             }
-            else if(System.currentTimeMillis() - state.getStartTime() >= 48000)
+            //won
+            else if(System.currentTimeMillis() - state.getStartTime() >= 480000)
             {
                 end.setType("endOfGame");
                 save = new SaveFinishedGame(state, userName, "endOfGame", gameNum);
@@ -164,6 +181,7 @@ public class GameLoop implements Runnable {
                 }
             });
         }
+        //left
         else if(leave)
         {
             backToMenu();

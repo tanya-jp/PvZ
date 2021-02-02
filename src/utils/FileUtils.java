@@ -1,7 +1,5 @@
 package utils;
 
-//import model.Note;
-
 import java.io.*;
 import java.util.Scanner;
 
@@ -25,105 +23,77 @@ public class FileUtils {
      * Makes new folder.
      * @param folder as path that folder should be created there
      */
-    public static void makeFolder(String folder)
-    {
-        boolean isSuccessful = new File(folder).mkdirs();
-//        System.out.println("Creating " + folder + " directory is successful: " + isSuccessful);
-    }
+    public static void makeFolder(String folder){ boolean isSuccessful = new File(folder).mkdirs(); }
+
     /**
-     * Write on a file using BufferedWriter
+     * Write on a file using BufferedWrite and get proper name based on first line of the content.
      * @param content String of content to be written on a file
+     * @param p as the path which this file should be saved.
      */
     public static void fileWriter(String content,String p) {
         String fileName = getProperFileName(content);
-        File newFile = new File(p+fileName+".txt");
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(newFile));
-            writer.write(content);
-            writer.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        } finally {
-            try {
-                if (writer != null)
-                {
-                    writer.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace(System.err);
-            }
-        }
+        write(p, fileName, content);
     }
 
     /**
-     * Write on a file using BufferedWriter
+     * Write on a file using BufferedWriter and the name of the written file is given
      * @param content String of content to be written on a file
+     * @param p as name of the file
+     * @return the number of this game
      */
-    public static void gamesWriter(String content,String p) {
+    public static String gamesWriter(String content,String p) {
         String fileName = String.valueOf(getGameNumber(p));
-        File newFile = new File(p+fileName+".txt");
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(newFile));
-            writer.write(content);
-            writer.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        } finally {
-            try {
-                if (writer != null)
-                {
-                    writer.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace(System.err);
-            }
-        }
+        write(p, fileName, content);
+        return fileName;
     }
+    /**
+     *  Write on a file using BufferedWriter.
+     * @param content as the content that should be written
+     * @param name as name of the file
+     * @param p as path  that this file should be saved
+     */
     public static void fileWriterByFileName(String content,String name, String p) {
         String fileName = name;
-        File newFile = new File(p+fileName+".txt");
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(newFile));
-            writer.write(content);
-            writer.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        } finally {
-            try {
-                if (writer != null)
-                {
-                    writer.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace(System.err);
-            }
-        }
-    }
-    public static void networkFileWriter(String content,String p) {
-        String fileName = "usersInfoFile";
-        File newFile = new File(p+fileName+".txt");
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(newFile));
-            writer.write(content);
-            writer.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        } finally {
-            try {
-                if (writer != null)
-                {
-                    writer.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace(System.err);
-            }
-        }
+        write(p, fileName, content);
     }
 
+    /**
+     *  Write on a file using BufferedWriter and write changes in the file that network uses
+     * @param content as content of the file
+     * @param p as path
+     */
+    public static void networkFileWriter(String content,String p) {
+        String fileName = "usersInfoFile";
+        write(p, fileName, content);
+    }
+
+    /**
+     * Write on a file using BufferedWriter.
+     * @param p as path
+     * @param fileName as name
+     * @param content as content that should be written
+     */
+    public static void write(String p, String fileName, String content)
+    {
+        File newFile = new File(p+fileName+".txt");
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(newFile));
+            writer.write(content);
+            writer.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        } finally {
+            try {
+                if (writer != null)
+                {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace(System.err);
+            }
+        }
+    }
     /**
      * Read from files using Buffered reader
      * @param file File to be read
@@ -155,6 +125,11 @@ public class FileUtils {
         return string;
     }
 
+    /**
+     * Find new game number by iterating in the file dictionary
+     * @param path as path of the folder that should be iterated.
+     * @return the number of this game
+     */
     public static int getGameNumber(String path)
     {
         File[] games = getFilesInDirectory(path);
@@ -201,7 +176,6 @@ public class FileUtils {
         scanner.close();
         return result;
     }
-
     /**
      * Scans a file and reads it line by line and finds the wanted lines
      * @param file as a file that should be read
@@ -233,6 +207,14 @@ public class FileUtils {
         scanner.close();
         return result;
     }
+    /**
+     * Scans a file and reads it line by line and finds the wanted lines,
+     * this method is used when information of this game is needed.
+     * @param file as a file that should be read
+     * @param userName as username of the player
+     * @param type as type of the game
+     * @return wanted String
+     */
     public static String scanByName(File file, String userName, String type)
     {
         String result = "";
@@ -258,7 +240,14 @@ public class FileUtils {
         scanner.close();
         return result;
     }
-
+    /**
+     * Scans line by line and fins other games and gamers information.
+     * @param file as the file that should be read
+     * @param str1 as name of this player
+     * @param type as type of this game that player has played
+     * @param score as current score of this player that should be updated
+     * @return the wanted string
+     */
     public static String scanOtherInfo(File file, String str1, String type, int score)
     {
         String result = "";

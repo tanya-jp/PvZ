@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * This class controls the time of showing card of cherry bomb and showing it.
  * Sets cherry bomb images.
- * @version 1.0
+ * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class CherryBomb implements Card, Images{
