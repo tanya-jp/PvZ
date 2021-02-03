@@ -14,6 +14,7 @@ import game.template.bufferstrategy.GameState;
  * For more information on how to use BufferStrategy check out:
  *    http://docs.oracle.com/javase/tutorial/extra/fullscreen/bufferstrategy.html
  *    http://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferStrategy.html
+ * @authors Tanya Djavaherpour, Elaheh akbari
  */
 public class GameCanvas extends JPanel {
 
@@ -36,6 +37,7 @@ public class GameCanvas extends JPanel {
         bufferedScreen = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Get the graphics of the offscreen buffer;
         bufferedGraphics = (Graphics2D) bufferedScreen.createGraphics();
+        //Sets images of background
         if(type.equals("day"))
             background = new ImageIcon(".\\PVS Design Kit\\images\\mainBG.png").getImage();
         else if(type.equals("night"))

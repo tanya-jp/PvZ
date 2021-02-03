@@ -34,12 +34,14 @@ public class GameState {
     private final Zombies zombie;
     private HashMap<Integer, Integer> stoppedPeas;
     private ArrayList<LawnMower> lawnMowers;
+    private String score;
     /**
-     * Constructs game state and sets first state of game lements
+     * Constructs game state and sets first state of game elements
      * @param type normal/hard
      * @param timeType day/night
+     * @param score as player's score
      */
-    public GameState(String type, String timeType) {
+    public GameState(String type, String timeType, String score) {
         //
         // Initialize the game state and all elements ...
         //
@@ -49,8 +51,10 @@ public class GameState {
         lifeInfo = new HashMap<>();
         this.type = type;
         this.timeType = timeType;
+        this.score = score;
         sunY = 60;
         sunNumber = 50;
+        //sets first state of flowers
         peashooter = new PeaShooter(type, timeType);
         sunFlower = new SunFlower(type, timeType);
         cherryBomb = new CherryBomb(type, timeType);
@@ -75,10 +79,12 @@ public class GameState {
         }
         sunTime = System.currentTimeMillis() + 50000;
         startTime = System.currentTimeMillis();
+        //sets cars size
         cardW = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getWidth(null);
         cardH = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage().getHeight(null);
         mouseHandler = new MouseHandler();
         sun = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun.gif").getImage();
+        //set lawn mowers
         setLawnMowers();
     }
     /**
@@ -663,9 +669,9 @@ public class GameState {
         if(sunY > (GAME_HEIGHT - 100)) {
             if(System.currentTimeMillis() - sunDropping > 3000 ) {
                 sunY = 60;
-                sunX = rand.nextInt(GAME_WIDTH) - 100;
-                if(sunX < 150)
-                    sunX = sunX + 150;
+                sunX = rand.nextInt(GAME_WIDTH) - 200;
+                if(sunX < 200)
+                    sunX = sunX + 200;
                 sunDropping = System.currentTimeMillis();
             }
         }
@@ -934,6 +940,10 @@ public class GameState {
      * The mouse handler.
      */
     class MouseHandler implements MouseListener, MouseMotionListener {
+        /**
+         * After mouse clicking, defines which item has been chosen
+         * @param e as clicked point
+         */
         @Override
         public void mouseClicked(MouseEvent e) {
             chooseItem(e);
@@ -942,10 +952,19 @@ public class GameState {
             if(x > 864 && x < 990 && y > 32 && y < 60)
                 menu = true;
         }
+        /**
+         * After mouse clicking, defines which item has been chosen
+         * @param e as clicked point
+         */
         @Override
         public void mousePressed(MouseEvent e) {
             saveSun(e);
         }
+        /**
+         * After mouse clicking, defines which item has been chosen,
+         * puts flowers or removes them
+         * @param e as clicked point
+         */
         @Override
         public void mouseReleased(MouseEvent e) {
             putFlower(e);
@@ -1082,7 +1101,6 @@ public class GameState {
      * Sets the number of suns
      */
     public void setSunNumber(int sunNumber) {this.sunNumber = sunNumber; }
-    //TODO
     /**
      * Sets sunDropping -> last time of dropping a sun
      */
@@ -1095,4 +1113,10 @@ public class GameState {
      * Sets y coordinate of dropping sun
      */
     public void setSunY(int sunY) { this.sunY = sunY; }
+    /**
+     * Returns this player score
+     */
+    public String getScore() {
+        return score;
+    }
 }

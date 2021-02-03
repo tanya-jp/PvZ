@@ -8,7 +8,7 @@ import java.util.HashMap;
  * This class controls the time of showing card of freeze pea shooter, showing freeze pea shooter
  * and shooting peas.
  * Sets all freeze pea shooter images
- * @version 2021
+ * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class FreezePeaShooter extends Pea implements Card, Images{

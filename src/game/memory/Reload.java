@@ -19,13 +19,21 @@ import java.io.File;
 public class Reload {
     private GameState state;
     private GameFrame canvas;
+    //player's username
     private String thisUser;
+    //day / night
     private String timeType;
+    // time that game has been started
     private long startTime;
+    // time that game has been stopped and saved
     private long stopTime;
+    // new start time based on current time of system
     private long newStartTime;
+    // path of the folder of all user's info
     private static final String PATH = ".\\users\\";
+    //line number of lawn mowers
     private int lawnMowers;
+    //line number of mushroom
     private int mushroom;
     /**
      * Creates reload class structure by game state and the path of saved  game
@@ -37,9 +45,8 @@ public class Reload {
         this.canvas = canvas;
         reloadGame();
     }
-
     /**
-     * Calls all necessary methods to loade a saved game
+     * Calls all necessary methods to load a saved game
      */
     public void reloadGame()
     {
@@ -57,7 +64,6 @@ public class Reload {
         if(timeType.equals("night"))
             setMushroom();
     }
-
     /**
      * Gets wanted saved information by reading the file and scanning to find wanted line.
      * @param lineNumber as the number of wanted line
@@ -70,7 +76,6 @@ public class Reload {
         String[] res = typeString.split(" ");
         return res[SplitNumber];
     }
-
     /**
      * Sets type of game -> normal / hard
      */
@@ -282,6 +287,10 @@ public class Reload {
         }
         mushroom = cards;
     }
+
+    /**
+     * If time type of the game is night, sets sun state and sun time of produced sun by mushroom.
+     */
     private void setMushroom()
     {
         for (int j = 1; j <= 5; j++){
