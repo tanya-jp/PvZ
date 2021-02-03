@@ -204,7 +204,7 @@ public class Server {
      */
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(6023);) {
+                ServerSocket welcomingSocket = new ServerSocket(1216);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {

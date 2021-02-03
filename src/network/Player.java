@@ -159,7 +159,7 @@ public class Player {
             }
         });
 
-        try (Socket client = new Socket("localhost", 6023);) {
+        try (Socket client = new Socket("localhost", 1216);) {
             System.out.println("Client connected.");
 
             StartManager.getMainMenu().getQuitButton().addMouseListener(new MouseAdapter() {
