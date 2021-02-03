@@ -81,14 +81,14 @@ public class SaveFinishedGame {
     {
         String info = FileUtils.scanByName(new File(".\\src\\network\\usersInfoFile.txt"),
                 userName, type);
-        String[] res = info.split("-");
+        String[] res = info.split(",");
         int wins = Integer.parseInt(res[3]);
         int loses = Integer.parseInt(res[4]);
         if(finishState.equals("gameOver"))
             loses ++;
         else
             wins++;
-        String newInfo = userName + "-" + type + "-d/n-" + wins + "-" + loses + "-" + currentScore;
+        String newInfo = userName + "," + type + ",d/n," + wins + "," + loses + "," + currentScore;
         String other = FileUtils.scanOtherInfo(new File(".\\src\\network\\usersInfoFile.txt"),
                 userName, type, currentScore);
         newInfo = other + newInfo;

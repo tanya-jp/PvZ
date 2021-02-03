@@ -132,8 +132,8 @@ public class Scoreboard {
         //each text is added to a label and labels are added to panels
         for (String userInfo:allInfo) {
 
-            //split each line using -
-            String[] info = userInfo.split("-");
+            //split each line using ,
+            String[] info = userInfo.split(",");
 
             //separate info into proper strings
             String u = info[0].trim(); //username

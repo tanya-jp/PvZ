@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
 
-import game.template.Elements.*;
+import game.template.elements.*;
 import game.template.doublebuffering.GameCanvas;
 
 /**
@@ -113,9 +113,7 @@ public class GameFrame extends JFrame {
         g2d.setFont(font);
         g2d.setColor(new Color(21, 156, 1));
         g2d.drawString("MENU", 890, 50);
-        if(System.currentTimeMillis() - state.getStartTime()> 150000+180000 &&
-                System.currentTimeMillis() - state.getStartTime()< 150000+180000+1000)
-            g2d.drawImage(finalWave, 100, GAME_HEIGHT/2, null);
+
         //show score
         setScore(g2d, state);
         //set shovel
@@ -130,6 +128,9 @@ public class GameFrame extends JFrame {
         putLawnMower(g2d, state);
         //set sun
         setSun(g2d, state);
+        if(System.currentTimeMillis() - state.getStartTime()> 150000+180000 &&
+                System.currentTimeMillis() - state.getStartTime()< 150000+180000+1000)
+            g2d.drawImage(finalWave, 100, GAME_HEIGHT/2, null);
 //        canvas.render(state);
         //
         // Draw all game elements according

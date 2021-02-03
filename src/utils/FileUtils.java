@@ -226,7 +226,7 @@ public class FileUtils {
         }
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            String[] res = line.split("-");
+            String[] res = line.split(",");
             if(res[0].equals(userName))
             {
                 if(res[1].equals(type))
@@ -259,7 +259,7 @@ public class FileUtils {
         }
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            String[] res = line.split("-");
+            String[] res = line.split(",");
             if(!res[0].equals(str1))
             {
                 result = result + line + "\n";
@@ -269,7 +269,7 @@ public class FileUtils {
                 if(!res[1].equals(type))
                 {
 
-                    result = result+res[0]+"-"+res[1]+"-"+res[2]+"-"+res[3]+"-"+res[4]+"-"+score+ "\n";
+                    result = result+res[0]+","+res[1]+","+res[2]+","+res[3]+","+res[4]+","+score+ "\n";
                 }
             }
         }

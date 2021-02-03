@@ -20,12 +20,9 @@ import java.util.*;
  */
 public class Server {
     //hashmap to save all info
-    private HashMap<String, ArrayList<String>> userInfoMapNormal;
-    private HashMap<String, ArrayList<String>> userInfoMapHard;
+    private final HashMap<String, ArrayList<String>> userInfoMapNormal;
+    private final HashMap<String, ArrayList<String>> userInfoMapHard;
     int numOfUsers = 0;
-    int normalIndex = 0;
-    int hardIndex = 0;
-    int index = 0;
 
     private ArrayList<String> returnArray = new ArrayList<>();
 
@@ -68,10 +65,10 @@ public class Server {
             //read till reaching the end of file
             while ((line = br.readLine()) != null) {
 
-                //split the current line by -
-                String[] info = line.split("-");
+                //split the current line by ,
+                String[] info = line.split(",");
 
-                //split a line using -
+                //split a line using ,
                 String u = info[0].trim(); //username
                 String m = info[1].trim(); //mode
                 String t = info[2].trim(); //type
@@ -88,6 +85,7 @@ public class Server {
                 restoredInfo.add(s);
 
 
+                //add all to arraylist
                 ArrayList<String> userInfo = new ArrayList<>();
                 userInfo.add(u);
                 userInfo.add(m);
@@ -168,20 +166,20 @@ public class Server {
 
             //iterate hashmap keys
             for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
-                //write values separated by -
-                bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                //write values separated by ,
+                bf.write(entry.getKey() + "," + entry.getValue().get(0)
+                        + "," + entry.getValue().get(1) + "," + entry.getValue().get(2)
+                        + "," + entry.getValue().get(3) + "," + entry.getValue().get(4));
                 //go to new line
                 bf.newLine();
             }
 
             //iterate hashmap keys
             for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
-                //write values separated by -
-                bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                //write values separated by ,
+                bf.write(entry.getKey() + "," + entry.getValue().get(0)
+                        + "," + entry.getValue().get(1) + "," + entry.getValue().get(2)
+                        + "," + entry.getValue().get(3) + "," + entry.getValue().get(4));
                 //go to new line
                 bf.newLine();
             }
@@ -204,7 +202,8 @@ public class Server {
      */
     public void waitForClient() {
         try (
-                ServerSocket welcomingSocket = new ServerSocket(1216);) {
+                //create new server socket
+                ServerSocket welcomingSocket = new ServerSocket(3040);) {
             System.out.println("Waiting for a client...");
 
             for (int i = 1; true; i++) {
@@ -268,6 +267,7 @@ public class Server {
     {
         FileUtils.makeFolder(".\\users\\"+newUsername+"\\");
         File[] allFiles = FileUtils.getFilesInDirectory(".\\users\\"+oldUsername+"\\");
+        //iterate files
         for (File allFile : allFiles) {
             String content="";
             if (allFile.getName().equals("score")) {
@@ -351,17 +351,17 @@ public class Server {
             }
 
             for(int i = 0; i < lines.size(); i++){
-                String[] info = lines.get(i).split("-");
+                String[] info = lines.get(i).split(",");
                 String u = info[0].trim(); //username
                 String m = info[1].trim(); //mode
                 if(u.equalsIgnoreCase(oldUser) && m.equalsIgnoreCase("normal")){
-                    lines.set(i,newUSer + "-" + "normal" + "-" + newInfo.get(1) + "-"
-                            + newInfo.get(2) + "-" + newInfo.get(3) + "-" +
+                    lines.set(i,newUSer + "," + "normal" + "," + newInfo.get(1) + ","
+                            + newInfo.get(2) + "," + newInfo.get(3) + "," +
                             newInfo.get(4));
                 }
                 else if(u.equalsIgnoreCase(oldUser) && m.equalsIgnoreCase("hard")){
-                    lines.set(i,newUSer + "-" + "hard" + "-" + newInfo.get(1) + "-"
-                            + newInfo.get(2) + "-" + newInfo.get(3) + "-" +
+                    lines.set(i,newUSer + "," + "hard" + "," + newInfo.get(1) + ","
+                            + newInfo.get(2) + "," + newInfo.get(3) + "," +
                             newInfo.get(4));
                 }
             }
@@ -384,7 +384,7 @@ public class Server {
      * This method creates a file which stores all information
      * The file is created only once.
      * Each line in this file has this format:
-     * username-mode-type-wins-loses-score
+     * username,mode,type,wins,loses,score
      * @return the created file
      * @throws IOException possible exception
      */

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import game.template.Elements.*;
+import game.template.elements.*;
 
 /**
  * This class holds the state of game and all of its elements.

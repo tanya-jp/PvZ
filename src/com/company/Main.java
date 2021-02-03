@@ -1,19 +1,18 @@
 package com.company;
 
-import game.memory.Reload;
-import game.template.bufferstrategy.GameState;
-import gui.LoadBoard;
-import gui.MainMenu;
 import manager.StartManager;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import java.io.IOException;
 
+/**
+ * Main class to execute the program and set look and feel.
+ * an object of StartManager is created.
+ * @author Tanya Djavaherpour and Elaheh Akbari
+ * @version 1.0 2021
+ */
 public class Main {
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public static void main(String[] args){
         //Set nimbus look and feel
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
@@ -25,6 +24,8 @@ public class Main {
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
+
+        //create start manager
         StartManager startManager = new StartManager();
     }
 }
