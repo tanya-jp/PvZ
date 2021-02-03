@@ -3,6 +3,7 @@ package game.template.elements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * This class controls zombies entrance and their movement,

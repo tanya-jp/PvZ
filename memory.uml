@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>game.memory</OriginalElement>
+  <nodes>
+    <node x="305.0" y="0.0">game.memory.Save</node>
+    <node x="0.0" y="0.0">game.memory.Reload</node>
+    <node x="0.0" y="408.0">game.memory.SaveFinishedGame</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="278.5" y="275.5" />
+  <SelectedNodes>
+    <node>game.memory.Save</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -79,20 +79,20 @@ public class SaveFinishedGame {
      */
     public void updateNetworkFile()
     {
-        String info = FileUtils.scanByName(new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt"),
+        String info = FileUtils.scanByName(new File(".\\src\\network\\usersInfoFile.txt"),
                 userName, type);
-        String[] res = info.split("-");
+        String[] res = info.split(",");
         int wins = Integer.parseInt(res[3]);
         int loses = Integer.parseInt(res[4]);
         if(finishState.equals("gameOver"))
             loses ++;
         else
             wins++;
-        String newInfo = userName + "-" + type + "-d/n-" + wins + "-" + loses + "-" + currentScore;
-        String other = FileUtils.scanOtherInfo(new File("C:\\AP\\final\\out\\production\\final\\network\\usersInfoFile.txt"),
+        String newInfo = userName + "," + type + ",d/n," + wins + "," + loses + "," + currentScore;
+        String other = FileUtils.scanOtherInfo(new File(".\\src\\network\\usersInfoFile.txt"),
                 userName, type, currentScore);
         newInfo = other + newInfo;
-        FileUtils.networkFileWriter(newInfo,"C:\\AP\\final\\out\\production\\final\\network\\");
+        FileUtils.networkFileWriter(newInfo,".\\src\\network\\");
     }
     /**
      * Appends all information and make a string that should be saved in file.

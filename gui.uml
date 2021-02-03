@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>gui</OriginalElement>
+  <nodes>
+    <node x="210.0" y="0.0">gui.User</node>
+    <node x="202.0" y="297.0">gui.Settings</node>
+    <node x="180.0" y="506.0">gui.Scoreboard</node>
+    <node x="0.0" y="297.0">gui.PauseMenu</node>
+    <node x="394.0" y="297.0">gui.GameOver</node>
+    <node x="0.0" y="0.0">gui.MainMenu</node>
+    <node x="353.0" y="506.0">gui.Background</node>
+    <node x="0.0" y="506.0">gui.LoadBoard</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="167.0" y="327.0" />
+  <SelectedNodes>
+    <node>gui.User</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
