@@ -1,13 +1,13 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
 /**
- * This class sets bucket head zombie images and stores its state and properties.
+ * This class sets cone head zombie images and stores its state and properties.
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class BucketHeadZombie implements Images, Zombie {
+public class ConeHeadZombie implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;
@@ -25,13 +25,13 @@ public class BucketHeadZombie implements Images, Zombie {
     private float x;
 
     /**
-     * Constructs a new bucket head zombie
+     * Constructs a new cone head zombie
      */
-    public BucketHeadZombie()
+    public ConeHeadZombie()
     {
         super();
         setImages();
-        life = 1300;
+        life = 560;
         stopped= false;
         squashAttacked = false;
         burnt = false;
@@ -54,6 +54,7 @@ public class BucketHeadZombie implements Images, Zombie {
     {
         return row;
     }
+
     /**
      *Sets the x coordinate of this zombie
      */
@@ -92,7 +93,7 @@ public class BucketHeadZombie implements Images, Zombie {
      */
     @Override
     public void setImages(){
-        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\bucketheadzombie.gif").getImage();
+        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\coneheadzombie.gif").getImage();
         burntZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\burntZombie.gif").getImage();
         dyingZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal_dying.gif").getImage();
     }

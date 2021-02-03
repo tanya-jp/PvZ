@@ -1,14 +1,13 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
-
 /**
- * This class sets normal zombie images and stores its state and properties.
+ * This class sets bucket head zombie images and stores its state and properties.
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class NormalZombie  implements Images, Zombie {
+public class BucketHeadZombie implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;
@@ -26,20 +25,19 @@ public class NormalZombie  implements Images, Zombie {
     private float x;
 
     /**
-     * Constructs a new normal zombie
+     * Constructs a new bucket head zombie
      */
-    public NormalZombie()
+    public BucketHeadZombie()
     {
         super();
         setImages();
-        life = 200;
+        life = 1300;
         stopped= false;
-        burnt = false;
         squashAttacked = false;
+        burnt = false;
         frozen = false;
         killed = false;
     }
-
     /**
      * Sets the row of this zombie
      */
@@ -56,7 +54,6 @@ public class NormalZombie  implements Images, Zombie {
     {
         return row;
     }
-
     /**
      *Sets the x coordinate of this zombie
      */
@@ -95,22 +92,22 @@ public class NormalZombie  implements Images, Zombie {
      */
     @Override
     public void setImages(){
-        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal.gif").getImage();
+        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\bucketheadzombie.gif").getImage();
         burntZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\burntZombie.gif").getImage();
         dyingZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal_dying.gif").getImage();
+    }
+    /**
+     * Returns the image of full flower
+     */
+    @Override
+    public Image getFullImage(){
+        return fullZombie;
     }
     /**
      * Returns the image of dying zombie
      */
     @Override
     public Image getDyingImage(){return dyingZombie;}
-    /**
-     * Returns the image of full zombie
-     */
-    @Override
-    public Image getFullImage(){
-        return fullZombie;
-    }
     /**
      * Returns image of burnt zombie
      */
@@ -191,16 +188,16 @@ public class NormalZombie  implements Images, Zombie {
     public boolean isSquashAttacked(){return squashAttacked;}
     /**
      * Sets the time of squash jumping
-     * @param time as time of starting attack.
+     * @param squashAttackTime as time of starting attack.
      */
     @Override
-    public void setSquashAttackTime(long time){squashAttackTime = time;}
+    public void setSquashAttackTime(long squashAttackTime){this.squashAttackTime = squashAttackTime;}
     /**
      * Gets the time of squash jumping
      * @return squashAttackTime as time of starting attack.
      */
     @Override
-    public long getSquashAttackTime(){ return squashAttackTime;}
+    public long getSquashAttackTime(){return squashAttackTime;}
     /**
      * After first frozen pea, frozen sets true than means zombie speed should decrease.
      */

@@ -1,63 +1,51 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 /**
- * This class controls the time of showing card of freeze pea shooter, showing freeze pea shooter
- * and shooting peas.
- * Sets all freeze pea shooter images
+ * This class controls the time of showing card of wall nut and showing it.
+ * Sets all images of wall nut.
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class FreezePeaShooter extends Pea implements Card, Images{
+public class WallNut implements Card, Images{
+
     private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image freezePeaShooterCard;
-    private Image freezeShooterFull;
-    private Image pea;
+    private Image wallNutCard;
+    private Image walnutFull;
+    private Image wallNutHalf;
+    private Image wallNutDead;
 
     /**
-     * Constructs a new freeze pea shooter
+     * Constructs a new wall nut
      * @param type normal / hard
      * @param timeType night / day
      */
-    public FreezePeaShooter(String type, String timeType)
+    public WallNut(String type, String timeType)
     {
-        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 175;
+        neededSuns = 50;
         setImages();
     }
     /**
-     * Sets related pea image.
-     */
-    @Override
-    public void setPeaImage() {
-        pea = new ImageIcon(".\\PVS Design Kit\\images\\freezepea.png").getImage();
-    }
-    /**
-     *Returns related pea image.
-     */
-    @Override
-    public Image getPea(){return pea;}
-    /**
-     * Sets all images of that sunFlower
+     * Sets all images of that wallNut
      */
     @Override
     public void setImages()
     {
-        freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
-        freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
-        setPeaImage();
+        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
+        walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
+        wallNutHalf = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_half_life.gif").getImage();
+        wallNutDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_dead.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -65,38 +53,29 @@ public class FreezePeaShooter extends Pea implements Card, Images{
     @Override
     public Image getCardImage()
     {
-        return freezePeaShooterCard;
+        return wallNutCard;
     }
     /**
      * Returns the image of full flower
      */
+    @Override
     public Image getFullImage()
     {
-        return freezeShooterFull;
+        return walnutFull;
     }
     /**
-     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
-     * @param peaLoc location of new peashooter in the form of yx
+     * Returns the image of half flower
      */
-    @Override
-    public void addPea(int peaLoc) {
-        super.addPea(peaLoc);
-    }
-    /**
-     * Returns the hashmap of peas
-     */
-    @Override
-    public HashMap<Integer, ArrayList<Integer>> getBullets()
+    public Image getHalfImage()
     {
-        return super.getBullets();
+        return wallNutHalf;
     }
     /**
-     * Changes the location of peas and adds a new pea when its time arrives.
+     * Returns the image of dead flower
      */
-    @Override
-    public void setBullets()
+    public Image getDeadImage()
     {
-        super.setBullets();
+        return wallNutDead;
     }
     /**
      * Sets card state
@@ -108,13 +87,8 @@ public class FreezePeaShooter extends Pea implements Card, Images{
      */
     @Override
     public void setCard() {
-        if(card)
-        {
-            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 7500)
-                card = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 30000)
-                card = false;
-        }
+        if(card && (System.currentTimeMillis() - flowerTime) >= 30000)
+            card = false;
     }
     /**
      * If card can be appeared, returns false.

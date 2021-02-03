@@ -1,51 +1,66 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 /**
- * This class controls the time of showing card of wall nut and showing it.
- * Sets all images of wall nut.
+ * This class controls the time of showing card of pea shooter, showing pea shooter and shooting peas.
+ * Sets all images of peashooter.
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class WallNut implements Card, Images{
+public class PeaShooter extends Pea implements Card, Images {
 
-    private final int neededSuns;
+    private int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image wallNutCard;
-    private Image walnutFull;
-    private Image wallNutHalf;
-    private Image wallNutDead;
-
+    private Image peaShooterCard;
+    private Image peaShooterFull;
+    private Image peaShooterDead;
+    private Image pea;
     /**
-     * Constructs a new wall nut
+     * Constructs a new peaShooter
      * @param type normal / hard
      * @param timeType night / day
      */
-    public WallNut(String type, String timeType)
+    public PeaShooter(String type, String timeType)
     {
+        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 50;
+        neededSuns = 100;
         setImages();
     }
     /**
-     * Sets all images of that wallNut
+     * Sets related pea image.
+     */
+    @Override
+    public void setPeaImage()
+    {
+        pea = new ImageIcon(".\\PVS Design Kit\\images\\Pea1.png").getImage();
+    }
+    /**
+     *Returns related pea image.
+     */
+    @Override
+    public Image getPea(){return pea;}
+    /**
+     * Sets all images of that sunFlower
      */
     @Override
     public void setImages()
     {
-        wallNutCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_wallnut.png").getImage();
-        walnutFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_full_life.gif").getImage();
-        wallNutHalf = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_half_life.gif").getImage();
-        wallNutDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\walnut_dead.gif").getImage();
+
+        peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
+        peaShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter.gif").getImage();
+        peaShooterDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter_dying.gif").getImage();
+        setPeaImage();
     }
     /**
      *Returns the image of card
@@ -53,29 +68,45 @@ public class WallNut implements Card, Images{
     @Override
     public Image getCardImage()
     {
-        return wallNutCard;
+        return peaShooterCard;
     }
     /**
      * Returns the image of full flower
      */
-    @Override
     public Image getFullImage()
     {
-        return walnutFull;
+        return peaShooterFull;
     }
     /**
-     * Returns the image of half flower
+     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
+     * @param peaLoc location of new peashooter in the form of yx
      */
-    public Image getHalfImage()
-    {
-        return wallNutHalf;
-    }
     /**
      * Returns the image of dead flower
      */
     public Image getDeadImage()
     {
-        return wallNutDead;
+        return peaShooterDead;
+    }
+    @Override
+    public void addPea(int peaLoc) {
+        super.addPea(peaLoc);
+    }
+    /**
+     * Returns the hashmap of peas
+     */
+    @Override
+    public HashMap<Integer, ArrayList<Integer>> getBullets()
+    {
+        return super.getBullets();
+    }
+    /**
+     * Changes the location of peas and adds a new pea when its time arrives.
+     */
+    @Override
+    public void setBullets()
+    {
+        super.setBullets();
     }
     /**
      * Sets card state
@@ -86,8 +117,9 @@ public class WallNut implements Card, Images{
      * makes state of cards based on proper time
      */
     @Override
-    public void setCard() {
-        if(card && (System.currentTimeMillis() - flowerTime) >= 30000)
+    public void setCard()
+    {
+        if(card && (System.currentTimeMillis() - flowerTime) >= 7500)
             card = false;
     }
     /**

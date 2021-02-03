@@ -1,13 +1,14 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
+
 /**
- * This class sets cone head zombie images and stores its state and properties.
+ * This class sets normal zombie images and stores its state and properties.
  * @version 1.0 2021
  * @authors Tanya Djavaherpour and  Elaheh Akbari
  */
-public class ConeHeadZombie implements Images, Zombie {
+public class NormalZombie  implements Images, Zombie {
     private Image fullZombie;
     private Image burntZombie;
     private Image dyingZombie;
@@ -25,19 +26,20 @@ public class ConeHeadZombie implements Images, Zombie {
     private float x;
 
     /**
-     * Constructs a new cone head zombie
+     * Constructs a new normal zombie
      */
-    public ConeHeadZombie()
+    public NormalZombie()
     {
         super();
         setImages();
-        life = 560;
+        life = 200;
         stopped= false;
-        squashAttacked = false;
         burnt = false;
+        squashAttacked = false;
         frozen = false;
         killed = false;
     }
+
     /**
      * Sets the row of this zombie
      */
@@ -93,22 +95,22 @@ public class ConeHeadZombie implements Images, Zombie {
      */
     @Override
     public void setImages(){
-        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\coneheadzombie.gif").getImage();
+        fullZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal.gif").getImage();
         burntZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\burntZombie.gif").getImage();
         dyingZombie = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\zombie_normal_dying.gif").getImage();
-    }
-    /**
-     * Returns the image of full flower
-     */
-    @Override
-    public Image getFullImage(){
-        return fullZombie;
     }
     /**
      * Returns the image of dying zombie
      */
     @Override
     public Image getDyingImage(){return dyingZombie;}
+    /**
+     * Returns the image of full zombie
+     */
+    @Override
+    public Image getFullImage(){
+        return fullZombie;
+    }
     /**
      * Returns image of burnt zombie
      */
@@ -189,16 +191,16 @@ public class ConeHeadZombie implements Images, Zombie {
     public boolean isSquashAttacked(){return squashAttacked;}
     /**
      * Sets the time of squash jumping
-     * @param squashAttackTime as time of starting attack.
+     * @param time as time of starting attack.
      */
     @Override
-    public void setSquashAttackTime(long squashAttackTime){this.squashAttackTime = squashAttackTime;}
+    public void setSquashAttackTime(long time){squashAttackTime = time;}
     /**
      * Gets the time of squash jumping
      * @return squashAttackTime as time of starting attack.
      */
     @Override
-    public long getSquashAttackTime(){return squashAttackTime;}
+    public long getSquashAttackTime(){ return squashAttackTime;}
     /**
      * After first frozen pea, frozen sets true than means zombie speed should decrease.
      */

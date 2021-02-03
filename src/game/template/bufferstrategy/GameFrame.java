@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
 
-import game.template.Elements.*;
+import game.template.elements.*;
 import game.template.doublebuffering.GameCanvas;
 
 /**

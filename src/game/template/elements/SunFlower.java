@@ -1,37 +1,40 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
-
+import java.awt.*;
 /**
- * This class controls the time of showing card of mushroom and showing it.(only at night)
- * Sets all images of mushroom.
+ * This class controls the time of showing card of sunFlower and showing it.
+ * Also manages producing sun by sunFlower.
+ * Sets sunFlower images.
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class Mushroom extends SunProducer implements Card, Images{
+public class SunFlower extends SunProducer implements Card, Images {
+
     private final int neededSuns;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image mushroomCard;
-    private Image mushroomFull;
+    private Image sunFlowerCard;
+    private Image sunFlowerFull;
+    private Image sunFlowerDead;
 
     /**
-     * Constructs a new mushroom when it is night.
+     * Constructs a new sunflower
      * @param type normal / hard
      * @param timeType night / day
      */
-    public Mushroom(String type, String timeType)
+    public SunFlower(String type, String timeType)
     {
         super(type, timeType);
         this.card = false;
         this.lock = true;
-        neededSuns = 25;
+        neededSuns = 50;
         setImages();
         init();
     }
+
     /**
      * Puts all cells to the  hashMaps and makes their values null for the first time
      * that means there is not any sun that location.
@@ -48,7 +51,7 @@ public class Mushroom extends SunProducer implements Card, Images{
     @Override
     public void setSunFlowerState()
     {
-       super.setSunFlowerState();
+        super.setSunFlowerState();
     }
     /**
      * If sunflower's sun can be appeared, returns true.
@@ -99,13 +102,14 @@ public class Mushroom extends SunProducer implements Card, Images{
         super.removeSunFlower(loc);
     }
     /**
-     * Sets all images of that mushroom
+     * Sets all images of that sunFlower
      */
     @Override
     public void setImages()
     {
-        mushroomCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sun-shroom.png").getImage();
-        mushroomFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Sun_Shroom.gif").getImage();
+        sunFlowerCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_sunflower.png").getImage();
+        sunFlowerFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower.gif").getImage();
+        sunFlowerDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\sun_flower_dying.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -113,14 +117,21 @@ public class Mushroom extends SunProducer implements Card, Images{
     @Override
     public Image getCardImage()
     {
-        return mushroomCard;
+        return sunFlowerCard;
     }
     /**
      * Returns the image of full flower
-     */
+     */@Override
     public Image getFullImage()
     {
-        return mushroomFull;
+        return sunFlowerFull;
+    }
+    /**
+     * Returns the image of dead flower
+     */
+    public Image getDeadImage()
+    {
+        return sunFlowerDead;
     }
     /**
      * Sets card state
@@ -132,7 +143,7 @@ public class Mushroom extends SunProducer implements Card, Images{
      */
     @Override
     public void setCard() {
-        if(card && (System.currentTimeMillis() - flowerTime) >= 7000)
+        if(card && (System.currentTimeMillis() - flowerTime) >= 7500)
             card = false;
     }
     /**
