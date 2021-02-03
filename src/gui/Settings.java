@@ -48,16 +48,16 @@ public class Settings {
     private final JFrame settingsFrame;
 
     //frame for showing plants
-    private JFrame plantsFrame;
+    private final JFrame plantsFrame;
 
     //images for all cards
-    private ImageIcon cherry;
-    private ImageIcon freezePee;
-    private ImageIcon peeShooter;
-    private ImageIcon sunflower;
-    private ImageIcon wallNut;
-    private ImageIcon squash;
-    private ImageIcon mushroom;
+    private final ImageIcon cherry;
+    private final ImageIcon freezePee;
+    private final ImageIcon peeShooter;
+    private final ImageIcon sunflower;
+    private final ImageIcon wallNut;
+    private final ImageIcon squash;
+    private final ImageIcon mushroom;
 
     /**
      * gets day/ night button
@@ -296,82 +296,69 @@ public class Settings {
 
     /**
      * This method opens a frame
-     * in which all plants are shown.
+     * in which all plants cards are shown.
      */
     private void choosePlants(){
+        //set plants frame features
         plantsFrame.setLayout(null);
         plantsFrame.setLocation(450,250);
         plantsFrame.setSize(405,300);
         plantsFrame.setResizable(false);
+
+        //set content to plants background
         plantsFrame.setContentPane(plantsBg);
+
+        //set layout to null
+        plantsBg.setLayout(null);
 
         //create background color
         Color bColor = new Color(102,102,102);
 
         //create foreground color
         Color fgColor = new Color(0,102,0);
+
+        //create button to close the frame
         JButton doneButton = new JButton("OK");
+
+        //manually set bounds for ok button
         doneButton.setBounds(125,235,150,25);
 
+        //set button colors
         doneButton.setBackground(bColor);
         doneButton.setForeground(fgColor);
 
+        //create new color
         Color color = new Color(102,0,153);
 
-
-        plantsBg.setLayout(null);
-
+        //create new panel
         JPanel plantsPanel = new JPanel();
+
+        //set panel color
         plantsPanel.setBackground(color);
 
+        //manually set plants panel bounds
         plantsPanel.setBounds(12,22,377,210);
+
+        //set plants panel layout to null
         plantsPanel.setLayout(new GridLayout(2,4,5,5));
 
-
-        JLabel cherryLabel = new JLabel(cherry);
-        cherryLabel.setBackground(color);
-        cherryLabel.setOpaque(true);
-
-        JLabel fpLabel = new JLabel(freezePee);
-        fpLabel.setBackground(color);
-        fpLabel.setOpaque(true);
-
-        JLabel pLabel = new JLabel(peeShooter);
-        pLabel.setBackground(color);
-        pLabel.setOpaque(true);
-
-        JLabel sfLabel = new JLabel(sunflower);
-        sfLabel.setBackground(color);
-        sfLabel.setOpaque(true);
-
-        JLabel wLabel = new JLabel(wallNut);
-        wLabel.setBackground(color);
-        wLabel.setOpaque(true);
-
-        JLabel sqLabel = new JLabel(squash);
-        sqLabel.setBackground(color);
-        sqLabel.setOpaque(true);
-
-        JLabel mLabel = new JLabel(mushroom);
-        mLabel.setBackground(color);
-        mLabel.setOpaque(true);
-
-
-
-
-
-        plantsPanel.add(cherryLabel);
-        plantsPanel.add(fpLabel);
-        plantsPanel.add(pLabel);
-        plantsPanel.add(sfLabel);
-        plantsPanel.add(wLabel);
-        plantsPanel.add(sqLabel);
-        plantsPanel.add(mLabel);
+        //add labels to panel
+        //create each label using crate label method
+        plantsPanel.add(createLabel(cherry));
+        plantsPanel.add(createLabel(freezePee));
+        plantsPanel.add(createLabel(peeShooter));
+        plantsPanel.add(createLabel(sunflower));
+        plantsPanel.add(createLabel(wallNut));
+        plantsPanel.add(createLabel(squash));
+        plantsPanel.add(createLabel(mushroom));
         plantsPanel.add(new JLabel());
 
+        //add panel and button to background
         plantsBg.add(plantsPanel);
         plantsBg.add(doneButton);
 
+        //add mouse listener to done button
+        //the frame is closed when this button is pressed
         doneButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -379,7 +366,22 @@ public class Settings {
             }
         });
 
+        //show the frame
         plantsFrame.setVisible(true);
 
+    }
+
+    /**
+     * This method gets an image and adds it to a label.
+     * @param image given image
+     * @return created label
+     */
+    public JLabel createLabel(ImageIcon image){
+        //create new color
+        Color color = new Color(102,0,153);
+        JLabel label = new JLabel(image);
+        label.setBackground(color);
+        label.setOpaque(true);
+        return label;
     }
 }
