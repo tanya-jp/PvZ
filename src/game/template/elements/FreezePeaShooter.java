@@ -1,47 +1,63 @@
-package game.template.Elements;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 /**
- * This class controls the time of showing card of cherry bomb and showing it.
- * Sets cherry bomb images.
+ * This class controls the time of showing card of freeze pea shooter, showing freeze pea shooter
+ * and shooting peas.
+ * Sets all freeze pea shooter images
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class CherryBomb implements Card, Images{
-
+public class FreezePeaShooter extends Pea implements Card, Images{
     private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image cherryBombCard;
-    private Image cherryFull;
+    private Image freezePeaShooterCard;
+    private Image freezeShooterFull;
+    private Image pea;
 
     /**
-     * Constructs a new cherry bomb
+     * Constructs a new freeze pea shooter
      * @param type normal / hard
      * @param timeType night / day
      */
-    public CherryBomb(String type, String timeType)
+    public FreezePeaShooter(String type, String timeType)
     {
+        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 150;
+        neededSuns = 175;
         setImages();
     }
     /**
-     * Sets all images of that cherryBomb
+     * Sets related pea image.
+     */
+    @Override
+    public void setPeaImage() {
+        pea = new ImageIcon(".\\PVS Design Kit\\images\\freezepea.png").getImage();
+    }
+    /**
+     *Returns related pea image.
+     */
+    @Override
+    public Image getPea(){return pea;}
+    /**
+     * Sets all images of that sunFlower
      */
     @Override
     public void setImages()
     {
-        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
-        cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
+        freezePeaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_freezepeashooter.png").getImage();
+        freezeShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\freezepeashooter.gif").getImage();
+        setPeaImage();
     }
     /**
      *Returns the image of card
@@ -49,14 +65,38 @@ public class CherryBomb implements Card, Images{
     @Override
     public Image getCardImage()
     {
-        return cherryBombCard;
+        return freezePeaShooterCard;
     }
     /**
      * Returns the image of full flower
      */
     public Image getFullImage()
     {
-        return cherryFull;
+        return freezeShooterFull;
+    }
+    /**
+     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
+     * @param peaLoc location of new peashooter in the form of yx
+     */
+    @Override
+    public void addPea(int peaLoc) {
+        super.addPea(peaLoc);
+    }
+    /**
+     * Returns the hashmap of peas
+     */
+    @Override
+    public HashMap<Integer, ArrayList<Integer>> getBullets()
+    {
+        return super.getBullets();
+    }
+    /**
+     * Changes the location of peas and adds a new pea when its time arrives.
+     */
+    @Override
+    public void setBullets()
+    {
+        super.setBullets();
     }
     /**
      * Sets card state
@@ -70,9 +110,9 @@ public class CherryBomb implements Card, Images{
     public void setCard() {
         if(card)
         {
-            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 30000)
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 7500)
                 card = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 45000)
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 30000)
                 card = false;
         }
     }

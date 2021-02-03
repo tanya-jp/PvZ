@@ -1,9 +1,9 @@
 package game.memory;
 
-import game.template.Elements.BucketHeadZombie;
-import game.template.Elements.ConeHeadZombie;
-import game.template.Elements.LawnMower;
-import game.template.Elements.NormalZombie;
+import game.template.elements.BucketHeadZombie;
+import game.template.elements.ConeHeadZombie;
+import game.template.elements.LawnMower;
+import game.template.elements.NormalZombie;
 import game.template.bufferstrategy.GameState;
 import utils.FileUtils;
 

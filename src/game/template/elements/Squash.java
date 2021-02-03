@@ -1,66 +1,71 @@
-package game.template.Elements;
+package game.template.elements;
+
+import game.template.bufferstrategy.GameState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
+
 /**
- * This class controls the time of showing card of pea shooter, showing pea shooter and shooting peas.
- * Sets all images of peashooter.
+ * This class controls the time of showing card of squash and showing it.
+ * Sets all images of squash.
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class PeaShooter extends Pea implements Card, Images {
-
-    private int neededSuns;
+public class Squash implements Card, Images{
+    private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image peaShooterCard;
-    private Image peaShooterFull;
-    private Image peaShooterDead;
-    private Image pea;
+    private Image squashCard;
+    private Image squashFull;
+    private Image attackSquash;
+
     /**
-     * Constructs a new peaShooter
+     * Constructs a new mushroom when it is night.
      * @param type normal / hard
      * @param timeType night / day
      */
-    public PeaShooter(String type, String timeType)
+    public Squash(String type, String timeType)
     {
-        super(type, timeType);
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 100;
+        neededSuns = 50;
         setImages();
     }
+
     /**
-     * Sets related pea image.
+     * Removes squash after jumping on zombie
+     * @param x as x coordinate
+     * @param y as y coordinate
+     * @param info as flowers state information
      */
-    @Override
-    public void setPeaImage()
+    public void removeSquash(int x, int y, HashMap<Integer, String > info)
     {
-        pea = new ImageIcon(".\\PVS Design Kit\\images\\Pea1.png").getImage();
+        int loc = GameState.findLoc(x,y);
+        if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
+            info.replace(loc-1, null);
+        else if(info.get(loc)!=null && info.get(loc).contains("quash"))
+            info.replace(loc, null);
     }
     /**
-     *Returns related pea image.
+     * Returns Image of Attacker squash
+     * @return
      */
-    @Override
-    public Image getPea(){return pea;}
+    public Image getAttackSquash(){return attackSquash;}
     /**
-     * Sets all images of that sunFlower
+     * Sets all images of that squash
      */
     @Override
     public void setImages()
     {
-
-        peaShooterCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_peashooter.png").getImage();
-        peaShooterFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter.gif").getImage();
-        peaShooterDead = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\pea_shooter_dying.gif").getImage();
-        setPeaImage();
+        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
+        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
+        attackSquash = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Squash_Attack.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -68,45 +73,14 @@ public class PeaShooter extends Pea implements Card, Images {
     @Override
     public Image getCardImage()
     {
-        return peaShooterCard;
+        return squashCard;
     }
     /**
      * Returns the image of full flower
      */
     public Image getFullImage()
     {
-        return peaShooterFull;
-    }
-    /**
-     * when a nea peashooter is added to the playground, this method adds new key to the Hashmap.
-     * @param peaLoc location of new peashooter in the form of yx
-     */
-    /**
-     * Returns the image of dead flower
-     */
-    public Image getDeadImage()
-    {
-        return peaShooterDead;
-    }
-    @Override
-    public void addPea(int peaLoc) {
-        super.addPea(peaLoc);
-    }
-    /**
-     * Returns the hashmap of peas
-     */
-    @Override
-    public HashMap<Integer, ArrayList<Integer>> getBullets()
-    {
-        return super.getBullets();
-    }
-    /**
-     * Changes the location of peas and adds a new pea when its time arrives.
-     */
-    @Override
-    public void setBullets()
-    {
-        super.setBullets();
+        return squashFull;
     }
     /**
      * Sets card state
@@ -117,10 +91,14 @@ public class PeaShooter extends Pea implements Card, Images {
      * makes state of cards based on proper time
      */
     @Override
-    public void setCard()
-    {
-        if(card && (System.currentTimeMillis() - flowerTime) >= 7500)
-            card = false;
+    public void setCard() {
+        if(card)
+        {
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 5000)
+                card = false;
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 8000)
+                card = false;
+        }
     }
     /**
      * If card can be appeared, returns false.

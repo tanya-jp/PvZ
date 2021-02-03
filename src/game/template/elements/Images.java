@@ -1,4 +1,4 @@
-package game.template.Elements;
+package game.template.elements;
 
 import java.awt.*;
 

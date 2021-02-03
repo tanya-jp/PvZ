@@ -1,71 +1,47 @@
-package game.template.Elements;
-
-import game.template.bufferstrategy.GameState;
+package game.template.elements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 /**
- * This class controls the time of showing card of squash and showing it.
- * Sets all images of squash.
+ * This class controls the time of showing card of cherry bomb and showing it.
+ * Sets cherry bomb images.
  * @version 1.0 2021
  * @author Tanya Djavaherpour, Elaheh akbari
  */
-public class Squash implements Card, Images{
+public class CherryBomb implements Card, Images{
+
     private final int neededSuns;
     private String type;
     private String timeType;
     private boolean card;
     private long flowerTime;
     private boolean lock;
-    private Image squashCard;
-    private Image squashFull;
-    private Image attackSquash;
+    private Image cherryBombCard;
+    private Image cherryFull;
 
     /**
-     * Constructs a new mushroom when it is night.
+     * Constructs a new cherry bomb
      * @param type normal / hard
      * @param timeType night / day
      */
-    public Squash(String type, String timeType)
+    public CherryBomb(String type, String timeType)
     {
         this.type = type;
         this.timeType = timeType;
         this.card = false;
         this.lock = true;
-        neededSuns = 50;
+        neededSuns = 150;
         setImages();
     }
-
     /**
-     * Removes squash after jumping on zombie
-     * @param x as x coordinate
-     * @param y as y coordinate
-     * @param info as flowers state information
-     */
-    public void removeSquash(int x, int y, HashMap<Integer, String > info)
-    {
-        int loc = GameState.findLoc(x,y);
-        if(info.get(loc-1)!=null && info.get(loc-1).contains("quash"))
-            info.replace(loc-1, null);
-        else if(info.get(loc)!=null && info.get(loc).contains("quash"))
-            info.replace(loc, null);
-    }
-    /**
-     * Returns Image of Attacker squash
-     * @return
-     */
-    public Image getAttackSquash(){return attackSquash;}
-    /**
-     * Sets all images of that squash
+     * Sets all images of that cherryBomb
      */
     @Override
     public void setImages()
     {
-        squashCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_squash.jpg").getImage();
-        squashFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\squash.gif").getImage();
-        attackSquash = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\Squash_Attack.gif").getImage();
+        cherryBombCard = new ImageIcon(".\\PVS Design Kit\\images\\Cards\\card_cherrybomb.png").getImage();
+        cherryFull = new ImageIcon(".\\PVS Design Kit\\images\\Gifs\\newCherryBomb.gif").getImage();
     }
     /**
      *Returns the image of card
@@ -73,14 +49,14 @@ public class Squash implements Card, Images{
     @Override
     public Image getCardImage()
     {
-        return squashCard;
+        return cherryBombCard;
     }
     /**
      * Returns the image of full flower
      */
     public Image getFullImage()
     {
-        return squashFull;
+        return cherryFull;
     }
     /**
      * Sets card state
@@ -94,9 +70,9 @@ public class Squash implements Card, Images{
     public void setCard() {
         if(card)
         {
-            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 5000)
+            if(type.equals("normal") && (System.currentTimeMillis() - flowerTime) >= 30000)
                 card = false;
-            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 8000)
+            else if(type.equals("hard") && (System.currentTimeMillis() - flowerTime) >= 45000)
                 card = false;
         }
     }

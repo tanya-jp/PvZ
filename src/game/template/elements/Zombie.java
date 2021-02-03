@@ -1,4 +1,4 @@
-package game.template.Elements;
+package game.template.elements;
 import java.awt.*;
 /**
  * This interface fixes everything which is related to zombies.
