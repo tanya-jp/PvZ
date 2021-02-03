@@ -166,25 +166,25 @@ public class Server {
             //new buffered writer
             bf = new BufferedWriter(new FileWriter(userInfoFile));
 
-                //iterate hashmap keys
-                for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
-                    //write values separated by -
-                    bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-                    //go to new line
-                    bf.newLine();
-                }
+            //iterate hashmap keys
+            for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
+                //write values separated by -
+                bf.write(entry.getKey() + "-" + entry.getValue().get(0)
+                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                //go to new line
+                bf.newLine();
+            }
 
-                //iterate hashmap keys
-                for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
-                    //write values separated by -
-                    bf.write(entry.getKey() + "-" + entry.getValue().get(0)
-                            + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
-                            + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
-                    //go to new line
-                    bf.newLine();
-                }
+            //iterate hashmap keys
+            for (Map.Entry<String, ArrayList<String>> entry : userInfoMapHard.entrySet()) {
+                //write values separated by -
+                bf.write(entry.getKey() + "-" + entry.getValue().get(0)
+                        + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2)
+                        + "-" + entry.getValue().get(3) + "-" + entry.getValue().get(4));
+                //go to new line
+                bf.newLine();
+            }
 //            }
             bf.flush();
         } catch (IOException e) {
@@ -238,12 +238,12 @@ public class Server {
         }
         ArrayList<String> temp = new ArrayList<>();
         //replace with new one
-            for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
-                if (entry.getKey().equalsIgnoreCase(oldUsername)) {
-                    temp = entry.getValue();
-                    changeUserInFile(oldUsername,newUsername,temp);
-                }
+        for (Map.Entry<String, ArrayList<String>> entry : userInfoMapNormal.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(oldUsername)) {
+                temp = entry.getValue();
+                changeUserInFile(oldUsername,newUsername,temp);
             }
+        }
 
         userInfoMapNormal.remove(oldUsername);
         userInfoMapNormal.put(newUsername,temp);

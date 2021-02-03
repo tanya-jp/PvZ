@@ -84,7 +84,7 @@ public class StartManager {
         music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
 
         //call select method
-        select();
+//        select();
 
         //start a new game
         if(flag == 0)
@@ -111,10 +111,7 @@ public class StartManager {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
                 music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
-                if(music.equals("off"))
-                {
-                    audio.playMenu(false);
-                }
+                audio.playMenu(music.equals("on"));
             }
         });
     }

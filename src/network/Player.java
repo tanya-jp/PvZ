@@ -29,6 +29,7 @@ public class Player {
         StartManager.getMainMenu().createStartGUI();
         StartManager.setMusic("on");
         StartManager.update();
+        StartManager.select();
 
         //needed fields
 //        final String newUsername = "";
@@ -77,16 +78,16 @@ public class Player {
                             "The Field");
                 }
                 else if (server.isSignUpAvailable(newUsername)) {
-                        StartManager.getMainMenu().login();
-                        StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
-                        //make a new folder for this player
-                        FileUtils.makeFolder(PATH+newUsername);
-                        FileUtils.fileWriter("score\n0",PATH+newUsername+"\\");
-                        name = user.getNewUserField().getText().toLowerCase();
+                    StartManager.getMainMenu().login();
+                    StartManager.getMainMenu().getUsernameLabel().setText(newUsername);
+                    //make a new folder for this player
+                    FileUtils.makeFolder(PATH+newUsername);
+                    FileUtils.fileWriter("score\n0",PATH+newUsername+"\\");
+                    name = user.getNewUserField().getText().toLowerCase();
 //                        StartManager.setUserName(name);
-                    } else
-                        JOptionPane.showMessageDialog(signButton, "Username Is" +
-                                " Already Taken.");
+                } else
+                    JOptionPane.showMessageDialog(signButton, "Username Is" +
+                            " Already Taken.");
             }
         });
 
@@ -154,7 +155,7 @@ public class Player {
             @Override
             public void mouseClicked(MouseEvent e) {
                 numOfClicks++;
-                    StartManager.getMainMenu().getScoreboard().createBoard(server.returnAllInfo());
+                StartManager.getMainMenu().getScoreboard().createBoard(server.returnAllInfo());
             }
         });
 

@@ -181,22 +181,27 @@ public class Scoreboard {
                 JLabel user = new JLabel(u, SwingConstants.CENTER);
                 user.setBackground(color);
                 user.setOpaque(true);
+
                 //type label
                 JLabel gType = new JLabel(t, SwingConstants.CENTER);
                 gType.setBackground(color);
                 gType.setOpaque(true);
+
                 //wins label
                 JLabel wins = new JLabel(w, SwingConstants.CENTER);
                 wins.setBackground(color);
                 wins.setOpaque(true);
+
                 //lost label
                 JLabel lost = new JLabel(l, SwingConstants.CENTER);
                 lost.setBackground(color);
                 lost.setOpaque(true);
+
                 //score label
                 JLabel scores = new JLabel(s, SwingConstants.CENTER);
                 scores.setBackground(color);
                 scores.setOpaque(true);
+
                 //add
                 mainHardPanel.add(user);
                 mainHardPanel.add(gType);
