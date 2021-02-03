@@ -165,13 +165,11 @@ public class Zombies {
     {
         int i = 0;
         int flag =0;
-        Random rand = new Random();
         if(System.currentTimeMillis()-time>=t)
         {
             while (i < num)
             {
                 int j = 0;
-                j = rand.nextInt(5);
                 for(Map.Entry<Integer, String> info: information.entrySet())
                 {
                     if(flag == 0)
