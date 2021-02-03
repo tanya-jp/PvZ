@@ -1,0 +1,10 @@
+com.company
+game.memory
+game.template.bufferstrategy
+game.template.doublebuffering
+game.template.elements
+gui
+manager
+network
+player
+utils

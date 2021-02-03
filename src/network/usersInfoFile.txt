@@ -1,0 +1,2 @@
+goli,normal,d/n,0,0,0
+goli,hard,d/n,0,0,0
