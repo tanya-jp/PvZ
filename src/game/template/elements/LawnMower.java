@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * This class makes lawn maker and fixes its state and image, changes its x coordinate when lawn maker should move.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  */
 public class LawnMower {
     private int row;

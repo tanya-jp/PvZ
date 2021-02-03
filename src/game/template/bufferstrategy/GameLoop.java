@@ -24,7 +24,7 @@ import java.io.File;
  * patterns is available in the following link:
  *    http://gameprogrammingpatterns.com/game-loop.html
  *
- * @authors Seyed Mohammad Ghaffarian, Tanya Djavaherpour, Elaheh Akbari
+ * @author Seyed Mohammad Ghaffarian, Tanya Djavaherpour, Elaheh Akbari
  *
  */
 public class GameLoop implements Runnable {
@@ -50,9 +50,9 @@ public class GameLoop implements Runnable {
     /**
      * Creates a new game loop
      * @param frame as frame of the game
-     * @param type -> normal / hard
-     * @param timeType -> day / night
-     * @param music -> music should be played or not
+     * @param type , normal / hard
+     * @param timeType , day / night
+     * @param music , music should be played or not
      * @param userName as player's username
      * @param gameNum as number of the selected game
      */

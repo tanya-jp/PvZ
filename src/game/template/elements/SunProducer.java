@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Flowers which produce sun such as mushroom and sunFlower extends from this class and
  * it handles time of sun producing and saving.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  */
 public class SunProducer {
     private HashMap<Integer, Boolean> sunFlowerState;

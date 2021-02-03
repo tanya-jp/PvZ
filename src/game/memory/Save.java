@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * This class merges all information of game that should be saved and
  * save them in the folder of users as a text file with username of player.
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  * @version 1.0 2021
  */
 public class Save {
@@ -54,7 +54,7 @@ public class Save {
      * Saves game
      * @param state as gameState
      * @param userName as name of the player
-     * @param finishState -> gameOver / endOfGame / notFinished
+     * @param finishState , gameOver / endOfGame / notFinished
      * @param gameNum as number of saved game
      */
     public Save(GameState state, String userName, String finishState, String gameNum)

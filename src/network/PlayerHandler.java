@@ -6,7 +6,7 @@ import java.net.Socket;
  * This class implements runnable and creates a thread.
  * Multiple players can join the server when the thread starts.
  * @version 1.0 2021
- * @authors Elaheh Akbari and Tanya Djavaherpour
+ * @author Elaheh Akbari and Tanya Djavaherpour
  */
 public class PlayerHandler implements Runnable{
     private final Socket client;

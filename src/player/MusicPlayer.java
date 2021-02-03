@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * This class plays and stops the music.
  * @version 1.0 2021
- * @authors Elaheh akbari, Tanya Djavaherpour
+ * @author Elaheh akbari, Tanya Djavaherpour
  */
 public class MusicPlayer {
     //clip that should be played

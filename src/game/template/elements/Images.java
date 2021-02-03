@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * This interface gets and sets images of elements
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh akbari
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public interface Images {
     /**

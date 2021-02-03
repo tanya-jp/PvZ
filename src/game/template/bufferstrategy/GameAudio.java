@@ -10,7 +10,7 @@ import java.io.IOException;
  * This class handles musics of the game, plays music of menu when game starts,
  * plays music of the background, music of "zombies are coming" and music of end of game after losing or winning.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  */
 public class GameAudio {
     //path of clips

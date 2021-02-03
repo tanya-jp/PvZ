@@ -11,7 +11,7 @@ import java.io.IOException;
  * It overrides the paintComponent method.
  * An object of this class is created wherever needed.
  * @version 1.0 2021
- * @authors Elaheh Akbari and Tanya Djavaherpour
+ * @author Elaheh Akbari and Tanya Djavaherpour
  */
 public class Background extends JPanel {
     private final Image backgroundImg;

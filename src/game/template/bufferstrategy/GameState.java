@@ -10,7 +10,7 @@ import game.template.elements.*;
  * This class holds the state of game and all of its elements.
  * This class also handles user inputs, which affect the game state.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour and Elaheh Akbari
+ * @author Tanya Djavaherpour and Elaheh Akbari
  */
 public class GameState {
     public static final int GAME_HEIGHT = 772;
@@ -982,7 +982,7 @@ public class GameState {
     //Getter setters
     /**
      * Returns the information of peas which are stopped by zombies
-     * @return HashMap<Integer, Integer> --> key: location of pea shooter,
+     * @return HashMap , key: location of pea shooter,
      * value: x coordinate tha this peashooter's peas are stopped
      */
     public HashMap<Integer, Integer> getStoppedPeas() {
@@ -1058,7 +1058,7 @@ public class GameState {
      */
     public HashMap<Integer, Integer> getLifeInfo() { return lifeInfo; }
     /**
-     * Returns cherryBomb state -> the time of starting to explode
+     * Returns cherryBomb state , the time of starting to explode
      */
     public long getCherryBombState() { return cherryBombState; }
     /**
@@ -1082,15 +1082,15 @@ public class GameState {
      */
     public boolean getMenu(){return menu;}
     /**
-     * Sets if menu has been chosen -> true
+     * Sets if menu has been chosen,  true
      */
     public void setMenu(boolean set){menu = set;}
     /**
-     * Sets time of game -> normal / hard
+     * Sets time of game , normal / hard
      */
     public void setType(String type) {this.type = type; }
     /**
-     * Sets time type of game -> night / day
+     * Sets time type of game , night / day
      */
     public void setTimeType(String timeType) { this.timeType = timeType; }
     /**
@@ -1102,7 +1102,7 @@ public class GameState {
      */
     public void setSunNumber(int sunNumber) {this.sunNumber = sunNumber; }
     /**
-     * Sets sunDropping -> last time of dropping a sun
+     * Sets sunDropping , last time of dropping a sun
      */
     public void setSunDropping(long sunDropping) { this.sunDropping = sunDropping;}
     /**

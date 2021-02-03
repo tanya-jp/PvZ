@@ -16,7 +16,7 @@ import java.util.*;
  * and checked via server.
  * server checks all the info with a file that stores players information.
  * @version 1.0 2021
- * @authors Elaheh Akbari and Tanya Djavaherpour
+ * @author Elaheh Akbari and Tanya Djavaherpour
  */
 public class Server {
     //hashmap to save all info

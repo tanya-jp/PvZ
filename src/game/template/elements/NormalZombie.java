@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * This class sets normal zombie images and stores its state and properties.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour and  Elaheh Akbari
+ * @author Tanya Djavaherpour and  Elaheh Akbari
  */
 public class NormalZombie  implements Images, Zombie {
     private Image fullZombie;
@@ -135,7 +135,7 @@ public class NormalZombie  implements Images, Zombie {
     }
     /**
      * Stops zombie or makes it move
-     * @param stopped -> true if it is stopped.
+     * @param stopped , true if it is stopped.
      */
     @Override
     public void setStopped(boolean stopped) {
@@ -150,7 +150,7 @@ public class NormalZombie  implements Images, Zombie {
     }
     /**
      * When cherryBomb burns zombie, sets that this zombie has been burnt.
-     * @param burnt -> true if zombie has been burnt.
+     * @param burnt , true if zombie has been burnt.
      */
     @Override
     public void setBurnt(boolean burnt) {

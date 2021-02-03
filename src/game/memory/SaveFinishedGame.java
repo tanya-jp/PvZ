@@ -9,7 +9,7 @@ import java.io.File;
  * and defines if the player has won or lost.
  * This class also updates the score of the player and all files that should be changed
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  */
 public class SaveFinishedGame {
     private GameState state;
@@ -35,7 +35,7 @@ public class SaveFinishedGame {
      * Saves information
      * @param state as gameState
      * @param userName as name of the player
-     * @param finishState -> gameOver / endOfGame
+     * @param finishState , gameOver / endOfGame
      * @param gameNum as number of saved game
      */
     public SaveFinishedGame(GameState state, String userName, String finishState, String gameNum)

@@ -3,7 +3,7 @@ import java.awt.*;
 /**
  * This interface fixes everything which is related to zombies.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour and Elaheh Akbari
+ * @author Tanya Djavaherpour and Elaheh Akbari
  */
 public interface Zombie {
     /**
@@ -38,7 +38,7 @@ public interface Zombie {
     void setStopTime(long stopTime);
     /**
      * Stops zombie or makes it move
-     * @param stopped -> true if it is stopped.
+     * @param stopped , true if it is stopped.
      */
     void setStopped(boolean stopped);
     /**
@@ -55,7 +55,7 @@ public interface Zombie {
     Image getBurntImage();
     /**
      * When cherryBomb burns zombie, sets that this zombie has been burnt.
-     * @param burnt -> true if zombie has been burnt.
+     * @param burnt , true if zombie has been burnt.
      */
     void setBurnt(boolean burnt);
     /**

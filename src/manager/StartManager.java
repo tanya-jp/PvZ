@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
  * the game starts.
  * access to different parts of UI is available from here.
  * @version 1.0 2021
- * @authors Elaheh Akbari and Tanya Djavaherpour
+ * @author Elaheh Akbari and Tanya Djavaherpour
  */
 public class StartManager {
     //create new main menu
@@ -44,6 +44,8 @@ public class StartManager {
 
     //string to keep music status
     private static String music;
+    private static String  playMusic;
+    private static boolean musicFlag;
 
     //string to keep game number (name of the game)
     private static String gameNum;
@@ -64,6 +66,10 @@ public class StartManager {
      */
     public static void update()
     {
+        if(!musicFlag)
+            playMusic = "on";
+        else
+            playMusic = "off";
         //create a gameAudio object
         audio = new GameAudio();
         if(!music.equals("off"))
@@ -111,7 +117,15 @@ public class StartManager {
                 type = mainMenu.getSettings().getTypeButton().getText().toLowerCase();
                 mode = mainMenu.getSettings().getModeButton().getText().toLowerCase();
                 music = mainMenu.getSettings().getSoundButton().getText().toLowerCase();
-                audio.playMenu(music.equals("on"));
+                System.out.println(music);
+                System.out.println(playMusic);
+                if(!playMusic.equals(music))
+                    audio.playMenu(music.equals("on"));
+                playMusic = music;
+                if(playMusic.equals("on"))
+                    musicFlag = false;
+                else
+                    musicFlag = true;
             }
         });
     }

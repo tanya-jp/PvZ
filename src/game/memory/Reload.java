@@ -14,7 +14,7 @@ import java.io.File;
  * This class reloads the saved game, after choosing it from the main menu,
  * Sets all elements and everything which is related to game state
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh Akbari
+ * @author Tanya Djavaherpour, Elaheh Akbari
  */
 public class Reload {
     private GameState state;
@@ -77,7 +77,7 @@ public class Reload {
         return res[SplitNumber];
     }
     /**
-     * Sets type of game -> normal / hard
+     * Sets type of game , normal / hard
      */
     private void setType()
     {
@@ -85,7 +85,7 @@ public class Reload {
     }
 
     /**
-     * Sets time type -> day / night
+     * Sets time type , day / night
      */
     private void setTimeType() {
         timeType = getInfo(2, 1);
@@ -202,7 +202,7 @@ public class Reload {
         lawnMowers = ++i;
     }
     /**
-     * Sets lawnMowers state -> their row and x coordinate and availability
+     * Sets lawnMowers state , their row and x coordinate and availability
      */
     private void setLawnMowers()
     {

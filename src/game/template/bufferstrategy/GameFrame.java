@@ -19,7 +19,7 @@ import game.template.doublebuffering.GameCanvas;
  *    http://docs.oracle.com/javase/tutorial/extra/fullscreen/bufferstrategy.html
  *    http://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferStrategy.html
  *
- * @authors Seyed Mohammad Ghaffarian, Tanya Djavaherpour, Elaheh Akbari
+ * @author Seyed Mohammad Ghaffarian, Tanya Djavaherpour, Elaheh Akbari
  */
 public class GameFrame extends JFrame {
 

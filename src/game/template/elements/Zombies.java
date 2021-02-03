@@ -9,7 +9,7 @@ import java.util.Random;
  * This class controls zombies entrance and their movement,
  * makes list of zombies which are in the game.
  * @version 1.0 2021
- * @authors Tanya Djavaherpour, Elaheh akbari
+ * @author Tanya Djavaherpour, Elaheh akbari
  */
 public class Zombies {
     protected ArrayList<Integer> normal;
@@ -74,7 +74,7 @@ public class Zombies {
     }
     /**
      * Returns bucket head zombies information
-     * @return bucketInfo --> key: zombie number, value: information of this zombie
+     * @return bucketInfo -- key: zombie number, value: information of this zombie
      */
     public HashMap<Integer, BucketHeadZombie> getBucketInfo(){return bucketInfo;}
     /**
@@ -92,7 +92,7 @@ public class Zombies {
 
     /**
      * Returns cone head zombies information
-     * @return coneInfo --> key: zombie number, value: information of this zombie
+     * @return coneInfo -- key: zombie number, value: information of this zombie
      */
     public HashMap<Integer, ConeHeadZombie> getConeInfo(){return coneInfo;}
     /**
