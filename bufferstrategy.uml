@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>game.template.bufferstrategy</OriginalElement>
+  <nodes>
+    <node x="62.0" y="676.0">game.template.bufferstrategy.GameState.MouseHandler</node>
+    <node x="313.0" y="0.0">game.template.bufferstrategy.GameFrame</node>
+    <node x="651.0" y="0.0">game.template.bufferstrategy.GameAudio</node>
+    <node x="0.0" y="751.0">game.template.bufferstrategy.GameLoop</node>
+    <node x="0.0" y="0.0">game.template.bufferstrategy.GameState</node>
+    <node x="478.0" y="0.0">game.template.bufferstrategy.ThreadPool</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="game.template.bufferstrategy.GameState.MouseHandler" target="game.template.bufferstrategy.GameState">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="313.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="361.0" y="267.0" />
+  <SelectedNodes>
+    <node>game.template.bufferstrategy.GameFrame</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

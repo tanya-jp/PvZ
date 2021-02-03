@@ -2,6 +2,12 @@ package network;
 
 import java.net.Socket;
 
+/**
+ * This class implements runnable and creates a thread.
+ * Multiple players can join the server when the thread starts.
+ * @version 1.0 2021
+ * @authors Elaheh Akbari and Tanya Djavaherpour
+ */
 public class PlayerHandler implements Runnable{
     private final Socket client;
     private final int clientNum;
@@ -17,7 +23,7 @@ public class PlayerHandler implements Runnable{
     }
 
     /**
-     * Method to read each client massages until "over" is sent. it appends them all together
+     * This method is called when thread starts.
      */
     @Override
     public void run(){
