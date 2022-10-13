@@ -29,3 +29,8 @@ In this game, there are three different types of zombies:
   <img src="https://user-images.githubusercontent.com/72709191/195582268-da2431f4-ac0f-499e-a4c4-83baaf8c1980.png" width=10% height=10%>
   </p>
 
+## Menu
+The game includes two types of menus: **Main Menu** which gives users the ability to start a new game, load a saved game, view rankings, modify settings or quit. **Pause Menu** is available throughout the game and helps users pause or save their game or exit to the main menu.
+
+## [Network](/src/network)
+Multiple users (clients) can start a game and play simultaneously by connecting to a **server**. Their game information including scores and mode will be saved to be displayed on a **scoreboard** later on.
